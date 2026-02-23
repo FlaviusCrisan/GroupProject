@@ -1,1 +1,49 @@
-<p>home works!</p>
+<h1>Welcome User</h1>
+
+<swiper-container
+  slides-per-view="1"
+  space-between="20"
+  loop="true"
+  navigation="true"
+  class="centered-swiper"
+>
+  <swiper-slide>
+    <div class="card" style="background-image: url('images/minecraft.png');">
+      <div class="card-title">
+        <h2>Minecraft server 1</h2>
+        <p>description</p>
+      </div>
+      <div class="card-info">
+        <p>username: player1234</p>
+        <p>server ip: 84.155.234.23</p>
+      </div>
+      <div class="tags">
+        <span>Adventure</span>
+        <span>Multiplayer</span>
+        <span>Creative</span>
+      </div>
+      <button matButton="filled" class="join-button">Join</button>
+    </div>
+  </swiper-slide>
+  <swiper-slide>
+    <div class="card" style="background-image: url('images/fortnite.jpg');">
+      <div class="card-title">
+        <h2>Fortnite lobby</h2>
+        <p>description</p>
+      </div>
+      <div class="card-info">
+        <p>username: player1234</p>
+      </div>
+      <div class="tags">
+        <span>Duos</span>
+        <span>Zero Build</span>
+      </div>
+      <button matButton="filled" class="join-button">Join</button>
+    </div>
+  </swiper-slide>
+</swiper-container>
+
+<div class="post">
+  <p>Want to start a game?</p>
+  <button matButton="filled" routerLink="/post-game">Post your game</button>
+</div>
