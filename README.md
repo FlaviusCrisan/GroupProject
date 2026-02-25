@@ -10,3 +10,25 @@ Features:
 - Player history
 - Chatting
 - Themes (dark / light)
+
+Tech Stack:
+
+Frontend
+ -Angular
+
+Backend
+ -Node.js
+
+Database
+ -PostgreSQL
+
+Testing
+ -Playwright
+
+Member Roles:
+
+Maksymilian - Frontend
+
+Kostiantyn - Backend
+
+Flavius - Database & Testing
