@@ -12,7 +12,7 @@ Features:
 - Themes (dark / light)
 
 
-Tech Stack:
+--- Tech Stack ---
 
 Frontend - Angular
 
@@ -23,7 +23,7 @@ Database - PostgreSQL
 Testing - Playwright
 
 
-Member Roles:
+--- Member Roles ---
 
 Maksymilian - Frontend
 
