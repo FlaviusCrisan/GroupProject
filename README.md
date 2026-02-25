@@ -11,19 +11,17 @@ Features:
 - Chatting
 - Themes (dark / light)
 
+
 Tech Stack:
 
-Frontend
- -Angular
+Frontend - Angular
 
-Backend
- -Node.js
+Backend - Node.js
 
-Database
- -PostgreSQL
+Database - PostgreSQL
 
-Testing
- -Playwright
+Testing - Playwright
+
 
 Member Roles:
 
