@@ -30,3 +30,9 @@ Maksymilian - Frontend
 Kostiantyn - Backend
 
 Flavius - Database & Testing
+
+# How to run
+- `cd` to the root directory `GroupProject/`
+- run `npm install`
+- run `npm run dev`
+- connect to `localhost:4200` in your browser
