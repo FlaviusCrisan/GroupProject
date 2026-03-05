@@ -11,11 +11,13 @@ import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatCardModule } from '@angular/material/card';
+import { MatChipsModule } from '@angular/material/chips';
 register();
 
 @Component({
   selector: 'app-home',
-  imports: [CommonModule, RouterModule, MatButtonModule, MatSidenavModule, MatListModule, MatIconModule, FormsModule, MatInputModule, MatFormFieldModule],
+  imports: [MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule, FormsModule, MatInputModule, MatFormFieldModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
