@@ -1,4 +1,4 @@
-import { Component, OnInit, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { Component, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,7 +25,7 @@ export class Home implements OnInit {
   text : string = "";
   posts : any[] = [];
 
-  constructor(private api: ApiService) {}
+  constructor(private api: ApiService, private cd: ChangeDetectorRef) {}
 
   async ngOnInit(): Promise<void>
   {
@@ -36,6 +36,7 @@ export class Home implements OnInit {
   {
     let res = await firstValueFrom(this.api.get_games());
 	this.posts = res as any[];
+	this.cd.detectChanges();
     console.log(res);
 	return res;
   }
