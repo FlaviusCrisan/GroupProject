@@ -18,31 +18,34 @@ const pool = new Pool({
 
 pool.connect()
   .then(() => console.log('Connected to PostgreSQL'))
+  .then(() => 
+    pool.query(`
+      CREATE TABLE IF NOT EXISTS posts (
+        id SERIAL PRIMARY KEY,
+        info VARCHAR(100) NOT NULL
+      )
+    `)
+  )
   .catch(err => console.error('Connection error', err.stack));
 
-app.get('/api/users', async (req, res) => {
-  const result = await pool.query('SELECT * FROM users');
+app.delete('/api/posts', async (req, res) => {
+  const result = await pool.query('DELETE FROM posts');
   res.json(result.rows);
 });
 
-app.get('/api/profiles/next/:userId', async (req, res) => {
+app.post('/api/posts', async (req, res) => {
+  const { info } = req.body;
+  const result = await pool.query('INSERT INTO posts (info) VALUES ($1);', [info]);
+  res.json(result.rows);
+});
+
+app.get('/api/posts', async (req, res) => {
   try {
-    const { userId } = req.params;
-    const result = await pool.query(
-      `SELECT id, username, bio, favorite_games
-       FROM users
-       WHERE id != $1
-         AND id NOT IN (SELECT swiped_id FROM swipes WHERE swiper_id = $1)
-       LIMIT 1`,
-      [userId]
-    );
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'No more profiles' });
-    }
-    res.json(result.rows[0]);
+    const result = await pool.query('SELECT * FROM posts;');
+    res.json(result.rows);
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
+    console.error('Error fetching posts', err.stack);
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 });
 

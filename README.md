@@ -11,8 +11,21 @@ Features:
 - Chatting
 - Themes (dark / light)
 
+# Supported Games
+- Fortnite
+- Rainbox six siege
+- Valorant
+- Rocket league
+- League of legends
+- Marvel rivals
+- Overwatch
+- Warzone
+- Minecraft
+- Cs2
+- Roblox
+- Apex legends
 
---- Tech Stack ---
+# Tech Stack
 
 Frontend - Angular
 
@@ -23,7 +36,7 @@ Database - PostgreSQL
 Testing - Playwright
 
 
---- Member Roles ---
+# Member Roles
 
 Maksymilian - Frontend
 
