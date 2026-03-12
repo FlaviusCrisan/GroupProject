@@ -23,6 +23,7 @@
     <button mat-icon-button (click)="sidenav.toggle()">
       <mat-icon>menu</mat-icon>
     </button>
+    <button matButton="filled" (click)="sign_out()">sign out</button>
 
     <div class="cards-grid">
       <mat-card *ngFor="let post of posts" appearance="outlined">

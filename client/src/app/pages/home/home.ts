@@ -46,10 +46,14 @@ export class Home implements OnInit {
   async add()
   {
     console.log("adding " + this.text);
-    let res = await firstValueFrom(this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"));
+    let res = await firstValueFrom((await this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"))!);
     console.log(res);
     this.text = "";
     await this.load_posts();
   }
 
+  async sign_out()
+  {
+    this.api.sign_out("/");
+  }
 }

@@ -6,12 +6,18 @@ declare const Clerk: any;
 @Injectable({
   providedIn: 'root'
 })
-export class ApiService {
+export class ApiService 
+{
   base_url = "http://localhost:3000";
+  private clerk_initialized = false;
 
   constructor(private http: HttpClient) {}
 
-  async init_clerk() {
+  private async init_clerk() 
+  {
+    if (this.clerk_initialized)
+      return;
+
     await new Promise<void>(resolve => {
       if ((window as any).Clerk) return resolve();
       const interval = setInterval(() => {
@@ -24,26 +30,47 @@ export class ApiService {
 
     await Clerk.load();
     console.log('ClerkJS is loaded');
+    this.clerk_initialized = true;
   }
 
-  is_signed_in() : boolean {
+  async is_signed_in() : Promise<boolean>
+  { 
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
     return Clerk.isSignedIn;
   }
 
-  async get_token() : Promise<string | null> {
+  async get_token() : Promise<string | null> 
+  {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
     return Clerk.session?.getToken() ?? null;
   }
 
-  async mount_user_button(e: HTMLDivElement) {
-    if (!e)
-      console.log("element is null");
+  async mount_user_button(e: HTMLDivElement) 
+  {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
+    if (!e) throw new Error("element is null");
+
     await Clerk.mountUserButton(e);
   }
 
-  async mount_sign_in(e: HTMLDivElement, after_sign_in_url: string) {
-    if (!e)
-      console.log("element is null");
+  async mount_sign_in(e: HTMLDivElement, after_sign_in_url: string)
+  {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
+    if (!e) throw new Error("element is null");
+  
     await Clerk.mountSignIn(e, {afterSignInUrl: after_sign_in_url});
+  }
+
+  async sign_out(redirect_url: string) 
+  {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
+
+    await Clerk.signOut({redirectUrl: redirect_url});
   }
 
   get_games()
@@ -51,8 +78,11 @@ export class ApiService {
     return this.http.get(`${this.base_url}/api/posts`);
   }
 
-  post_game(token: string, title: string, description: string, username: string, game: string)
+  async post_game(token: string, title: string, description: string, username: string, game: string)
   {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
+
     return this.http.post(`${this.base_url}/api/posts`, {
       title: title,
       description: description,

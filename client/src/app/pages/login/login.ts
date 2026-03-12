@@ -13,9 +13,8 @@ export class Login implements AfterViewInit {
 
   async ngAfterViewInit() : Promise<void>
   {
-    await this.api.init_clerk();
-
-    if (this.api.is_signed_in())
+    const is_signed_in = await this.api.is_signed_in();
+    if (is_signed_in)
       await this.router.navigate(["/home"]);
     else
       await this.api.mount_sign_in(document.getElementById("sign-in") as HTMLDivElement, "/home");
