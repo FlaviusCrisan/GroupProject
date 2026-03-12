@@ -29,26 +29,27 @@ export class Home implements OnInit {
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef) {}
 
-  async ngOnInit(): Promise<void>
+  async ngOnInit() : Promise<void>
   {
-    this.load_posts();
+    await this.load_posts();
   }
 
   async load_posts()
   {
     let res = await firstValueFrom(this.api.get_games());
-	this.posts = res as any[];
-	this.cd.detectChanges();
+    this.posts = res as any[];
+    this.cd.detectChanges();
     console.log(res);
-	return res;
+    return res;
   }
 
   async add()
   {
-    let res = await firstValueFrom(this.api.post_game(this.text));
-	console.log(res);
-	this.text = "";
-	await this.load_posts();
+    console.log("adding " + this.text);
+    let res = await firstValueFrom(this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"));
+    console.log(res);
+    this.text = "";
+    await this.load_posts();
   }
 
 }
