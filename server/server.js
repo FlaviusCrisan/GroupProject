@@ -56,6 +56,17 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
+app.get('/api/posts/:id', async (req, res) => {
+  try {
+    const id = req.params.id;
+    const result = await pool.query('SELECT * FROM posts WHERE id = $1 LIMIT 1', [id]);
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.post('/api/posts', requireAuth(), async (req, res) => {
   try {
     const { title, description, username, game } = req.body;

@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { firstValueFrom } from 'rxjs';
 
 declare const Clerk: any;
 
@@ -73,17 +74,22 @@ export class ApiService
     await Clerk.signOut({redirectUrl: redirect_url});
   }
 
-  get_games()
+  async get_games(): Promise<any>
   {
-    return this.http.get(`${this.base_url}/api/posts`);
+    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts`));
   }
 
-  async post_game(token: string, title: string, description: string, username: string, game: string)
+  async get_game(id: number): Promise<any>
+  {
+    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}`));
+  }
+
+  async post_game(token: string, title: string, description: string, username: string, game: string): Promise<any>
   {
     await this.init_clerk();
     if (!this.clerk_initialized) throw new Error("Clerk not initialized");
 
-    return this.http.post(`${this.base_url}/api/posts`, {
+    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, {
       title: title,
       description: description,
       username: username,
@@ -92,6 +98,6 @@ export class ApiService
       headers: {
         Authorization: `Bearer ${token}`
       }
-    });
+    }));
   }
 }

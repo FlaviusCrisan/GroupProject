@@ -1,12 +1,11 @@
 import { Component, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { RouterModule } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { register } from 'swiper/element/bundle';
-import { firstValueFrom } from 'rxjs';
 import { ApiService } from '../../services/api.service';
 import { FormsModule } from '@angular/forms';
 import { MatInputModule } from '@angular/material/input';
@@ -27,7 +26,7 @@ export class Home implements OnInit {
   text : string = "";
   posts : any[] = [];
 
-  constructor(private api: ApiService, private cd: ChangeDetectorRef) {}
+  constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
 
   async ngOnInit() : Promise<void>
   {
@@ -36,24 +35,26 @@ export class Home implements OnInit {
 
   async load_posts()
   {
-    let res = await firstValueFrom(this.api.get_games());
+    let res = await this.api.get_games();
     this.posts = res as any[];
     this.cd.detectChanges();
-    console.log(res);
     return res;
   }
 
   async add()
   {
-    console.log("adding " + this.text);
-    let res = await firstValueFrom((await this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"))!);
-    console.log(res);
+    let res = (await this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"))!;
     this.text = "";
     await this.load_posts();
   }
 
   async sign_out()
   {
-    this.api.sign_out("/");
+    await this.api.sign_out("/");
+  }
+
+  async join(post: any)
+  {
+    this.router.navigate(['/post', post.id]);
   }
 }
