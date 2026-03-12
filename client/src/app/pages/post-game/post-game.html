@@ -1,1 +1,9 @@
-<p>post-game works!</p>
+<mat-form-field appearance="fill">
+  <mat-label>title</mat-label>
+  <input matInput placeholder="Enter title" [(ngModel)]="title">
+</mat-form-field>
+<mat-form-field appearance="fill">
+  <mat-label>description</mat-label>
+  <input matInput placeholder="Enter description" [(ngModel)]="description">
+</mat-form-field>
+<button matButton="filled" (click)="add()">post</button>

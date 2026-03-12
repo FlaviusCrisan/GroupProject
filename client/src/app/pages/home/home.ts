@@ -7,23 +7,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { register } from 'swiper/element/bundle';
 import { ApiService } from '../../services/api.service';
-import { FormsModule } from '@angular/forms';
-import { MatInputModule } from '@angular/material/input';
-import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 register();
 
 @Component({
   selector: 'app-home',
-  imports: [MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule, FormsModule, MatInputModule, MatFormFieldModule],
+  imports: [MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
-export class Home implements OnInit {
-
-  text : string = "";
+export class Home implements OnInit
+{
   posts : any[] = [];
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
@@ -39,13 +35,6 @@ export class Home implements OnInit {
     this.posts = res as any[];
     this.cd.detectChanges();
     return res;
-  }
-
-  async add()
-  {
-    let res = (await this.api.post_game((await this.api.get_token())!, this.text, "DESC123", "username", "game"))!;
-    this.text = "";
-    await this.load_posts();
   }
 
   async sign_out()
