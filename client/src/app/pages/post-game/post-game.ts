@@ -5,6 +5,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatButtonModule } from '@angular/material/button';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
+import { Post, PostInfo } from '../../Post';
 
 @Component({
   selector: 'app-post-game',
@@ -14,14 +15,14 @@ import { ApiService } from '../../services/api.service';
 })
 export class PostGame
 {
-  title : string = "";
-  description : string = "";
+  info: PostInfo = new PostInfo();
 
   constructor(private api: ApiService, private router: Router) {}
 
   async add()
   {
-    (await this.api.post_game((await this.api.get_token())!, this.title, this.description, "username", "game"))!;
+    this.info.username = "whatever";
+    (await this.api.post_game((await this.api.get_token())!, this.info))!;
     this.router.navigate(["/home"]);
   }
 }

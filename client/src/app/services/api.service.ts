@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Post, PostInfo } from '../Post';
 import { firstValueFrom } from 'rxjs';
 
 declare const Clerk: any;
@@ -41,6 +42,13 @@ export class ApiService
     return Clerk.isSignedIn;
   }
 
+  async get_user_id() : Promise<string> 
+  {
+    await this.init_clerk();
+    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
+    return Clerk.user.id;
+  }
+
   async get_token() : Promise<string | null> 
   {
     await this.init_clerk();
@@ -74,27 +82,24 @@ export class ApiService
     await Clerk.signOut({redirectUrl: redirect_url});
   }
 
-  async get_games(): Promise<any>
+  async get_games(): Promise<Post[]>
   {
-    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts`));
+    const array = await firstValueFrom(this.http.get<any[]>(`${this.base_url}/api/posts`));
+    return array.map(json => Post.from_json(json));
   }
 
-  async get_game(id: number): Promise<any>
+  async get_game(id: number): Promise<Post>
   {
-    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}`));
+    const json = await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}`));
+    return Post.from_json(json);
   }
 
-  async post_game(token: string, title: string, description: string, username: string, game: string): Promise<any>
+  async post_game(token: string, info: PostInfo): Promise<any>
   {
     await this.init_clerk();
     if (!this.clerk_initialized) throw new Error("Clerk not initialized");
 
-    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, {
-      title: title,
-      description: description,
-      username: username,
-      game: game,
-    }, {
+    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, info, {
       headers: {
         Authorization: `Bearer ${token}`
       }

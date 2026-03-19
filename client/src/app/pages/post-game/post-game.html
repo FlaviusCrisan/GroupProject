@@ -1,9 +1,28 @@
-<mat-form-field appearance="fill">
-  <mat-label>title</mat-label>
-  <input matInput placeholder="Enter title" [(ngModel)]="title">
-</mat-form-field>
-<mat-form-field appearance="fill">
-  <mat-label>description</mat-label>
-  <input matInput placeholder="Enter description" [(ngModel)]="description">
-</mat-form-field>
-<button matButton="filled" (click)="add()">post</button>
+<div style="display: flex; flex-direction: column;">
+  <mat-form-field appearance="fill">
+    <mat-label>title</mat-label>
+    <input matInput placeholder="Enter title" [(ngModel)]="info.title">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>description</mat-label>
+    <input matInput placeholder="Enter description" [(ngModel)]="info.description">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>game</mat-label>
+    <input matInput placeholder="Enter game" [(ngModel)]="info.game">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>game_mode</mat-label>
+    <input matInput placeholder="Enter game_mode" [(ngModel)]="info.game_mode">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>skill_level</mat-label>
+    <input matInput placeholder="Enter skill_level" [(ngModel)]="info.skill_level">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>region</mat-label>
+    <input matInput placeholder="Enter region" [(ngModel)]="info.region">
+  </mat-form-field>
+
+  <button matButton="filled" (click)="add()">post</button>
+</div>

@@ -3,6 +3,7 @@ import { ActivatedRoute } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
+import { Post } from '../../Post';
 
 @Component({
   selector: 'app-post-page',
@@ -12,7 +13,7 @@ import { ApiService } from '../../services/api.service';
 })
 export class PostPage implements AfterViewInit
 {
-  post = {title: "", description: ""};
+  post?: Post;
 
   constructor(private api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
 
