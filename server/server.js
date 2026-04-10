@@ -43,6 +43,17 @@ pool.connect()
       )
     `)
   )
+  .then(() =>
+    pool.query(`
+      CREATE TABLE IF NOT EXISTS likes (
+        id SERIAL PRIMARY KEY,
+        from_clerk_id VARCHAR(100) NOT NULL,
+        to_clerk_id VARCHAR(100) NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW(),
+        UNIQUE(from_clerk_id, to_clerk_id)
+      )
+    `)
+  )
   .catch(err => console.error('Connection error', err.stack));
 
 // get all supported games and their filter options
@@ -168,9 +179,12 @@ app.patch('/api/users/metadata', requireAuth(), async (req, res) => {
       publicMetadata: publicMetadata
     });
 
+    const safeMetadata = { ...user.publicMetadata };
+    delete safeMetadata.socials;
+
     res.json({
       id: user.id,
-      publicMetadata: user.publicMetadata
+      publicMetadata: safeMetadata
     });
   } catch (err) {
     console.error(err);
@@ -183,17 +197,94 @@ app.get('/api/users/:userId', async (req, res) => {
   try {
     const { userId } = req.params;
     const user = await clerkClient.users.getUser(userId);
+
+    const safeMetadata = { ...user.publicMetadata };
+    // Do NOT send sensitive socials here; they are only for mutual matches via /socials
+    delete safeMetadata.socials;
+
     res.json({
       id: user.id,
       username: user.username,
       firstName: user.firstName,
       lastName: user.lastName,
       imageUrl: user.imageUrl,
-      publicMetadata: user.publicMetadata
+      publicMetadata: safeMetadata
     });
   } catch (err) {
     console.error(err);
     res.status(404).json({ error: 'User not found' });
+  }
+});
+
+// like another user (swipe right)
+app.post('/api/likes', requireAuth(), async (req, res) => {
+  try {
+    const { userId: fromUserId } = getAuth(req);
+    const { toUserId } = req.body;
+
+    if (!toUserId) {
+      return res.status(400).json({ error: 'toUserId is required' });
+    }
+
+    if (fromUserId === toUserId) {
+      return res.status(400).json({ error: 'You cannot like yourself' });
+    }
+
+    await pool.query(
+      `INSERT INTO likes (from_clerk_id, to_clerk_id) 
+       VALUES ($1, $2) 
+       ON CONFLICT (from_clerk_id, to_clerk_id) DO NOTHING`,
+      [fromUserId, toUserId]
+    );
+
+    // check if it's a mutual match
+    const matchCheck = await pool.query(
+      `SELECT * FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [toUserId, fromUserId]
+    );
+
+    const isMatch = matchCheck.rows.length > 0;
+    
+    res.json({ isMatch });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// get user socials (only works if there is a mutual match)
+app.get('/api/users/:userId/socials', requireAuth(), async (req, res) => {
+  try {
+    const { userId: requesterId } = getAuth(req);
+    const targetUserId = req.params.userId;
+
+    if (requesterId === targetUserId) {
+       // user wants to see their own socials
+       const targetUser = await clerkClient.users.getUser(targetUserId);
+       return res.json({ socials: targetUser.publicMetadata?.socials || {} });
+    }
+
+    // Check mutual like
+    const matchCheck1 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [requesterId, targetUserId]
+    );
+
+    const matchCheck2 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [targetUserId, requesterId]
+    );
+
+    if (matchCheck1.rows.length > 0 && matchCheck2.rows.length > 0) {
+      // It's a match, get the socials from clerk
+      const targetUser = await clerkClient.users.getUser(targetUserId);
+      res.json({ socials: targetUser.publicMetadata?.socials || {} });
+    } else {
+      res.status(403).json({ error: 'Forbidden. Socials are only visible for mutual matches.' });
+    }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
   }
 });
 
