@@ -105,4 +105,9 @@ export class ApiService
       }
     }));
   }
+
+  async get_user_info(): Promise<any>
+  {
+    return await firstValueFrom(this.http.get(`${this.base_url}/api/users/${await this.get_user_id()}`));
+  }
 }

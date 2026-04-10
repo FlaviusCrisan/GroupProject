@@ -1,26 +1,21 @@
-import { Component, AfterViewInit, ChangeDetectorRef } from '@angular/core';
+import { Component, ChangeDetectorRef } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
 import { ApiService } from '../../services/api.service';
 import { Post } from '../../Post';
+import { PostComponent } from '../../components/post/post';
 
 @Component({
   selector: 'app-post-page',
-  imports: [MatCardModule, MatChipsModule],
+  imports: [PostComponent],
   templateUrl: './post-page.html',
   styleUrl: './post-page.css',
 })
-export class PostPage implements AfterViewInit
+export class PostPage
 {
-  post?: Post;
+  id: number;
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef) {}
-
-  async ngAfterViewInit() 
+  constructor(private api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef)
   {
-    const id = Number(this.route.snapshot.paramMap.get("id"));
-    this.post = await this.api.get_game(id);
-    this.cd.detectChanges();
+    this.id = Number(this.route.snapshot.paramMap.get("id"));
   }
 }

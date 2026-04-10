@@ -26,29 +26,7 @@
     <button matButton="filled" (click)="sign_out()">sign out</button>
 
     <div class="cards-grid">
-      <mat-card *ngFor="let post of posts" appearance="outlined">
-        <mat-card-header>
-          <mat-card-title>{{post.info.title}}</mat-card-title>
-        </mat-card-header>
-        <mat-card-content>
-          <p>description: {{post.info.description}}</p>
-          <p>username: {{post.info.username}}</p>
-          <p>game: {{post.info.game}}</p>
-          <p>game_mode: {{post.info.game_mode}}</p>
-          <p>skill_level: {{post.info.skill_level}}</p>
-          <p>region: {{post.info.region}}</p>
-          <p>joined: {{post.joined}}</p>
-          <p>created_at: {{post.created_at}}</p>
-        </mat-card-content>
-        <mat-card-footer class="card-footer">
-          <mat-chip-set aria-label="Chihuahua traits">
-            <mat-chip>tag</mat-chip>
-            <mat-chip>tag</mat-chip>
-            <mat-chip>tag</mat-chip>
-          </mat-chip-set>
-          <button matButton="filled" (click)="join(post)">Join</button>
-        </mat-card-footer>
-      </mat-card>
+      <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="join($event)"></app-post>
     </div>
     
     <div class="post">

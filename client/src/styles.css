@@ -1,0 +1,30 @@
+.avatar {
+	display: flex;
+	align-items: center;
+	margin: 10px 0px;
+}
+
+.avatar img {
+	max-width: 30px;
+	max-height: 30px;
+	border-radius: 9999px;
+}
+
+.avatar p {
+	margin-left: 10px;
+}
+
+mat-card-title {
+	display: flex;
+	align-items: center;
+}
+
+mat-card-title span:last-child {
+	font-size: 13px;
+	margin-left: 6px;
+	opacity: 0.7;
+}
+
+p {
+	margin: 0px;
+}

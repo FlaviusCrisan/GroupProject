@@ -7,20 +7,22 @@ import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { register } from 'swiper/element/bundle';
 import { ApiService } from '../../services/api.service';
+import { PostComponent } from '../../components/post/post';
+import { Post } from '../../Post';
 import { MatCardModule } from '@angular/material/card';
 import { MatChipsModule } from '@angular/material/chips';
 register();
 
 @Component({
   selector: 'app-home',
-  imports: [MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule],
+  imports: [PostComponent, MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
 })
 export class Home implements OnInit
 {
-  posts : any[] = [];
+  posts: Post[] = [];
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
 
@@ -31,10 +33,8 @@ export class Home implements OnInit
 
   async load_posts()
   {
-    let res = await this.api.get_games();
-    this.posts = res as any[];
+    this.posts = await this.api.get_games();
     this.cd.detectChanges();
-    return res;
   }
 
   async sign_out()
@@ -42,7 +42,7 @@ export class Home implements OnInit
     await this.api.sign_out("/");
   }
 
-  async join(post: any)
+  async join(post: Post)
   {
     this.router.navigate(['/post', post.id]);
   }

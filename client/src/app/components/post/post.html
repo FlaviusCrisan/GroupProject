@@ -1,0 +1,27 @@
+<mat-card appearance="outlined">
+  <mat-card-header>
+  <mat-card-title><span>{{post?.info?.title}}</span> <span>&middot;&nbsp; {{time_string}}</span></mat-card-title>
+  </mat-card-header>
+  <mat-card-content>
+    <div class="avatar">
+      <img src="{{user_info?.imageUrl}}">
+      <p>Posted by {{user_info?.username}}</p>
+    </div>
+    <p class="description">{{post?.info?.description}}</p>
+  </mat-card-content>
+  <mat-card-footer class="card-footer">
+    <mat-chip-set aria-label="Chihuahua traits">
+      <mat-chip>{{post?.info?.game}}</mat-chip>
+      <mat-chip>{{post?.info?.game_mode}}</mat-chip>
+      <mat-chip>{{post?.info?.rank}}</mat-chip>
+      <mat-chip>{{post?.info?.region}}</mat-chip>
+      <mat-chip>{{post?.info?.platform}}</mat-chip>
+      <mat-chip>{{post?.info?.language}}</mat-chip>
+      <mat-chip>{{post?.info?.age_range}}</mat-chip>
+      <mat-chip>{{post?.info?.gender}}</mat-chip>
+    </mat-chip-set>
+    @if (join_clicked.observed) {
+      <button matButton="filled" (click)="join_clicked.emit(post)">Join</button>
+    }
+  </mat-card-footer>
+</mat-card>
