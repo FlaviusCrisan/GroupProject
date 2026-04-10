@@ -1,8 +1,10 @@
 const express = require('express');
 const cors = require('cors');
 const { Pool } = require('pg');
-const { clerkMiddleware, requireAuth } = require('@clerk/express');
+const { clerkMiddleware, requireAuth, getAuth, clerkClient } = require('@clerk/express');
 require('dotenv').config();
+
+const { GAMES, REGIONS, LANGUAGES, AGE_RANGES, GENDERS } = require('./game-config');
 
 const app = express();
 
@@ -22,27 +24,20 @@ pool.connect()
   .then(() => console.log('Connected to PostgreSQL'))
   .then(() =>
     pool.query(`
-      CREATE TABLE IF NOT EXISTS users (
-        id SERIAL PRIMARY KEY,
-        clerk_id VARCHAR(100) UNIQUE NOT NULL,
-        username VARCHAR(50) UNIQUE NOT NULL,
-        bio TEXT DEFAULT '',
-        favorite_games TEXT DEFAULT '',
-        created_at TIMESTAMP DEFAULT NOW()
-      )
-    `)
-  )
-  .then(() =>
-    pool.query(`
       CREATE TABLE IF NOT EXISTS posts (
         id SERIAL PRIMARY KEY,
         title VARCHAR(100) NOT NULL,
         description TEXT DEFAULT '',
+        clerk_id VARCHAR(100) NOT NULL,
         username VARCHAR(50) NOT NULL,
         game VARCHAR(50) DEFAULT '',
         game_mode VARCHAR(50) DEFAULT '',
-        skill_level VARCHAR(20) DEFAULT '',
+        rank VARCHAR(40) DEFAULT '',
         region VARCHAR(20) DEFAULT '',
+        platform VARCHAR(30) DEFAULT '',
+        language VARCHAR(30) DEFAULT '',
+        age_range VARCHAR(20) DEFAULT '',
+        gender VARCHAR(30) DEFAULT '',
         joined BOOLEAN DEFAULT FALSE,
         created_at TIMESTAMP DEFAULT NOW()
       )
@@ -50,39 +45,35 @@ pool.connect()
   )
   .catch(err => console.error('Connection error', err.stack));
 
+// get all supported games and their filter options
+app.get('/api/games', (req, res) => {
+  res.json({
+    games: GAMES,
+    regions: REGIONS,
+    languages: LANGUAGES,
+    age_ranges: AGE_RANGES,
+    genders: GENDERS
+  });
+});
+
+// get posts with optional filters
 app.get('/api/posts', async (req, res) => {
   try {
-    const { game, game_mode, skill_level, region } = req.query;
+    const filters = ['game', 'game_mode', 'rank', 'region', 'platform', 'language', 'age_range', 'gender'];
     let query = 'SELECT * FROM posts WHERE joined = FALSE';
     const params = [];
     let paramIndex = 1;
 
-    if (game) {
-      query += ` AND game = $${paramIndex}`;
-      params.push(game);
-      paramIndex++;
-    }
-
-    if (game_mode) {
-      query += ` AND game_mode = $${paramIndex}`;
-      params.push(game_mode);
-      paramIndex++;
-    }
-
-    if (skill_level) {
-      query += ` AND skill_level = $${paramIndex}`;
-      params.push(skill_level);
-      paramIndex++;
-    }
-
-    if (region) {
-      query += ` AND region = $${paramIndex}`;
-      params.push(region);
-      paramIndex++;
+    for (const filter of filters) {
+      if (req.query[filter]) {
+        query += ` AND ${filter} = $${paramIndex}`;
+        params.push(req.query[filter]);
+        paramIndex++;
+      }
     }
 
     query += ' ORDER BY created_at DESC';
-    
+
     const result = await pool.query(query, params);
     res.json(result.rows);
   } catch (err) {
@@ -91,10 +82,14 @@ app.get('/api/posts', async (req, res) => {
   }
 });
 
+// get single post by id
 app.get('/api/posts/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const result = await pool.query('SELECT * FROM posts WHERE id = $1 LIMIT 1', [id]);
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
     res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
@@ -102,15 +97,37 @@ app.get('/api/posts/:id', async (req, res) => {
   }
 });
 
+// create a new post (auth required)
 app.post('/api/posts', requireAuth(), async (req, res) => {
   try {
-    const { title, description, username, game, game_mode, skill_level, region } = req.body;
-    if (!title || !username) {
-      return res.status(400).json({ error: 'title and username are required' });
+    const { userId } = getAuth(req);
+    const { title, description, game, game_mode, rank, region, platform, language, age_range, gender } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: 'title is required' });
     }
+
+    // get username from clerk
+    const user = await clerkClient.users.getUser(userId);
+    const username = user.username || user.firstName || 'Unknown';
+
     const result = await pool.query(
-      'INSERT INTO posts (title, description, username, game, game_mode, skill_level, region) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *',
-      [title, description || '', username, game || '', game_mode || '', skill_level || '', region || '']
+      `INSERT INTO posts (title, description, clerk_id, username, game, game_mode, rank, region, platform, language, age_range, gender)
+       VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+      [
+        title,
+        description || '',
+        userId,
+        username,
+        game || '',
+        game_mode || '',
+        rank || '',
+        region || '',
+        platform || '',
+        language || '',
+        age_range || '',
+        gender || ''
+      ]
     );
     res.json(result.rows[0]);
   } catch (err) {
@@ -119,41 +136,7 @@ app.post('/api/posts', requireAuth(), async (req, res) => {
   }
 });
 
-app.post('/api/users', async (req, res) => {
-  try {
-    const { clerkId, username } = req.body;
-    if (!clerkId || !username) {
-      return res.status(400).json({ error: 'clerkId and username are required' });
-    }
-    const existing = await pool.query('SELECT * FROM users WHERE clerk_id = $1', [clerkId]);
-    if (existing.rows.length > 0) {
-      return res.json(existing.rows[0]);
-    }
-    const result = await pool.query(
-      'INSERT INTO users (clerk_id, username) VALUES ($1, $2) RETURNING *',
-      [clerkId, username]
-    );
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
-app.get('/api/users/:clerkId', async (req, res) => {
-  try {
-    const { clerkId } = req.params;
-    const result = await pool.query('SELECT * FROM users WHERE clerk_id = $1', [clerkId]);
-    if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'User not found' });
-    }
-    res.json(result.rows[0]);
-  } catch (err) {
-    console.error(err);
-    res.status(500).json({ error: 'Server error' });
-  }
-});
-
+// join a post (auth required)
 app.patch('/api/posts/:id/join', requireAuth(), async (req, res) => {
   try {
     const id = req.params.id;
@@ -168,6 +151,49 @@ app.patch('/api/posts/:id/join', requireAuth(), async (req, res) => {
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// update user metadata in clerk (auth required)
+app.patch('/api/users/metadata', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const { publicMetadata } = req.body;
+
+    if (!publicMetadata) {
+      return res.status(400).json({ error: 'publicMetadata is required' });
+    }
+
+    const user = await clerkClient.users.updateUserMetadata(userId, {
+      publicMetadata: publicMetadata
+    });
+
+    res.json({
+      id: user.id,
+      publicMetadata: user.publicMetadata
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// get user info from clerk by their id
+app.get('/api/users/:userId', async (req, res) => {
+  try {
+    const { userId } = req.params;
+    const user = await clerkClient.users.getUser(userId);
+    res.json({
+      id: user.id,
+      username: user.username,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      imageUrl: user.imageUrl,
+      publicMetadata: user.publicMetadata
+    });
+  } catch (err) {
+    console.error(err);
+    res.status(404).json({ error: 'User not found' });
   }
 });
 
