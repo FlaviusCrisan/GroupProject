@@ -16,13 +16,28 @@
     <input matInput placeholder="Enter game_mode" [(ngModel)]="info.game_mode">
   </mat-form-field>
   <mat-form-field appearance="fill">
-    <mat-label>skill_level</mat-label>
-    <input matInput placeholder="Enter skill_level" [(ngModel)]="info.skill_level">
+    <mat-label>rank</mat-label>
+    <input matInput placeholder="Enter rank" [(ngModel)]="info.rank">
   </mat-form-field>
   <mat-form-field appearance="fill">
     <mat-label>region</mat-label>
     <input matInput placeholder="Enter region" [(ngModel)]="info.region">
   </mat-form-field>
-
+  <mat-form-field appearance="fill">
+    <mat-label>platform</mat-label>
+    <input matInput placeholder="Enter platform" [(ngModel)]="info.platform">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>language</mat-label>
+    <input matInput placeholder="Enter language" [(ngModel)]="info.language">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>age_range</mat-label>
+    <input matInput placeholder="Enter age_range" [(ngModel)]="info.age_range">
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>gender</mat-label>
+    <input matInput placeholder="Enter gender" [(ngModel)]="info.gender">
+  </mat-form-field>
   <button matButton="filled" (click)="add()">post</button>
 </div>

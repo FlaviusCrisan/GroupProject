@@ -13,11 +13,14 @@ export class Post
     const info = new PostInfo();
     info.title = json.title;
     info.description = json.description;
-    info.username = json.username;
     info.game = json.game;
     info.game_mode = json.game_mode;
-    info.skill_level = json.skill_level;
+    info.rank = json.rank;
     info.region = json.region;
+    info.platform = json.platform;
+    info.language = json.language;
+    info.age_range = json.age_range;
+    info.gender = json.gender;
     return new Post(json.id, json.joined, json.created_at, info);
   }
 }
@@ -26,9 +29,12 @@ export class PostInfo
 {
   title: string = "";
   description: string = "";
-  username: string = "";
   game: string = "";
   game_mode: string = "";
-  skill_level: string = "";
+  rank: string = "";
   region: string = "";
+  platform: string = "";
+  language: string = "";
+  age_range: string = "";
+  gender: string = "";
 }
