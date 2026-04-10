@@ -54,6 +54,17 @@ pool.connect()
       )
     `)
   )
+  .then(() =>
+    pool.query(`
+      CREATE TABLE IF NOT EXISTS messages (
+        id SERIAL PRIMARY KEY,
+        sender_id VARCHAR(100) NOT NULL,
+        receiver_id VARCHAR(100) NOT NULL,
+        content TEXT NOT NULL,
+        created_at TIMESTAMP DEFAULT NOW()
+      )
+    `)
+  )
   .catch(err => console.error('Connection error', err.stack));
 
 // get all supported games and their filter options
@@ -282,6 +293,77 @@ app.get('/api/users/:userId/socials', requireAuth(), async (req, res) => {
     } else {
       res.status(403).json({ error: 'Forbidden. Socials are only visible for mutual matches.' });
     }
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// get conversation history with a matched user
+app.get('/api/messages/:matchUserId', requireAuth(), async (req, res) => {
+  try {
+    const { userId: currentUserId } = getAuth(req);
+    const { matchUserId } = req.params;
+
+    // Verify mutual match first
+    const matchCheck1 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [currentUserId, matchUserId]
+    );
+    const matchCheck2 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [matchUserId, currentUserId]
+    );
+
+    if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
+      return res.status(403).json({ error: 'You can only message mutually matched users' });
+    }
+
+    const messages = await pool.query(
+      `SELECT * FROM messages 
+       WHERE (sender_id = $1 AND receiver_id = $2) 
+          OR (sender_id = $2 AND receiver_id = $1)
+       ORDER BY created_at ASC`,
+      [currentUserId, matchUserId]
+    );
+
+    res.json(messages.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+// send a chat message
+app.post('/api/messages', requireAuth(), async (req, res) => {
+  try {
+    const { userId: senderId } = getAuth(req);
+    const { receiverId, content } = req.body;
+
+    if (!receiverId || !content) {
+      return res.status(400).json({ error: 'receiverId and content are required' });
+    }
+
+    // Verify mutual match first
+    const matchCheck1 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [senderId, receiverId]
+    );
+    const matchCheck2 = await pool.query(
+      `SELECT 1 FROM likes WHERE from_clerk_id = $1 AND to_clerk_id = $2`,
+      [receiverId, senderId]
+    );
+
+    if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
+      return res.status(403).json({ error: 'You can only message mutually matched users' });
+    }
+
+    const result = await pool.query(
+      `INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3) RETURNING *`,
+      [senderId, receiverId, content]
+    );
+
+    res.json(result.rows[0]);
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
