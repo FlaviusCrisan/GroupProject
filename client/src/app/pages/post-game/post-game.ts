@@ -21,7 +21,7 @@ export class PostGame
 
   async add()
   {
-    (await this.api.post_game((await this.api.get_token())!, this.info))!;
+    (await this.api.post_game(this.info))!;
     this.router.navigate(["/home"]);
   }
 }

@@ -3,10 +3,12 @@ import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Post } from '../../Post';
 import { PostComponent } from '../../components/post/post';
+import { MatCardModule } from '@angular/material/card';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-post-page',
-  imports: [PostComponent],
+  imports: [MatButtonModule, MatCardModule, PostComponent],
   templateUrl: './post-page.html',
   styleUrl: './post-page.css',
 })

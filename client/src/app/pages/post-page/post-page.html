@@ -1,1 +1,13 @@
-<app-post [id]="id"></app-post>
+<div style="display: flex; justify-content: center">
+  <mat-card appearance="outlined" style="width: 800px">
+    <mat-card-content style="display: flex; flex-direction: column; gap: 15px">
+      <app-post [id]="id"></app-post>
+      <mat-card appearance="outlined">
+        <mat-card-content style="display: flex; flex-direction: column; align-items: center; gap: 10px">
+          <p>Once the poster accepts your request, you can start messaging.</p>
+          <button matButton="filled">Request to join</button>
+        </mat-card-content>
+      </mat-card>
+    </mat-card-content>
+  </mat-card>
+</div>

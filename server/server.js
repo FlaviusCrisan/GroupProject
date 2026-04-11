@@ -315,9 +315,9 @@ app.get('/api/messages/:matchUserId', requireAuth(), async (req, res) => {
       [matchUserId, currentUserId]
     );
 
-    if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
-      return res.status(403).json({ error: 'You can only message mutually matched users' });
-    }
+    // if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
+    //   return res.status(403).json({ error: 'You can only message mutually matched users' });
+    // }
 
     const messages = await pool.query(
       `SELECT * FROM messages 
@@ -354,9 +354,9 @@ app.post('/api/messages', requireAuth(), async (req, res) => {
       [receiverId, senderId]
     );
 
-    if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
-      return res.status(403).json({ error: 'You can only message mutually matched users' });
-    }
+    // if (matchCheck1.rows.length === 0 || matchCheck2.rows.length === 0) {
+    //   return res.status(403).json({ error: 'You can only message mutually matched users' });
+    // }
 
     const result = await pool.query(
       `INSERT INTO messages (sender_id, receiver_id, content) VALUES ($1, $2, $3) RETURNING *`,

@@ -4,6 +4,7 @@ import { Login } from './pages/login/login';
 import { PostGame } from './pages/post-game/post-game';
 import { PostPage } from './pages/post-page/post-page';
 import { ProfilePage } from './pages/profile-page/profile-page';
+import { DmsPage } from './pages/dms-page/dms-page';
 import { authGuard } from './guards/auth/auth-guard';
 
 export const routes: Routes = [
@@ -15,6 +16,7 @@ export const routes: Routes = [
 			{path: 'home', component: Home},
 			{path: 'post-game', component: PostGame},
 			{path: 'user/:id', component: ProfilePage},
+			{path: 'user/:id/dms', component: DmsPage},
 			{path: 'post/:id', component: PostPage},
 		],
 	}

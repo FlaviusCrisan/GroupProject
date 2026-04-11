@@ -94,20 +94,23 @@ export class ApiService
     return Post.from_json(json);
   }
 
-  async post_game(token: string, info: PostInfo): Promise<any>
+  async post_game(info: PostInfo): Promise<any>
   {
-    await this.init_clerk();
-    if (!this.clerk_initialized) throw new Error("Clerk not initialized");
-
-    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, info, {
-      headers: {
-        Authorization: `Bearer ${token}`
-      }
-    }));
+    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async get_user_info(id: string): Promise<any>
   {
     return await firstValueFrom(this.http.get(`${this.base_url}/api/users/${id}`));
+  }
+
+  async get_messages(id: string)
+  {
+    return await firstValueFrom(this.http.get(`${this.base_url}/api/messages/${id}`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async send_message(id: string, message: string)
+  {
+    return await firstValueFrom(this.http.post(`${this.base_url}/api/messages`, {receiverId: id, content: message}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 }
