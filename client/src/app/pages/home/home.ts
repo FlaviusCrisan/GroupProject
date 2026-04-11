@@ -46,4 +46,9 @@ export class Home implements OnInit
   {
     this.router.navigate(['/post', post.id]);
   }
+
+  async go_to_profile()
+  {
+    this.router.navigate(['/user', await this.api.get_user_id()]);
+  }
 }

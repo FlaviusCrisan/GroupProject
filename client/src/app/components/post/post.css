@@ -5,3 +5,8 @@
 mat-chip-set {
 	margin: 8px 8px;
 }
+
+a {
+	display: flex;
+	margin: 0px;
+}

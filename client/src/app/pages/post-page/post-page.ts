@@ -1,4 +1,4 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
+import { Component } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { Post } from '../../Post';
@@ -14,7 +14,7 @@ export class PostPage
 {
   id: number;
 
-  constructor(private api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef)
+  constructor(private api: ApiService, private route: ActivatedRoute)
   {
     this.id = Number(this.route.snapshot.paramMap.get("id"));
   }

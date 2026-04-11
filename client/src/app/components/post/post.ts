@@ -27,7 +27,7 @@ export class PostComponent implements OnChanges
   async ngOnChanges(changes: SimpleChanges)
   {
     this.post = await this.api.get_game(this.id);
-    this.user_info = await this.api.get_user_info();
+    this.user_info = await this.api.get_user_info(this.post.user_id);
     this.time_string = formatDistanceToNow(this.post.created_at, { addSuffix: true });
     this.cd.detectChanges();
   }
