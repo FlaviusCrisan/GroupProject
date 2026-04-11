@@ -1,0 +1,46 @@
+<div style="display: flex; flex-direction: column; height: 100%">
+  <mat-toolbar style="height: 50px; gap: 15px">
+    <button matIconButton (click)="sidenav.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <a href="/home" style="text-decoration: none; color: inherit; margin: 0">GameMatch</a>
+    <span style="flex: 1 1 auto"></span>
+    <button matIconButton (click)="post_game()">
+      <mat-icon>add</mat-icon>
+    </button>
+    <button matIconButton (click)="sign_out()">
+      <mat-icon>logout</mat-icon>
+    </button>
+    <a href="/user/{{user_info?.id}}" style="width: 30px; height: 30px"><img src="{{user_info?.imageUrl}}" style="border-radius: 999px; width: 100%; height: 100%"></a>
+  </mat-toolbar>
+  <mat-sidenav-container style="flex: 1">
+    <mat-sidenav #sidenav mode="side">
+      <mat-nav-list>
+          <a mat-list-item (click)="sign_out()">
+            <mat-icon matListItemIcon>logout</mat-icon>
+            <span matListItemTitle>Sign Out</span>
+          </a>
+          <a mat-list-item (click)="home()">
+            <mat-icon matListItemIcon>home</mat-icon>
+            <span matListItemTitle>Home</span>
+          </a>
+          <a mat-list-item (click)="go_to_profile()">
+            <mat-icon matListItemIcon>account_circle</mat-icon>
+            <span matListItemTitle>Profile</span>
+          </a>
+          <a mat-list-item (click)="post_game()">
+            <mat-icon matListItemIcon>add</mat-icon>
+            <span matListItemTitle>New Game</span>
+          </a>
+          <a mat-list-item (click)="match_history()">
+            <mat-icon matListItemIcon>history</mat-icon>
+            <span matListItemTitle>Match History</span>
+          </a>
+      </mat-nav-list>
+    </mat-sidenav>
+    <mat-sidenav-content>
+      <router-outlet></router-outlet>
+    </mat-sidenav-content>
+  </mat-sidenav-container>
+  <div style="height: 50px"></div>
+</div>

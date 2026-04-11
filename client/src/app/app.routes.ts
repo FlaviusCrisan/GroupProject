@@ -5,12 +5,17 @@ import { PostGame } from './pages/post-game/post-game';
 import { PostPage } from './pages/post-page/post-page';
 import { ProfilePage } from './pages/profile-page/profile-page';
 import { DmsPage } from './pages/dms-page/dms-page';
+import { Layout } from './components/layout/layout';
 import { authGuard } from './guards/auth/auth-guard';
 
 export const routes: Routes = [
-	{path: '', component: Login},
+	{
+		path: '', 
+		component: Login
+	},
 	{
 		path: '',
+		component: Layout,
 		canActivate: [authGuard],
 		children: [
 			{path: 'home', component: Home},

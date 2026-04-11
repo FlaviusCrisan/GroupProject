@@ -2,20 +2,13 @@ import { Component, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@a
 import { CommonModule } from '@angular/common';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
-import { MatIconModule } from '@angular/material/icon';
-import { register } from 'swiper/element/bundle';
 import { ApiService } from '../../services/api.service';
 import { PostComponent } from '../../components/post/post';
 import { Post } from '../../Post';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-register();
 
 @Component({
   selector: 'app-home',
-  imports: [PostComponent, MatCardModule, CommonModule, RouterModule, MatButtonModule, MatChipsModule, MatSidenavModule, MatListModule, MatIconModule],
+  imports: [PostComponent, CommonModule, RouterModule, MatButtonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
   schemas: [CUSTOM_ELEMENTS_SCHEMA],
@@ -37,18 +30,8 @@ export class Home implements OnInit
     this.cd.detectChanges();
   }
 
-  async sign_out()
-  {
-    await this.api.sign_out("/");
-  }
-
   async join(post: Post)
   {
     this.router.navigate(['/post', post.id]);
-  }
-
-  async go_to_profile()
-  {
-    this.router.navigate(['/user', await this.api.get_user_id()]);
   }
 }

@@ -1,38 +1,7 @@
-<mat-sidenav-container class="example-container">
-  <mat-sidenav #sidenav mode="side">
-
-    <mat-nav-list>
-        <a mat-list-item (click)="go_to_profile()">
-          <mat-icon matListItemIcon>account_circle</mat-icon>
-          <span matListItemTitle>Profile</span>
-        </a>
-        <a mat-list-item href="#">
-          <mat-icon matListItemIcon>add</mat-icon>
-          <span matListItemTitle>Post Game</span>
-        </a>
-        <a mat-list-item href="#">
-          <mat-icon matListItemIcon>history</mat-icon>
-          <span matListItemTitle>Match History</span>
-        </a>
-    </mat-nav-list>
-
-  </mat-sidenav>
-
-  <mat-sidenav-content>
-
-    <button mat-icon-button (click)="sidenav.toggle()">
-      <mat-icon>menu</mat-icon>
-    </button>
-    <button matButton="filled" (click)="sign_out()">sign out</button>
-
-    <div class="cards-grid">
-      <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="join($event)"></app-post>
-    </div>
-    
-    <div class="post">
-      <p>Want to start a game?</p>
-      <button matButton="filled" routerLink="/post-game">Post your game</button>
-    </div>
-
-  </mat-sidenav-content>
-</mat-sidenav-container>
+<div class="cards-grid">
+  <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="join($event)"></app-post>
+</div>
+<div class="post">
+  <p>Want to start a game?</p>
+  <button matButton="filled" routerLink="/post-game">Post your game</button>
+</div>
