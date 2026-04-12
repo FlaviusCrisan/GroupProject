@@ -208,6 +208,24 @@ app.get('/api/posts/:id/requests', requireAuth(), async (req, res) => {
   }
 });
 
+app.get('/api/posts/:id/hasRequested', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const id = req.params.id;
+
+    const postCheck = await pool.query('SELECT clerk_id FROM posts WHERE id = $1', [id]);
+    if (postCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    const result = await pool.query('SELECT * FROM join_requests WHERE post_id = $1 AND clerk_id = $2', [id, userId]);
+    res.json({hasRequested: result.rows.length !== 0});
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.post('/api/posts/:id/accept', requireAuth(), async (req, res) => {
   try {
     const { userId } = getAuth(req);

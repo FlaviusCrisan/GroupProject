@@ -3,7 +3,7 @@ export class Post
   constructor(
     public id: number,
     public user_id: string,
-    public joined: boolean,
+    public accepted_user_id: string | undefined,
     public created_at: Date,
     public info: PostInfo
   )
@@ -22,7 +22,7 @@ export class Post
     info.language = json.language;
     info.age_range = json.age_range;
     info.gender = json.gender;
-    return new Post(json.id, json.clerk_id, json.joined, json.created_at, info);
+    return new Post(json.id, json.clerk_id, json.joined ? json.accepted_clerk_id : null, json.created_at, info);
   }
 }
 

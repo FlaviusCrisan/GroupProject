@@ -3,10 +3,14 @@
     <mat-card-content style="display: flex; flex-direction: column; align-items: center; gap: 15px">
       <img style="border-radius: 9999px; width: 100px; height: 100px" src="{{user_info?.imageUrl}}">
       <p style="margin: 3px 0px; font-size: 30px">{{user_info?.username}}</p>
-      @if (is_self) {
+      @if (is_self) 
+      {
         <button matButton="filled" (click)="edit_profile()">Edit profile</button>
       }
-      <button matButton="filled" (click)="open_dms()">Send a message</button>
+      @else 
+      {
+        <button matButton="filled" (click)="open_dms()">Send a message</button>
+      }
     </mat-card-content>
   </mat-card>
 </div>

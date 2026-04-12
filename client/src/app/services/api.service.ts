@@ -1,4 +1,6 @@
 import { HttpClient } from '@angular/common/http';
+import { Router, NavigationEnd } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Post, PostInfo } from '../Post';
 import { firstValueFrom } from 'rxjs';
@@ -11,9 +13,15 @@ declare const Clerk: any;
 export class ApiService 
 {
   base_url = "http://localhost:3000";
-  private clerk_initialized = false;
+  clerk_initialized = false;
+  user_info_cache = new Map<string, Promise<any>>();
 
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private router: Router)
+  {
+    this.router.events
+      .pipe(filter(e => e instanceof NavigationEnd))
+      .subscribe(() => { this.user_info_cache.clear(); });
+  }
 
   private async init_clerk() 
   {
@@ -94,14 +102,20 @@ export class ApiService
     return Post.from_json(json);
   }
 
-  async post_game(info: PostInfo): Promise<any>
+  async post_game(info: PostInfo)
   {
     return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async get_user_info(id: string): Promise<any>
   {
-    return await firstValueFrom(this.http.get(`${this.base_url}/api/users/${id}`));
+    const cached = this.user_info_cache.get(id);
+    if (cached)
+      return cached;
+
+    const request = firstValueFrom(this.http.get(`${this.base_url}/api/users/${id}`)) as any;
+    this.user_info_cache.set(id, request);
+    return request;
   }
 
   async get_messages(id: string)
@@ -112,5 +126,26 @@ export class ApiService
   async send_message(id: string, message: string)
   {
     return await firstValueFrom(this.http.post(`${this.base_url}/api/messages`, {receiverId: id, content: message}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async request_to_join(id: number)
+  {
+    return await firstValueFrom(this.http.patch(`${this.base_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async has_requested(id: number): Promise<boolean>
+  {
+    const json = await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}/hasRequested`, {headers: {Authorization: `Bearer ${await this.get_token()}`}})) as any;
+    return json.hasRequested;
+  }
+
+  async get_requests(id: number)
+  {
+    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}/requests`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async accept_request(post_id: number, user_id: string)
+  {
+    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts/${post_id}/accept`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 }

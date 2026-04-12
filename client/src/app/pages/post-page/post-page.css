@@ -1,0 +1,22 @@
+.accept-button {
+	margin-left: auto;
+}
+
+.request {
+	display: flex;
+	align-items: center;
+	width: 100%;
+}
+
+.request .accept-button {
+	visibility: hidden;
+}
+
+.request:hover .accept-button {
+	visibility: visible;
+}
+
+.request:nth-child(even) {
+	background: color-mix(in srgb, var(--mat-sys-surface-variant) 10%, transparent);
+	border-radius: 5px;
+}
