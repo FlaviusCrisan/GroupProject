@@ -1,0 +1,13 @@
+@for (template of templates; track template)
+{
+  <mat-form-field>
+    <mat-label>{{template.name}}</mat-label>
+    <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
+      <mat-option value="Any">Any</mat-option>
+      @for (item of template.values; track item)
+      {
+        <mat-option [value]="item">{{item}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}

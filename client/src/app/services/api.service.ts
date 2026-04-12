@@ -90,9 +90,10 @@ export class ApiService
     await Clerk.signOut({redirectUrl: redirect_url});
   }
 
-  async get_games(): Promise<Post[]>
+  async get_games(filters: any): Promise<Post[]>
   {
-    const array = await firstValueFrom(this.http.get<any[]>(`${this.base_url}/api/posts`));
+    const query_params = new URLSearchParams(filters).toString();
+    const array = await firstValueFrom(this.http.get<any[]>(`${this.base_url}/api/posts?${query_params}`));
     return array.map(json => Post.from_json(json));
   }
 

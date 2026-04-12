@@ -1,34 +1,19 @@
-import { Component, OnInit, ChangeDetectorRef, CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
-import { ApiService } from '../../services/api.service';
-import { PostComponent } from '../../components/post/post';
+import { PostList } from '../../components/post-list/post-list';
 import { Post } from '../../Post';
 
 @Component({
   selector: 'app-home',
-  imports: [PostComponent, CommonModule, RouterModule, MatButtonModule],
+  imports: [PostList, RouterModule, MatButtonModule],
   templateUrl: './home.html',
   styleUrl: './home.css',
-  schemas: [CUSTOM_ELEMENTS_SCHEMA],
+  schemas: [],
 })
-export class Home implements OnInit
+export class Home
 {
-  posts: Post[] = [];
-
-  constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
-
-  async ngOnInit() : Promise<void>
-  {
-    await this.load_posts();
-  }
-
-  async load_posts()
-  {
-    this.posts = await this.api.get_games();
-    this.cd.detectChanges();
-  }
+  constructor(private router: Router) {}
 
   async join(post: Post)
   {

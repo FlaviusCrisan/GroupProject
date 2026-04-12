@@ -1,0 +1,4 @@
+<app-post-info-selectors (on_changed)="load_posts($event)"></app-post-info-selectors>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; padding: 16px">
+  <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="view_clicked.emit($event)"></app-post>
+</div>
