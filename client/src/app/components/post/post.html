@@ -1,15 +1,17 @@
-<mat-card appearance="outlined" style="width: 100%; height: 100%">
+<mat-card appearance="outlined" style="width: 100%; height: 100%; display: flex; flex-direction: column; gap: 10px">
   <mat-card-header>
-  <mat-card-title><span>{{post?.info?.title}}</span> <span>&middot;&nbsp; {{time_string}}</span></mat-card-title>
+    <mat-card-title><span>{{post?.info?.title}}</span> <span>&middot;&nbsp; {{time_string}}</span></mat-card-title>
   </mat-card-header>
   <mat-card-content>
-    <div class="avatar">
+    <div class="avatar" style="margin: 0px">
       <a href="/user/{{user_info?.id}}" style="display: flex; margin: 0px">
         <img src="{{user_info?.imageUrl}}">
       </a>
       <p>{{user_info?.username}}</p>
     </div>
-    <p style="margin: 10px 0">{{post?.info?.description}}</p>
+  </mat-card-content>
+  <mat-card-content style="height: 100%; overflow: auto">
+    <p style="white-space: pre-line">{{post?.info?.description}}</p>
   </mat-card-content>
   <mat-card-footer class="card-footer" style="padding: 0 16px 16px">
     <div style="display: flex; align-items: flex-end">

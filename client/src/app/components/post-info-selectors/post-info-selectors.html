@@ -1,6 +1,6 @@
 @for (template of templates; track template)
 {
-  <mat-form-field>
+  <mat-form-field appearance="outline">
     <mat-label>{{template.name}}</mat-label>
     <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
       <mat-option value="Any">Any</mat-option>

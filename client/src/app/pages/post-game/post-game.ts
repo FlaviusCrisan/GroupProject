@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { MatCardModule } from '@angular/material/card';
 import { MatInputModule } from '@angular/material/input';
 import { FormsModule } from '@angular/forms';
 import { MatFormFieldModule } from '@angular/material/form-field';
@@ -10,7 +11,7 @@ import { PostInfoSelectors } from '../../components/post-info-selectors/post-inf
 
 @Component({
   selector: 'app-post-game',
-  imports: [PostInfoSelectors, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
+  imports: [MatCardModule, PostInfoSelectors, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule],
   templateUrl: './post-game.html',
   styleUrl: './post-game.css',
 })

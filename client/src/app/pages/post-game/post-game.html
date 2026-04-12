@@ -1,24 +1,35 @@
-<div style="display: flex; flex-direction: column;">
-  <mat-form-field appearance="fill">
-    <mat-label>title</mat-label>
-    <input matInput placeholder="Enter title" [(ngModel)]="info.title">
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>description</mat-label>
-    <input matInput placeholder="Enter description" [(ngModel)]="info.description">
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>game</mat-label>
-    <input matInput placeholder="Enter game" [(ngModel)]="info.game">
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>game_mode</mat-label>
-    <input matInput placeholder="Enter game_mode" [(ngModel)]="info.game_mode">
-  </mat-form-field>
-  <mat-form-field appearance="fill">
-    <mat-label>rank</mat-label>
-    <input matInput placeholder="Enter rank" [(ngModel)]="info.rank">
-  </mat-form-field>
-  <app-post-info-selectors (on_changed)="update_info($event)"></app-post-info-selectors>
-  <button matButton="filled" (click)="add()">post</button>
+<div style="display: flex; flex-direction: column; width: 100%; align-items: center">
+  <mat-card appearance="outlined" style="width: 600px; height: 100%; gap: 16px">
+    <mat-card-header>
+      <p style="margin: 10px auto; font-size: 25px">Create a new post</p>
+    </mat-card-header>
+    <mat-card-content>
+      <div style="display: flex; flex-direction: column;">
+        <mat-form-field appearance="outline">
+          <mat-label>Title</mat-label>
+          <input matInput placeholder="Enter title" [(ngModel)]="info.title">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>Description</mat-label>
+          <textarea matInput cdkTextareaAutosize placeholder="Description" name="info.description" [(ngModel)]="info.description"></textarea>
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>game</mat-label>
+          <input matInput placeholder="Enter game" [(ngModel)]="info.game">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>game_mode</mat-label>
+          <input matInput placeholder="Enter game_mode" [(ngModel)]="info.game_mode">
+        </mat-form-field>
+        <mat-form-field appearance="outline">
+          <mat-label>rank</mat-label>
+          <input matInput placeholder="Enter rank" [(ngModel)]="info.rank">
+        </mat-form-field>
+        <app-post-info-selectors (on_changed)="update_info($event)"></app-post-info-selectors>
+      </div>
+    </mat-card-content>
+    <mat-card-footer class="card-footer" style="display: flex; flex-direction: column; align-items: center; padding: 0 16px 16px">
+      <button matButton="filled" (click)="add()">Post</button>
+    </mat-card-footer>
+  </mat-card>
 </div>
