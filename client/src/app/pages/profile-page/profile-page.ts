@@ -4,10 +4,11 @@ import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { PostList } from '../../components/post-list/post-list';
 
 @Component({
   selector: 'app-profile-page',
-  imports: [MatCardModule, MatButtonModule],
+  imports: [PostList, MatCardModule, MatButtonModule],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })
