@@ -31,7 +31,7 @@ export class PostList implements OnChanges
 
   async on_filters_changed(filters: Record<string, string>)
   {
-    Object.assign(this.filters, filters);
+    this.filters = filters;
     await this.load_posts();
   }
 

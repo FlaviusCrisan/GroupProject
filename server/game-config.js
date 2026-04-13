@@ -50,7 +50,6 @@ const GAMES = {
   minecraft: {
     name: 'Minecraft',
     modes: ['Survival', 'Creative', 'Hardcore', 'Minigames', 'PvP'],
-    ranks: ['Any'],
     platforms: ['PC', 'PlayStation', 'Xbox', 'Nintendo Switch', 'Mobile']
   },
   cs2: {
@@ -61,8 +60,7 @@ const GAMES = {
   },
   roblox: {
     name: 'Roblox',
-    modes: ['Any Game', 'Roleplay', 'Tycoon', 'Obby', 'PvP', 'Building'],
-    ranks: ['Any'],
+    modes: ['Roleplay', 'Tycoon', 'Obby', 'PvP', 'Building'],
     platforms: ['PC', 'Mobile', 'Xbox']
   },
   apex_legends: {

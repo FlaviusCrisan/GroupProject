@@ -1,13 +1,38 @@
-@for (template of templates; track template)
-{
-  <mat-form-field appearance="outline">
-    <mat-label>{{template.name}}</mat-label>
-    <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
-      <mat-option value="Any">Any</mat-option>
-      @for (item of template.values; track item)
+<mat-card appearance="outlined" style="padding: 16px; gap: 16px; max-width: 800px; margin: auto">
+  <mat-card appearance="outlined" style="padding: 16px; gap: 16px; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr))">
+    @for (template of templates; track template)
+    {
+      @if (template.name === "Game" || template.name === "Rank" || template.name === "Platform" || template.name === "Mode")
       {
-        <mat-option [value]="item">{{item}}</mat-option>
+        <mat-form-field appearance="outline" style="margin-bottom: -20px">
+          <mat-label>{{template.name}}</mat-label>
+          <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
+            <mat-option value="Any">Any</mat-option>
+            @for (item of template.values; track item)
+            {
+              <mat-option [value]="item">{{item}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
       }
-    </mat-select>
-  </mat-form-field>
-}
+    }
+  </mat-card>
+  <div style="display: grid; grid-template-columns: auto auto; gap: 16px">
+    @for (template of templates; track template)
+    {
+      @if (template.name !== "Game" && template.name !== "Rank" && template.name !== "Platform" && template.name !== "Mode")
+      {
+        <mat-form-field appearance="outline" style="margin-bottom: -20px">
+          <mat-label>{{template.name}}</mat-label>
+          <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
+            <mat-option value="Any">Any</mat-option>
+            @for (item of template.values; track item)
+            {
+              <mat-option [value]="item">{{item}}</mat-option>
+            }
+          </mat-select>
+        </mat-form-field>
+      }
+    }
+  </div>
+</mat-card>

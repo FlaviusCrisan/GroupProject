@@ -1,3 +1,5 @@
+import { ApiService } from "./services/api.service"
+
 export class Post
 {
   constructor(
@@ -9,7 +11,7 @@ export class Post
   )
   {}
 
-  static from_json(json: any)
+  static from_json(api: ApiService, json: any)
   {
     const info = new PostInfo();
     info.title = json.title;
@@ -24,52 +26,64 @@ export class Post
     info.gender = json.gender;
     return new Post(json.id, json.clerk_id, json.created_at, info, json.joined ? json.accepted_clerk_id : undefined);
   }
-}
 
-export enum Gender
-{
-  Male = "Male",
-  Female = "Female",
-}
+  static async get_game(api: ApiService, game: string): Promise<any>
+  {
+    const games = (await api.get_filter_data()).games;
 
-export enum Region
-{
-  Europe = "Europe",
-  NorthAmerica = "North America",
-  SouthAmerica = "South America",
-  Africa = "Africa",
-  Asia = "Asia",
-  Oceania = "Oceania",
-}
+    let game_names: string[] = [];
+    for (const key in games)
+      if (games[key].name === game)
+        return games[key];
 
-export enum Platform
-{
-  PC = "PC",
-  PlayStation = "PlayStation",
-  Xbox = "Xbox",
-  Switch = "Switch",
-  Mobile = "Mobile",
-}
+    throw new Error("game doesnt exist: " + game);
+  }
 
-export enum Language
-{
-  English = "English",
-  Spanish = "Spanish",
-  Portuguese = "Portuguese",
-  Russian = "Russian",
-  Japanese = "Japanese",
-  Mandarin = "Mandarin",
-  Hindi = "Hindi",
-}
+  static async get_games(api: ApiService): Promise<string[]>
+  {
+    const games = (await api.get_filter_data()).games;
 
-export enum AgeRange
-{
-  LessThanTwenty = "<20",
-  Twenty = "20-30",
-  Thirty = "30-40",
-  Fourty = "40-50",
-  Fifty = "50-60",
-  SixtyAndAbove = "60+",
+    let game_names: string[] = [];
+    for (const key in games)
+      game_names.push(games[key].name);
+
+    return game_names;
+  }
+
+  static async get_game_modes(api: ApiService, game: string): Promise<string[]>
+  {
+    return (await Post.get_game(api, game)).modes;
+  }
+
+  static async get_ranks(api: ApiService, game: string): Promise<string[]>
+  {
+    return (await Post.get_game(api, game)).ranks;
+  }
+
+  static async get_platforms(api: ApiService, game: string): Promise<string[]>
+  {
+    return (await Post.get_game(api, game)).platforms;
+  }
+
+  static async get_regions(api: ApiService): Promise<string[]>
+  {
+    return (await api.get_filter_data()).regions;
+  }
+
+  static async get_languages(api: ApiService): Promise<string[]>
+  {
+    return (await api.get_filter_data()).languages;
+  }
+
+  static async get_age_ranges(api: ApiService): Promise<string[]>
+  {
+    return (await api.get_filter_data()).age_ranges;
+  }
+
+  static async get_genders(api: ApiService): Promise<string[]>
+  {
+    return (await api.get_filter_data()).genders;
+  }
 }
 
 export class PostInfo
@@ -79,9 +93,9 @@ export class PostInfo
   game: string = "";
   game_mode: string = "";
   rank: string = "";
-  region?: Region;
-  platform?: Platform;
-  language?: Language;
-  age_range?: AgeRange;
-  gender?: Gender;
+  region: string = "";
+  platform: string = "";
+  language: string = "";
+  age_range: string = "";
+  gender: string = "";
 }

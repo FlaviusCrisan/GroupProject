@@ -1,4 +1,6 @@
-<app-post-info-selectors (on_changed)="on_filters_changed($event)"></app-post-info-selectors>
+<div style="display: flex; justify-content: center">
+  <app-post-info-selectors (on_changed)="on_filters_changed($event)" style="width: 100%"></app-post-info-selectors>
+</div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; padding: 16px">
   <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="view($event)" style="max-height: 400px"></app-post>
 </div>

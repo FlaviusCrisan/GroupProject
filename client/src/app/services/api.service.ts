@@ -15,6 +15,7 @@ export class ApiService
   base_url = "http://localhost:3000";
   clerk_initialized = false;
   user_info_cache = new Map<string, Promise<any>>();
+  filter_data: any = null;
 
   constructor(private http: HttpClient, private router: Router)
   {
@@ -94,13 +95,13 @@ export class ApiService
   {
     const query_params = new URLSearchParams(filters).toString();
     const array = await firstValueFrom(this.http.get<any[]>(`${this.base_url}/api/posts?${query_params}`));
-    return array.map(json => Post.from_json(json));
+    return array.map(json => Post.from_json(this, json));
   }
 
   async get_game(id: number): Promise<Post>
   {
     const json = await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}`));
-    return Post.from_json(json);
+    return Post.from_json(this, json);
   }
 
   async post_game(info: PostInfo)
@@ -148,5 +149,14 @@ export class ApiService
   async accept_request(post_id: number, user_id: string)
   {
     return await firstValueFrom(this.http.post(`${this.base_url}/api/posts/${post_id}/accept`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async get_filter_data()
+  {
+    if (this.filter_data)
+      return this.filter_data;
+
+    this.filter_data = await firstValueFrom(this.http.get(`${this.base_url}/api/games`)) as any;
+    return this.filter_data;
   }
 }
