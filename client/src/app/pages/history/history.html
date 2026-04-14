@@ -1,0 +1,9 @@
+<div style="display: flex; flex-direction: column; align-items: center; width: 100%">
+  <div style="max-width: 1200px; width: 90%">
+    <p style="font-size: 50px; margin: 40px 0 60px 0">History</p>
+    <p style="font-size: 30px; margin: 50px 0 5px 0">Requested</p>
+    <app-post-list [current_user_joined]="false"></app-post-list>
+    <p style="font-size: 30px; margin: 40px 0 5px 0">Accepted</p>
+    <app-post-list [current_user_joined]="true"></app-post-list>
+  </div>
+</div>

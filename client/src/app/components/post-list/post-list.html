@@ -1,4 +1,4 @@
-<div style="display: flex; justify-content: center">
+<div [ngStyle]="{'display': show_filters ? 'flex' : 'none'}" style="justify-content: center">
   <app-post-info-selectors (on_changed)="on_filters_changed($event)" style="width: 100%"></app-post-info-selectors>
 </div>
 <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; padding: 16px">

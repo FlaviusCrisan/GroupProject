@@ -159,4 +159,14 @@ export class ApiService
     this.filter_data = await firstValueFrom(this.http.get(`${this.base_url}/api/games`)) as any;
     return this.filter_data;
   }
+
+  async get_user_requests(joined?: boolean)
+  {
+    let url = `${this.base_url}/api/users/requests`;
+    if (joined !== undefined)
+      url += `?joined=${joined ? 1 : 0}`;
+
+    const array = await firstValueFrom(this.http.get<any[]>(url, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return array.map(json => Post.from_json(this, json));
+  }
 }

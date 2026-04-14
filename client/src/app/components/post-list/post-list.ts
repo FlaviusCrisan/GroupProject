@@ -15,6 +15,8 @@ import { Post } from '../../Post';
 export class PostList implements OnChanges
 {
   @Input() filter_user_id?: string;
+  @Input() show_filters?: boolean;
+  @Input() current_user_joined?: boolean;
 
   posts: Post[] = [];
   filters: Record<string, string> = {};
@@ -37,7 +39,11 @@ export class PostList implements OnChanges
 
   async load_posts()
   {
-    this.posts = await this.api.get_games(this.filters);
+    if (this.current_user_joined === undefined)
+      this.posts = await this.api.get_games(this.filters);
+    else
+      this.posts = await this.api.get_user_requests(this.current_user_joined);
+
     this.cd.detectChanges();
   }
 

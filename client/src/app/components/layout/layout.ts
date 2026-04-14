@@ -47,5 +47,6 @@ export class Layout implements OnInit
 
   match_history()
   {
+    this.router.navigate(["/history"]);
   }
 }
