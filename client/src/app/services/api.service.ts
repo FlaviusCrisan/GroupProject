@@ -4,6 +4,7 @@ import { filter } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Post, PostInfo } from '../Post';
 import { firstValueFrom } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 declare const Clerk: any;
 
@@ -12,13 +13,13 @@ declare const Clerk: any;
 })
 export class ApiService 
 {
-  base_url = "http://localhost:3000";
   clerk_initialized = false;
   user_info_cache = new Map<string, Promise<any>>();
   filter_data: any = null;
 
   constructor(private http: HttpClient, private router: Router)
   {
+	  console.log(environment.api_url);
     this.router.events
       .pipe(filter(e => e instanceof NavigationEnd))
       .subscribe(() => { this.user_info_cache.clear(); });
@@ -94,19 +95,19 @@ export class ApiService
   async get_games(filters: any): Promise<Post[]>
   {
     const query_params = new URLSearchParams(filters).toString();
-    const array = await firstValueFrom(this.http.get<any[]>(`${this.base_url}/api/posts?${query_params}`));
+    const array = await firstValueFrom(this.http.get<any[]>(`${environment.api_url}/api/posts?${query_params}`));
     return array.map(json => Post.from_json(this, json));
   }
 
   async get_game(id: number): Promise<Post>
   {
-    const json = await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}`));
+    const json = await firstValueFrom(this.http.get(`${environment.api_url}/api/posts/${id}`));
     return Post.from_json(this, json);
   }
 
   async post_game(info: PostInfo)
   {
-    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async get_user_info(id: string): Promise<any>
@@ -115,40 +116,40 @@ export class ApiService
     if (cached)
       return cached;
 
-    const request = firstValueFrom(this.http.get(`${this.base_url}/api/users/${id}`)) as any;
+    const request = firstValueFrom(this.http.get(`${environment.api_url}/api/users/${id}`)) as any;
     this.user_info_cache.set(id, request);
     return request;
   }
 
   async get_messages(id: string)
   {
-    return await firstValueFrom(this.http.get(`${this.base_url}/api/messages/${id}`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.get(`${environment.api_url}/api/messages/${id}`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async send_message(id: string, message: string)
   {
-    return await firstValueFrom(this.http.post(`${this.base_url}/api/messages`, {receiverId: id, content: message}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.post(`${environment.api_url}/api/messages`, {receiverId: id, content: message}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async request_to_join(id: number)
   {
-    return await firstValueFrom(this.http.patch(`${this.base_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.patch(`${environment.api_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async has_requested(id: number): Promise<boolean>
   {
-    const json = await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}/hasRequested`, {headers: {Authorization: `Bearer ${await this.get_token()}`}})) as any;
+    const json = await firstValueFrom(this.http.get(`${environment.api_url}/api/posts/${id}/hasRequested`, {headers: {Authorization: `Bearer ${await this.get_token()}`}})) as any;
     return json.hasRequested;
   }
 
   async get_requests(id: number)
   {
-    return await firstValueFrom(this.http.get(`${this.base_url}/api/posts/${id}/requests`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.get(`${environment.api_url}/api/posts/${id}/requests`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async accept_request(post_id: number, user_id: string)
   {
-    return await firstValueFrom(this.http.post(`${this.base_url}/api/posts/${post_id}/accept`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts/${post_id}/accept`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async get_filter_data()
@@ -156,13 +157,13 @@ export class ApiService
     if (this.filter_data)
       return this.filter_data;
 
-    this.filter_data = await firstValueFrom(this.http.get(`${this.base_url}/api/games`)) as any;
+    this.filter_data = await firstValueFrom(this.http.get(`${environment.api_url}/api/games`)) as any;
     return this.filter_data;
   }
 
   async get_user_requests(joined?: boolean)
   {
-    let url = `${this.base_url}/api/users/requests`;
+    let url = `${environment.api_url}/api/users/requests`;
     if (joined !== undefined)
       url += `?joined=${joined ? 1 : 0}`;
 

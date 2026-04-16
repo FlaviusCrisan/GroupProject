@@ -355,6 +355,10 @@ app.post('/api/messages', requireAuth(), async (req, res) => {
   }
 });
 
+app.get('/api/check', (req, res) => {
+    res.send("ok");
+});
+
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
