@@ -51,5 +51,24 @@ test.describe('Login Page', () => {
     test('footer question is visible', async ({ page }) => {
         await expect(page.getByText(/don.?t have an account/i)).toBeVisible();
     });
+    
+    test('login page should load in acceptable time', async ({ page }) => {
+        const start = Date.now();
+      
+        await page.goto('http://localhost:4200');
+        await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible();
+      
+        const duration = Date.now() - start;
+        expect(duration).toBeLessThan(8000);
+    });
 
+    test('login page should be stable across multiple reloads', async ({ page }) => {
+        await page.goto('http://localhost:4200');
+      
+        for (let i = 0; i < 3; i++) {
+          await page.reload();
+          await expect(page).toHaveURL('http://localhost:4200/');
+          await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible();
+        }
+    });
 });
