@@ -5,6 +5,9 @@
     </button>
     <a href="/home" style="text-decoration: none; color: inherit; margin: 0">GameMatch</a>
     <span style="flex: 1 1 auto"></span>
+    <button matIconButton (click)="toggle_theme()">
+      <mat-icon>{{ is_dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    </button>
     <button matIconButton (click)="post_game()">
       <mat-icon>add</mat-icon>
     </button>

@@ -16,13 +16,31 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 export class Layout implements OnInit
 {
   user_info?: any;
+  is_dark: boolean = true;
 
   constructor(private router: Router, private api: ApiService, private cd: ChangeDetectorRef) {}
 
   async ngOnInit()
   {
+    this.is_dark = localStorage.getItem('theme') !== 'light';
+    this.update_theme();
     this.user_info = await this.api.get_user_info(await this.api.get_user_id());
     await this.cd.detectChanges();
+  }
+
+  toggle_theme()
+  {
+    this.is_dark = !this.is_dark;
+    localStorage.setItem('theme', this.is_dark ? 'dark' : 'light');
+    this.update_theme();
+  }
+
+  update_theme()
+  {
+    if (this.is_dark)
+      document.body.classList.remove('light-theme');
+    else
+      document.body.classList.add('light-theme');
   }
 
   async sign_out()
