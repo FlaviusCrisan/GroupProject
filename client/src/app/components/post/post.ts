@@ -6,6 +6,8 @@ import { ApiService } from '../../services/api.service';
 import { Post } from '../../Post';
 import { formatDistanceToNow } from 'date-fns';
 
+import { Router } from '@angular/router';
+
 @Component({
   selector: 'app-post',
   imports: [MatCardModule, MatChipsModule, MatButtonModule],
@@ -23,7 +25,12 @@ export class PostComponent implements OnChanges
   join_button: boolean = false;
   chips: string[] = [];
 
-  constructor(private api: ApiService, private cd: ChangeDetectorRef) {}
+  constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
+
+  go_to_profile()
+  {
+    this.router.navigate(['/user', this.user_info.id]);
+  }
 
   async ngOnChanges(changes: SimpleChanges)
   {

@@ -1,28 +1,32 @@
-<mat-card appearance="outlined" style="width: 100%; height: 100%; display: flex; flex-direction: column; gap: 10px">
+<mat-card class="post-card" appearance="raised">
   <mat-card-header>
-    <mat-card-title><span>{{post?.info?.title}}</span> <span>&middot;&nbsp; {{time_string}}</span></mat-card-title>
-  </mat-card-header>
-  <mat-card-content>
-    <div class="avatar" style="margin: 0px">
-      <a href="/user/{{user_info?.id}}" style="display: flex; margin: 0px">
-        <img src="{{user_info?.imageUrl}}">
-      </a>
-      <p>{{user_info?.username}}</p>
+    <div mat-card-avatar class="user-avatar-container">
+      <img [src]="user_info?.imageUrl" class="user-avatar" (click)="$event.stopPropagation(); go_to_profile()">
     </div>
+    <mat-card-title class="post-title">{{post?.info?.title}}</mat-card-title>
+    <mat-card-subtitle class="post-subtitle">
+      <span class="username" (click)="$event.stopPropagation(); go_to_profile()">{{user_info?.username}}</span>
+      <span class="dot">&middot;</span>
+      <span class="time">{{time_string}}</span>
+    </mat-card-subtitle>
+  </mat-card-header>
+
+  <mat-card-content class="post-description-container">
+    <p class="post-description">{{post?.info?.description}}</p>
   </mat-card-content>
-  <mat-card-content style="height: 100%; overflow: auto">
-    <p style="white-space: pre-line">{{post?.info?.description}}</p>
-  </mat-card-content>
-  <mat-card-footer class="card-footer" style="padding: 0 16px 16px">
-    <div style="display: flex; align-items: flex-end">
-      <mat-chip-set aria-label="Chihuahua traits">
-        @for (chip of chips; track $index)
-        {
-          <mat-chip>{{chip}}</mat-chip>
+
+  <mat-card-footer class="post-footer">
+    <div class="footer-content">
+      <mat-chip-set class="tag-list">
+        @for (chip of chips; track $index) {
+          <mat-chip class="custom-chip">{{chip}}</mat-chip>
         }
       </mat-chip-set>
+      
       @if (join_clicked.observed) {
-        <button matButton="filled" (click)="join_clicked.emit(post)" style="margin-left: auto">View</button>
+        <button mat-flat-button color="primary" class="view-button" (click)="join_clicked.emit(post)">
+          View
+        </button>
       }
     </div>
   </mat-card-footer>
