@@ -5,10 +5,11 @@ import { ApiService } from '../../services/api.service';
 import { PostComponent } from '../../components/post/post';
 import { PostInfoSelectors } from '../../components/post-info-selectors/post-info-selectors';
 import { Post } from '../../Post';
+import { MatCardModule } from '@angular/material/card';
 
 @Component({
   selector: 'app-post-list',
-  imports: [PostInfoSelectors, CommonModule, PostComponent],
+  imports: [PostInfoSelectors, CommonModule, PostComponent, MatCardModule],
   templateUrl: './post-list.html',
   styleUrl: './post-list.css',
 })

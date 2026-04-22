@@ -1,20 +1,29 @@
-<div style="display: flex; flex-direction: column; height: 100%">
-  <mat-toolbar style="height: 50px; gap: 15px">
-    <button matIconButton (click)="sidenav.toggle()">
+<div class="app-container">
+  <mat-toolbar class="main-header">
+    <button mat-icon-button (click)="sidenav.toggle()" class="menu-button">
       <mat-icon>menu</mat-icon>
     </button>
-    <a href="/home" style="text-decoration: none; color: inherit; margin: 0">GameMatch</a>
-    <span style="flex: 1 1 auto"></span>
-    <button matIconButton (click)="toggle_theme()">
-      <mat-icon>{{ is_dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
-    </button>
-    <button matIconButton (click)="post_game()">
-      <mat-icon>add</mat-icon>
-    </button>
-    <button matIconButton (click)="sign_out()">
-      <mat-icon>logout</mat-icon>
-    </button>
-    <a href="/user/{{user_info?.id}}" style="width: 30px; height: 30px"><img src="{{user_info?.imageUrl}}" style="border-radius: 999px; width: 100%; height: 100%"></a>
+    
+    <div class="logo-container" (click)="home()">
+      <span class="logo-text">Game<span class="logo-accent">Match</span></span>
+    </div>
+
+    <span class="spacer"></span>
+
+    <div class="nav-actions">
+      <button mat-flat-button color="accent" (click)="post_game()" class="create-button">
+        <mat-icon>add</mat-icon>
+        <span class="button-text">Create Lobby</span>
+      </button>
+
+      <button mat-icon-button (click)="toggle_theme()" class="theme-toggle">
+        <mat-icon>{{ is_dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+      </button>
+
+      <div class="user-profile" (click)="go_to_profile()">
+        <img [src]="user_info?.imageUrl" class="user-avatar">
+      </div>
+    </div>
   </mat-toolbar>
   <mat-sidenav-container style="flex: 1">
     <mat-sidenav #sidenav mode="side">
