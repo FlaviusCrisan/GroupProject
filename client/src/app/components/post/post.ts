@@ -23,7 +23,8 @@ export class PostComponent implements OnChanges
   user_info?: any;
   time_string?: string;
   join_button: boolean = false;
-  chips: string[] = [];
+  chips: {text: string, color: string}[] = [];
+  game_image: string = '';
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
 
@@ -32,21 +33,50 @@ export class PostComponent implements OnChanges
     this.router.navigate(['/user', this.user_info.id]);
   }
 
+  get_bg_image(game: string): string {
+    const images: any = {
+      'fortnite': 'https://gaming-cdn.com/images/products/6008/orig/fortnite-pc-game-cover.jpg',
+      'valorant': 'https://cmsassets.rgpub.io/visibility/pigeon/VALORANT/Product_Page_Background_VALORANT_1920x1080.jpg',
+      'cs2': 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/730/header.jpg',
+      'league_of_legends': 'https://gaming-cdn.com/images/products/9378/orig/league-of-legends-pc-game-cover.jpg',
+      'apex_legends': 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/1172470/header.jpg',
+      'roblox': 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/2102300/header.jpg',
+      'minecraft': 'https://gaming-cdn.com/images/products/442/orig/minecraft-java-bedrock-edition-pc-game-cover.jpg',
+      'overwatch': 'https://gaming-cdn.com/images/products/12615/orig/overwatch-2-pc-game-cover.jpg',
+      'rocket_league': 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/252950/header.jpg',
+      'rainbow_six_siege': 'https://shared.fastly.steamstatic.com/store_item_assets/steam/apps/359550/header.jpg'
+    };
+    return images[game.toLowerCase().replace(/ /g, '_')] || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000';
+  }
+
   async ngOnChanges(changes: SimpleChanges)
   {
     this.post = await this.api.get_game(this.id);
     this.user_info = await this.api.get_user_info(this.post.user_id);
     this.time_string = formatDistanceToNow(this.post.created_at, { addSuffix: true });
+    this.game_image = this.get_bg_image(this.post.info.game || '');
 
     this.chips = [];
+    const colors: any = {
+      game: 'primary',
+      region: 'accent',
+      platform: 'warn',
+      language: 'secondary',
+      gender: 'info'
+    };
+
     for (const key of Object.keys(this.post.info))
     {
       if (key === "title" || key === "description")
         continue;
 
       const value = (this.post.info as any)[key];
-      if (value !== "")
-        this.chips.push(value);
+      if (value !== "" && value !== "Any") {
+        this.chips.push({
+          text: value.toUpperCase(),
+          color: colors[key.toLowerCase()] || 'default'
+        });
+      }
     }
 
     this.cd.detectChanges();

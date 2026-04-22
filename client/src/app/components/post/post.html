@@ -1,4 +1,8 @@
 <mat-card class="post-card" appearance="raised">
+  <div class="game-banner" [style.background-image]="'url(' + game_image + ')'">
+    <div class="banner-overlay"></div>
+  </div>
+
   <mat-card-header>
     <div mat-card-avatar class="user-avatar-container">
       <img [src]="user_info?.imageUrl" class="user-avatar" (click)="$event.stopPropagation(); go_to_profile()">
@@ -17,11 +21,13 @@
 
   <mat-card-footer class="post-footer">
     <div class="footer-content">
-      <mat-chip-set class="tag-list">
+      <div class="tag-cells">
         @for (chip of chips; track $index) {
-          <mat-chip class="custom-chip">{{chip}}</mat-chip>
+          <div class="tag-cell" [class]="'tag-' + chip.color">
+            {{chip.text}}
+          </div>
         }
-      </mat-chip-set>
+      </div>
       
       @if (join_clicked.observed) {
         <button mat-flat-button color="primary" class="view-button" (click)="join_clicked.emit(post)">

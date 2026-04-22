@@ -2,10 +2,32 @@
     height: 100%;
     display: flex;
     flex-direction: column;
-    padding: 16px;
+    padding: 0 !important;
     border-radius: 16px !important;
+    overflow: hidden;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
     background: var(--mat-sys-surface-container-low) !important;
+}
+
+.game-banner {
+    height: 120px;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+    position: relative;
+}
+
+.banner-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, var(--mat-sys-surface-container-low) 0%, transparent 100%);
+}
+
+mat-card-header {
+    padding: 16px 16px 0 !important;
 }
 
 .post-card:hover {
@@ -74,30 +96,54 @@
 }
 
 .post-footer {
-    padding: 0 !important;
+    padding: 0 16px 16px !important;
 }
 
 .footer-content {
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
+    flex-direction: column;
+    gap: 16px;
+    width: 100%;
 }
 
-.tag-list {
-    flex-wrap: nowrap;
-    overflow: hidden;
+.tag-cells {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
 }
 
-.custom-chip {
-    font-size: 0.75rem !important;
-    min-height: 24px !important;
-    background: var(--mat-sys-secondary-container) !important;
-    color: var(--mat-sys-on-secondary-container) !important;
+.tag-cell {
+    font-size: 0.65rem;
+    font-weight: 800;
+    padding: 4px 8px;
+    border-radius: 4px;
+    letter-spacing: 0.5px;
+    background: var(--mat-sys-surface-container-high);
+    color: var(--mat-sys-on-surface-variant);
+    border: 1px solid var(--mat-sys-outline-variant);
+}
+
+.tag-primary {
+    background: color-mix(in srgb, var(--mat-sys-primary) 15%, transparent);
+    color: var(--mat-sys-primary);
+    border-color: var(--mat-sys-primary);
+}
+
+.tag-accent {
+    background: color-mix(in srgb, var(--mat-sys-tertiary) 15%, transparent);
+    color: var(--mat-sys-tertiary);
+    border-color: var(--mat-sys-tertiary);
+}
+
+.tag-warn {
+    background: color-mix(in srgb, var(--mat-sys-error) 15%, transparent);
+    color: var(--mat-sys-error);
+    border-color: var(--mat-sys-error);
 }
 
 .view-button {
-    border-radius: 20px !important;
+    width: 100%;
+    border-radius: 12px !important;
     font-weight: 600 !important;
-    padding: 0 20px !important;
+    height: 40px !important;
 }
