@@ -1,53 +1,61 @@
-<div class="container">
-  <div class="content">
-    <app-post style="flex: 1" [id]="id"></app-post>
-    @if (post?.accepted_user_id)
-    {
-      @if (is_self || accepted_is_self)
-      {
-        <app-messaging [id]="is_self ? post?.accepted_user_id! : post?.user_id!" style="flex: 1;"></app-messaging>
-      }
-      @else
-      {
-        <mat-card appearance="outlined" style="flex: 1">
-          <mat-card-content style="display: flex; flex-direction: column; align-items: center; height: 100%; gap: 10px">
-            <p>This game is not available anymore.</p>
+<div class="container page-layout">
+  <div class="content main-grid">
+    <div class="post-column">
+      <app-post [id]="id" class="featured-post"></app-post>
+    </div>
+
+    <div class="action-column">
+      @if (post?.accepted_user_id) {
+        @if (is_self || accepted_is_self) {
+          <mat-card class="chat-card">
+            <app-messaging [id]="is_self ? post?.accepted_user_id! : post?.user_id!" class="full-chat"></app-messaging>
+          </mat-card>
+        } @else {
+          <mat-card class="status-card">
+            <mat-icon color="warn">lock</mat-icon>
+            <p>This lobby is already full.</p>
+          </mat-card>
+        }
+      } @else {
+        <mat-card class="interaction-card">
+          <mat-card-header>
+            <mat-card-title>{{ is_self ? 'Lobby Management' : 'Join this Game' }}</mat-card-title>
+          </mat-card-header>
+          
+          <mat-card-content class="interaction-content">
+            @if (is_self) {
+              <p class="section-title">Join Requests ({{requests.length}})</p>
+              <div class="requests-list">
+                @for (request of requests; track request.clerk_id) {
+                  <div class="request-item">
+                    <img [src]="request.user_info.imageUrl" class="mini-avatar">
+                    <span class="request-username">{{request.user_info.username}}</span>
+                    <button mat-flat-button color="primary" (click)="this.accept(request.clerk_id)" class="small-accept-btn">
+                      Accept
+                    </button>
+                  </div>
+                }
+                @if (requests.length === 0) {
+                  <div class="empty-requests">No requests yet. Waiting for gamers...</div>
+                }
+              </div>
+            } @else {
+              @if (requested) {
+                <div class="status-box pending">
+                  <mat-icon>hourglass_empty</mat-icon>
+                  <p>Request sent! Waiting for host to accept...</p>
+                </div>
+              } @else {
+                <p class="pitch">Looking for a teammate? Send a request to start a chat!</p>
+                <button mat-flat-button color="accent" size="large" (click)="this.request_to_join()" class="join-btn">
+                  <mat-icon>person_add</mat-icon>
+                  Request to Join
+                </button>
+              }
+            }
           </mat-card-content>
         </mat-card>
       }
-    }
-    @else
-    {
-      <mat-card appearance="outlined" style="flex: 1">
-        <mat-card-content style="display: flex; flex-direction: column; align-items: center; height: 100%; gap: 10px">
-          @if (is_self)
-          {
-            <p>Join Requests</p>
-            <div style="width: 100%; height: 100%; overflow: auto">
-              <div class="request" *ngFor="let request of requests">
-                <div class="avatar">
-                  <a href="/user/{{request.clerk_id}}">
-                    <img src="{{request.user_info.imageUrl}}">
-                  </a>
-                  <p>{{request.user_info.username}}</p>
-                </div>
-                <button matButton="filled" (click)="this.accept(request.clerk_id)" class="accept-button">Accept</button>
-              </div>
-            </div>
-          }
-          @else
-          {
-            @if (requested)
-            {
-              <p>Once the poster accepts your request, you can start messaging.</p>
-            }
-            @else
-            {
-              <button matButton="filled" (click)="this.request_to_join()">Request to join</button>
-            }
-          }
-        </mat-card-content>
-      </mat-card>
-    }
+    </div>
   </div>
 </div>

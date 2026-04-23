@@ -355,6 +355,33 @@ app.post('/api/messages', requireAuth(), async (req, res) => {
   }
 });
 
+app.get('/api/users/requests', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const joined = req.query.joined === '1';
+
+    let query = '';
+    let params = [];
+
+    if (joined) {
+      query = `SELECT * FROM posts WHERE joined = TRUE AND (clerk_id = $1 OR accepted_clerk_id = $1) ORDER BY created_at DESC`;
+      params = [userId];
+    } else {
+      query = `SELECT p.* FROM posts p 
+               INNER JOIN join_requests r ON p.id = r.post_id 
+               WHERE r.clerk_id = $1 AND p.joined = FALSE 
+               ORDER BY r.created_at DESC`;
+      params = [userId];
+    }
+
+    const result = await pool.query(query, params);
+    res.json(result.rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.get('/api/check', (req, res) => {
     res.send("ok");
 });
