@@ -7,10 +7,11 @@ import { PostComponent } from '../../components/post/post';
 import { MessagingComponent } from '../../components/messaging/messaging';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
 
 @Component({
   selector: 'app-post-page',
-  imports: [CommonModule, MatButtonModule, MatCardModule, PostComponent, MessagingComponent],
+  imports: [MatIconModule, CommonModule, MatButtonModule, MatCardModule, PostComponent, MessagingComponent],
   templateUrl: './post-page.html',
   styleUrl: './post-page.css',
 })
