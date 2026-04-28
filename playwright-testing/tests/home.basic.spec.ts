@@ -11,11 +11,11 @@ test.describe('Home Page Basic UI', () => {
     page = await context.newPage();
 
     await page.goto('http://localhost:4200');
-    await page.getByPlaceholder('Enter email or username').fill('lamudu@denipl.com');
+    await page.getByPlaceholder('Enter email or username').fill('pagimuly@fxzig.com');
     await page.getByRole('button', { name: 'Continue' }).click();
     await expect(page).toHaveURL(/#\/factor-one/);
 
-    await page.locator('input[type="password"]').fill('pAsSwOrD123_');
+    await page.locator('input[type="password"]').fill('tempAccount1234_');
     await page.getByRole('button', { name: /continue|sign in|login/i }).click();
     await page.waitForTimeout(5000);
 
