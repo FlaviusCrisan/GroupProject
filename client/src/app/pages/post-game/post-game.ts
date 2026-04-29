@@ -10,9 +10,12 @@ import { Post, PostInfo } from '../../Post';
 import { PostInfoSelectors } from '../../components/post-info-selectors/post-info-selectors';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { MatIconModule } from '@angular/material/icon';
+import { CommonModule } from '@angular/common';
+
 @Component({
   selector: 'app-post-game',
-  imports: [MatCardModule, PostInfoSelectors, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule],
+  imports: [MatCardModule, PostInfoSelectors, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatIconModule, CommonModule],
   templateUrl: './post-game.html',
   styleUrl: './post-game.css',
 })
@@ -21,7 +24,7 @@ export class PostGame
   info: PostInfo = new PostInfo();
   add_clicked: boolean = false;
 
-  constructor(private api: ApiService, private router: Router, private snack: MatSnackBar) {}
+  constructor(public api: ApiService, public router: Router, private snack: MatSnackBar) {}
 
   async add()
   {

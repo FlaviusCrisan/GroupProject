@@ -62,9 +62,14 @@
                   <div class="request-item">
                     <img [src]="request.user_info.imageUrl" class="mini-avatar">
                     <span class="request-username">{{request.user_info.username}}</span>
-                    <button mat-flat-button color="primary" (click)="this.accept(request.clerk_id)" class="small-accept-btn">
-                      Accept
-                    </button>
+                    <div class="request-actions">
+                      <button mat-flat-button color="primary" (click)="this.accept(request.clerk_id)" class="small-btn">
+                        Accept
+                      </button>
+                      <button mat-button color="warn" (click)="this.decline(request.clerk_id)" class="small-btn">
+                        Decline
+                      </button>
+                    </div>
                   </div>
                 }
                 @if (requests.length === 0) {

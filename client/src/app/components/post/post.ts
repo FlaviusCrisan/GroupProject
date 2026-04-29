@@ -8,9 +8,12 @@ import { formatDistanceToNow } from 'date-fns';
 
 import { Router } from '@angular/router';
 
+import { CommonModule } from '@angular/common';
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-post',
-  imports: [MatCardModule, MatChipsModule, MatButtonModule],
+  imports: [MatCardModule, MatChipsModule, MatButtonModule, CommonModule, MatIconModule],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })

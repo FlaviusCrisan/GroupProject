@@ -109,6 +109,15 @@ export class PostPage implements OnInit
     await this.api.accept_request(this.id, user_id);
     if (this.post) this.post.accepted_user_id = user_id;
     this.snack.open("Request accepted", "Close", {duration: 2500});
+    await this.load_post();
+    this.cd.detectChanges();
+  }
+
+  async decline(user_id: string)
+  {
+    await this.api.decline_request(this.id, user_id);
+    this.requests = this.requests.filter(r => r.clerk_id !== user_id);
+    this.snack.open("Request declined", "Close", {duration: 2500});
     this.cd.detectChanges();
   }
 }

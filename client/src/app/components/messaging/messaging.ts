@@ -32,6 +32,7 @@ export class MessagingComponent implements OnChanges, OnDestroy
     this.right_user_info = await this.api.get_user_info(await this.api.get_user_id());
 
     await this.update_messages();
+    if (this.interval) clearInterval(this.interval);
     this.interval = setInterval(() => this.update_messages(), 1000);
   }
 

@@ -88,10 +88,18 @@
     font-weight: 500;
 }
 
-.small-accept-btn {
+.request-actions {
+    display: flex;
+    gap: 4px;
+}
+
+.small-btn {
     border-radius: 16px !important;
     height: 32px !important;
     line-height: 32px !important;
+    padding: 0 12px !important;
+    min-width: 60px !important;
+    font-size: 11px !important;
 }
 
 .status-box {

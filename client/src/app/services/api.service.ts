@@ -148,7 +148,7 @@ export class ApiService
 
   async request_to_join(id: number)
   {
-    return await firstValueFrom(this.http.patch(`${environment.api_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+    return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async cancel_request(id: number)
@@ -170,6 +170,11 @@ export class ApiService
   async accept_request(post_id: number, user_id: string)
   {
     return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts/${post_id}/accept`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async decline_request(post_id: number, user_id: string)
+  {
+    return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts/${post_id}/decline`, {clerk_id: user_id}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
   async get_filter_data()
