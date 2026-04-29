@@ -30,12 +30,15 @@ export class ProfilePage implements OnInit
   {
     const id = this.route.snapshot.paramMap.get("id")!;
     const current_id = await this.api.get_user_id();
+    this.is_self = id === current_id;
     try {
       this.user_info = await this.api.get_user_info(id);
+      if (this.is_self && (window as any).Clerk && (window as any).Clerk.user) {
+        this.user_info.imageUrl = (window as any).Clerk.user.imageUrl;
+      }
     } catch {
-      this.user_info = { id, username: 'User', imageUrl: '', publicMetadata: {} };
+      this.user_info = { id, username: 'User', imageUrl: this.is_self ? (window as any).Clerk?.user?.imageUrl : '', publicMetadata: {} };
     }
-    this.is_self = this.user_info.id === current_id;
     this.socials = Object.assign({}, this.user_info.publicMetadata?.socials || {});
     this.preferred_games = this.get_games_text();
     this.cd.detectChanges();

@@ -1,15 +1,12 @@
 import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { Router, RouterOutlet } from '@angular/router';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatListModule } from '@angular/material/list';
 import { MatIconModule } from '@angular/material/icon';
 import { ApiService } from '../../services/api.service';
 import { MatButtonModule } from '@angular/material/button';
-import { MatToolbarModule } from '@angular/material/toolbar';
 
 @Component({
   selector: 'app-layout',
-  imports: [MatButtonModule, MatToolbarModule, MatSidenavModule, MatListModule, MatIconModule, RouterOutlet],
+  imports: [MatButtonModule, MatIconModule, RouterOutlet],
   templateUrl: './layout.html',
   styleUrl: './layout.css',
 })

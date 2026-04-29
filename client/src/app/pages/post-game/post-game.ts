@@ -52,6 +52,13 @@ export class PostGame
 
   update_info(info: Record<string, string>)
   {
-    Object.assign(this.info, info);
+    this.info.game = info['game'];
+    this.info.game_mode = info['game_mode'];
+    this.info.rank = info['rank'];
+    this.info.region = info['region'];
+    this.info.platform = info['platform'];
+    this.info.language = info['language'];
+    this.info.age_range = info['age_range'];
+    this.info.gender = info['gender'];
   }
 }

@@ -1,8 +1,12 @@
 <div class="profile-page">
   <mat-card appearance="outlined" class="profile-card">
     <mat-card-content class="profile-content">
-      <img class="profile-avatar" src="{{user_info?.imageUrl}}">
-      <p class="profile-name">{{user_info?.username || user_info?.firstName}}</p>
+      @if (user_info?.imageUrl) {
+        <img class="profile-avatar" [src]="user_info?.imageUrl">
+      } @else {
+        <mat-icon style="font-size: 100px; width: 100px; height: 100px; color: gray;">account_circle</mat-icon>
+      }
+      <p class="profile-name">{{user_info?.username || user_info?.firstName || 'Player'}}</p>
 
       @if (is_self) {
         @if (editing) {
