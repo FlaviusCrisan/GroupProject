@@ -98,4 +98,19 @@ test.describe('Post Game', () => {
     await page.getByPlaceholder('description').fill('Casual match');
     await expect(page.getByRole('button', { name: /post/i })).toBeVisible();
   });
+
+  test('postgame page should load within 10 seconds', async () => {
+    const start = Date.now();
+    await page.goto('http://localhost:4200/post-game');
+    await expect(page.getByText('Create a new post')).toBeVisible();
+    const loadTime = Date.now() - start;
+    expect(loadTime).toBeLessThan(10000);
+  });
+
+  test('page should stay authenticated during long idle period', async () => {
+    await page.goto('http://localhost:4200/post-game');
+    await page.waitForTimeout(15000);
+    await expect(page).toHaveURL('http://localhost:4200/post-game');
+    await expect(page).not.toHaveURL(/login|factor-one|factor-two/i);
+  });
 });
