@@ -93,6 +93,13 @@ export class PostPage implements OnInit
     this.cd.detectChanges();
   }
 
+  async cancel_request()
+  {
+    await this.api.cancel_request(this.id);
+    this.requested = false;
+    this.cd.detectChanges();
+  }
+
   async accept(user_id: string)
   {
     await this.api.accept_request(this.id, user_id);

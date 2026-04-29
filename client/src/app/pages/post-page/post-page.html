@@ -80,6 +80,9 @@
                 <div class="status-box pending">
                   <mat-icon>hourglass_empty</mat-icon>
                   <p>Request sent! Waiting for host to accept...</p>
+                  <button mat-stroked-button color="warn" (click)="cancel_request()">
+                    Cancel request
+                  </button>
                 </div>
               } @else {
                 <p class="pitch">Looking for a teammate? Send a request to start a chat!</p>

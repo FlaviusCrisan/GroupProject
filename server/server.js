@@ -260,6 +260,19 @@ app.patch('/api/posts/:id/join', requireAuth(), async (req, res) => {
   }
 });
 
+app.delete('/api/posts/:id/join', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const id = req.params.id;
+
+    await pool.query('DELETE FROM join_requests WHERE post_id = $1 AND clerk_id = $2', [id, userId]);
+    res.json({ message: 'Request cancelled' });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
 app.get('/api/posts/:id/requests', requireAuth(), async (req, res) => {
   try {
     const { userId } = getAuth(req);

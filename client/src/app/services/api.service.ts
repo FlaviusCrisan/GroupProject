@@ -146,6 +146,11 @@ export class ApiService
     return await firstValueFrom(this.http.patch(`${environment.api_url}/api/posts/${id}/join`, {}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
+  async cancel_request(id: number)
+  {
+    return await firstValueFrom(this.http.delete(`${environment.api_url}/api/posts/${id}/join`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
   async has_requested(id: number): Promise<boolean>
   {
     const json = await firstValueFrom(this.http.get(`${environment.api_url}/api/posts/${id}/hasRequested`, {headers: {Authorization: `Bearer ${await this.get_token()}`}})) as any;
