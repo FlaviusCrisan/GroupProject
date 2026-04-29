@@ -17,6 +17,7 @@ import { Router } from '@angular/router';
 export class PostComponent implements OnChanges
 {
   @Input() id!: number;
+  @Input() refresh: number = 0;
   @Output() join_clicked = new EventEmitter<Post>();
 
   post?: Post;

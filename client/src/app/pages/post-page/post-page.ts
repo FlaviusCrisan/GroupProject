@@ -2,16 +2,21 @@ import { Component, OnInit, ChangeDetectorRef } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute } from '@angular/router';
 import { ApiService } from '../../services/api.service';
-import { Post } from '../../Post';
+import { Post, PostInfo } from '../../Post';
 import { PostComponent } from '../../components/post/post';
 import { MessagingComponent } from '../../components/messaging/messaging';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { FormsModule } from '@angular/forms';
+import { PostInfoSelectors } from '../../components/post-info-selectors/post-info-selectors';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-post-page',
-  imports: [MatIconModule, CommonModule, MatButtonModule, MatCardModule, PostComponent, MessagingComponent],
+  imports: [MatIconModule, CommonModule, MatButtonModule, MatCardModule, MatInputModule, MatFormFieldModule, FormsModule, PostInfoSelectors, PostComponent, MessagingComponent],
   templateUrl: './post-page.html',
   styleUrl: './post-page.css',
 })
@@ -19,19 +24,29 @@ export class PostPage implements OnInit
 {
   id: number;
   post: Post | undefined;
+  edit_info: PostInfo = new PostInfo();
   is_self: boolean = false;
   accepted_is_self: boolean = false;
   requested: boolean = false;
   requests: any[] = [];
+  editing: boolean = false;
+  refresh: number = 0;
+  message: string = "";
 
-  constructor(public api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef)
+  constructor(public api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef, private router: Router)
   {
     this.id = Number(this.route.snapshot.paramMap.get("id"));
   }
 
   async ngOnInit()
   {
-    this.post = (await this.api.get_game(this.id))!;
+    await this.load_post();
+  }
+
+  async load_post()
+  {
+    this.post = await this.api.get_game(this.id);
+    this.edit_info = Object.assign(new PostInfo(), this.post.info);
 
     this.is_self = this.post?.user_id === await this.api.get_user_id();
     this.accepted_is_self = this.post.accepted_user_id === await this.api.get_user_id();
@@ -45,6 +60,30 @@ export class PostPage implements OnInit
       this.requested = await this.api.has_requested(this.id);
 
     this.cd.detectChanges();
+  }
+
+  update_edit_info(info: Record<string, string>)
+  {
+    Object.assign(this.edit_info, info);
+  }
+
+  async save_post()
+  {
+    await this.api.update_game(this.id, this.edit_info);
+    this.editing = false;
+    this.message = "Post updated";
+    await this.load_post();
+    this.refresh++;
+    this.cd.detectChanges();
+  }
+
+  async delete_post()
+  {
+    if (!confirm("Delete this post?"))
+      return;
+
+    await this.api.delete_game(this.id);
+    this.router.navigate(["/home"]);
   }
 
   async request_to_join()

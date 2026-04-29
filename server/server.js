@@ -10,7 +10,6 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
-app.use(clerkMiddleware());
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -77,6 +76,12 @@ app.get('/api/games', (req, res) => {
     genders: GENDERS
   });
 });
+
+app.get('/api/check', (req, res) => {
+    res.send("ok");
+});
+
+app.use(clerkMiddleware());
 
 app.get('/api/posts', async (req, res) => {
   try {
@@ -154,6 +159,75 @@ app.post('/api/posts', requireAuth(), async (req, res) => {
       ]
     );
     res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.patch('/api/posts/:id', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const id = req.params.id;
+    const { title, description, game, game_mode, rank, region, platform, language, age_range, gender } = req.body;
+
+    if (!title) {
+      return res.status(400).json({ error: 'title is required' });
+    }
+
+    const postCheck = await pool.query('SELECT clerk_id FROM posts WHERE id = $1', [id]);
+    if (postCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    if (postCheck.rows[0].clerk_id !== userId) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+    const result = await pool.query(
+      `UPDATE posts
+       SET title = $1, description = $2, game = $3, game_mode = $4, rank = $5, region = $6, platform = $7, language = $8, age_range = $9, gender = $10
+       WHERE id = $11 RETURNING *`,
+      [
+        title,
+        description || '',
+        game || '',
+        game_mode || '',
+        rank || '',
+        region || '',
+        platform || '',
+        language || '',
+        age_range || '',
+        gender || '',
+        id
+      ]
+    );
+
+    res.json(result.rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Server error' });
+  }
+});
+
+app.delete('/api/posts/:id', requireAuth(), async (req, res) => {
+  try {
+    const { userId } = getAuth(req);
+    const id = req.params.id;
+
+    const postCheck = await pool.query('SELECT clerk_id FROM posts WHERE id = $1', [id]);
+    if (postCheck.rows.length === 0) {
+      return res.status(404).json({ error: 'Post not found' });
+    }
+
+    if (postCheck.rows[0].clerk_id !== userId) {
+      return res.status(403).json({ error: 'Unauthorized' });
+    }
+
+    await pool.query('DELETE FROM join_requests WHERE post_id = $1', [id]);
+    await pool.query('DELETE FROM posts WHERE id = $1', [id]);
+
+    res.json({ message: 'Post deleted' });
   } catch (err) {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
@@ -380,10 +454,6 @@ app.get('/api/users/requests', requireAuth(), async (req, res) => {
     console.error(err);
     res.status(500).json({ error: 'Server error' });
   }
-});
-
-app.get('/api/check', (req, res) => {
-    res.send("ok");
 });
 
 const PORT = process.env.PORT || 3000;

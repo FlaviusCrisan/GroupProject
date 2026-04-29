@@ -1,7 +1,7 @@
 <div class="container page-layout">
   <div class="content main-grid">
     <div class="post-column">
-      <app-post [id]="id" class="featured-post"></app-post>
+      <app-post [id]="id" [refresh]="refresh" class="featured-post"></app-post>
     </div>
 
     <div class="action-column">
@@ -24,6 +24,42 @@
           
           <mat-card-content class="interaction-content">
             @if (is_self) {
+              @if (message) {
+                <div class="success-message">{{message}}</div>
+              }
+
+              @if (editing) {
+                <div class="edit-form">
+                  <mat-form-field appearance="outline">
+                    <mat-label>Title</mat-label>
+                    <input matInput [(ngModel)]="edit_info.title">
+                  </mat-form-field>
+
+                  <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="3" [(ngModel)]="edit_info.description"></textarea>
+                  </mat-form-field>
+
+                  <app-post-info-selectors (on_changed)="update_edit_info($event)"></app-post-info-selectors>
+
+                  <div class="edit-actions">
+                    <button mat-flat-button color="primary" (click)="save_post()">Save</button>
+                    <button mat-button (click)="editing = false">Cancel</button>
+                  </div>
+                </div>
+              } @else {
+                <div class="owner-actions">
+                  <button mat-flat-button color="primary" (click)="editing = true">
+                    <mat-icon>edit</mat-icon>
+                    Edit
+                  </button>
+                  <button mat-flat-button color="warn" (click)="delete_post()">
+                    <mat-icon>delete</mat-icon>
+                    Delete
+                  </button>
+                </div>
+              }
+
               <p class="section-title">Join Requests ({{requests.length}})</p>
               <div class="requests-list">
                 @for (request of requests; track request.clerk_id) {

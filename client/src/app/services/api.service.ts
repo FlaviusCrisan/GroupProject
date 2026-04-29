@@ -110,6 +110,16 @@ export class ApiService
     return await firstValueFrom(this.http.post(`${environment.api_url}/api/posts`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
   }
 
+  async update_game(id: number, info: PostInfo)
+  {
+    return await firstValueFrom(this.http.patch(`${environment.api_url}/api/posts/${id}`, info, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
+  async delete_game(id: number)
+  {
+    return await firstValueFrom(this.http.delete(`${environment.api_url}/api/posts/${id}`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
   async get_user_info(id: string): Promise<any>
   {
     const cached = this.user_info_cache.get(id);
