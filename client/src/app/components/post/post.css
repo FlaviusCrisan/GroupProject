@@ -93,6 +93,7 @@ mat-card-header {
     -webkit-line-clamp: 3;
     -webkit-box-orient: vertical;
     overflow: hidden;
+    white-space: pre-line;
 }
 
 .post-footer {
