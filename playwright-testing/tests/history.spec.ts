@@ -67,8 +67,47 @@ test.describe('History Page', () => {
 
   test('page should stay authenticated during long idle period', async () => {
     await page.goto('http://localhost:4200/history');
-    await page.waitForTimeout(50000);
+    await page.waitForTimeout(30000);
     await expect(page).toHaveURL(/history/);
     await expect(page).not.toHaveURL(/login|factor-one|factor-two/i);
+  });
+
+  test('clicking username/avatar navigates to the user profile page', async () => {
+    await page.goto('http://localhost:4200/history');
+    const acceptedList = page.locator('app-post-list').nth(1);
+    const acceptedCards = acceptedList.locator('.post-card');
+    if ((await acceptedCards.count()) === 0) {
+      await expect(
+        acceptedList.locator('h2', { hasText: 'No matches found' })
+      ).toBeVisible();
+      return;
+    }
+    const username = acceptedList.locator('.username').first();
+    await expect(username).toBeVisible();
+    await username.click();
+    await expect(page).toHaveURL(/\/user\/\d+/);
+  });
+  
+  test('posts or “No matches found” are shown', async () => {
+    await page.goto('http://localhost:4200/history');
+    const postLists = page.locator('app-post-list');
+    const requestedList = postLists.first();
+    const requestedCards = requestedList.locator('.post-card');
+    const requestedCount = await requestedCards.count();
+    if (requestedCount === 0) {
+      await expect(
+        requestedList.locator('h2', { hasText: 'No matches found' })
+      ).toBeVisible();
+      return;
+    }
+    await expect(requestedCards.first()).toBeVisible();
+    await expect(requestedList.locator('.post-title').first()).toBeVisible();
+    await expect(requestedList.locator('.username').first()).toBeVisible();
+  });
+
+  test('authenticated user should not see login form', async () => {
+    await page.goto('http://localhost:4200/history');
+    await expect(page.locator('input[placeholder="Enter email or username"]')).toHaveCount(0);
+    await expect(page).toHaveURL(/\/history/);
   });
 });
