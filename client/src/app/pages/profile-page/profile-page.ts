@@ -10,9 +10,11 @@ import { MatInputModule } from '@angular/material/input';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
+import { MatIconModule } from '@angular/material/icon';
+
 @Component({
   selector: 'app-profile-page',
-  imports: [PostList, MatCardModule, MatButtonModule, FormsModule, MatInputModule, MatFormFieldModule, MatSnackBarModule],
+  imports: [MatIconModule, MatCardModule, MatButtonModule, FormsModule, MatInputModule, MatFormFieldModule, MatSnackBarModule],
   templateUrl: './profile-page.html',
   styleUrl: './profile-page.css',
 })

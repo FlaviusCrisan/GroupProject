@@ -164,12 +164,22 @@
 
 @media (max-width: 768px) {
     .nav-links {
-        display: none;
+        gap: 12px;
+        flex-wrap: wrap;
+    }
+    .nav-link {
+        font-size: 14px;
+        padding: 4px 8px;
     }
     .glass-navbar {
-        padding: 0 20px;
+        padding: 0 10px;
+        height: auto;
+        min-height: 70px;
+    }
+    .logo-container {
+        margin-right: 15px;
     }
     .main-content {
-        padding: 20px;
+        padding: 20px 10px;
     }
 }

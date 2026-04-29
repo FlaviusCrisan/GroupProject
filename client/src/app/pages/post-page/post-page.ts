@@ -32,6 +32,7 @@ export class PostPage implements OnInit
   requests: any[] = [];
   editing: boolean = false;
   refresh: number = 0;
+  message?: string;
 
   constructor(public api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef, private router: Router, private snack: MatSnackBar)
   {

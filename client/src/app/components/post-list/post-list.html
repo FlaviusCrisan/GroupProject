@@ -19,7 +19,17 @@
 
 <div *ngIf="posts.length === 0" class="empty-list">
   <mat-card>
-    <h2>No matches found</h2>
-    <p>There are no open lobbies right now. Be the first to start a game and find your perfect teammate!</p>
+    <ng-container *ngIf="current_user_joined === undefined">
+      <h2>No matches found</h2>
+      <p>There are no open lobbies right now. Be the first to start a game and find your perfect teammate!</p>
+    </ng-container>
+    <ng-container *ngIf="current_user_joined === false">
+      <h2>No requests yet</h2>
+      <p>You haven't requested to join any games yet.</p>
+    </ng-container>
+    <ng-container *ngIf="current_user_joined === true">
+      <h2>No joined games</h2>
+      <p>You haven't been accepted into any games yet.</p>
+    </ng-container>
   </mat-card>
 </div>

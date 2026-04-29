@@ -72,4 +72,9 @@ export class Layout implements OnInit
   {
     this.router.navigate(["/history"]);
   }
+
+  chats()
+  {
+    this.router.navigate(["/chats"]);
+  }
 }

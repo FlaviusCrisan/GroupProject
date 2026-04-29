@@ -1,5 +1,6 @@
 .post-card {
-    height: 100%;
+    min-height: 100%;
+    height: auto;
     display: flex;
     flex-direction: column;
     padding: 0 !important;

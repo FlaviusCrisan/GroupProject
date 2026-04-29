@@ -72,7 +72,11 @@ export class PostComponent implements OnChanges
     return images[game.toLowerCase().replace(/ /g, '_')] || 'https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=80&w=1000';
   }
 
-  async ngOnChanges(changes: SimpleChanges)
+  ngOnChanges(changes: SimpleChanges) {
+    this.updateData();
+  }
+
+  async updateData()
   {
     this.post = await this.api.get_game(this.id);
     this.user_info = await this.api.get_user_info(this.post.user_id);

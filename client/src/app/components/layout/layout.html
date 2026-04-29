@@ -8,15 +8,12 @@
       <a class="nav-link" (click)="home()">Home</a>
       <a class="nav-link" (click)="post_game()">New Game</a>
       <a class="nav-link" (click)="match_history()">History</a>
+      <a class="nav-link" (click)="chats()">Chats</a>
     </div>
 
     <span class="spacer"></span>
 
     <div class="nav-actions">
-      <button class="glass-button primary-glow" (click)="post_game()">
-        <mat-icon>add</mat-icon> Create Lobby
-      </button>
-
       <button mat-icon-button (click)="toggle_theme()" class="theme-toggle">
         <mat-icon>{{ is_dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
       </button>

@@ -26,13 +26,16 @@ mat-card-title span:last-child {
 }
 
 p {
-	margin: 0px;
+	margin: 0 0 8px 0;
+	line-height: 1.6;
 }
 
 body {
     background-color: transparent !important;
     margin: 0;
     font-family: 'Inter', Roboto, sans-serif;
+    line-height: 1.6;
+    letter-spacing: 0.3px;
 }
 
 mat-card, .mat-mdc-card {

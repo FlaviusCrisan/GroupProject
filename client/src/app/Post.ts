@@ -29,9 +29,18 @@ export class Post
 
   static async get_game(api: ApiService, game: string): Promise<any>
   {
-    const games = (await api.get_filter_data()).games;
+    let games: any;
+    try {
+      games = (await api.get_filter_data()).games;
+    } catch {
+      games = [
+        { name: 'Fortnite', modes: ['Battle Royale', 'Zero Build'], ranks: ['Unranked', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Elite', 'Champion', 'Unreal'], platforms: ['PC', 'PlayStation', 'Xbox', 'Switch', 'Mobile'] },
+        { name: 'Valorant', modes: ['Unrated', 'Competitive', 'Swiftplay', 'Spike Rush', 'Deathmatch'], ranks: ['Unranked', 'Iron', 'Bronze', 'Silver', 'Gold', 'Platinum', 'Diamond', 'Ascendant', 'Immortal', 'Radiant'], platforms: ['PC'] },
+        { name: 'Minecraft', modes: ['Survival', 'Creative', 'Hardcore', 'Adventure', 'Spectator'], ranks: ['None'], platforms: ['PC', 'PlayStation', 'Xbox', 'Switch', 'Mobile'] },
+        { name: 'CS2', modes: ['Competitive', 'Premier', 'Casual', 'Deathmatch', 'Wingman'], ranks: ['Unranked', 'Silver I', 'Silver II', 'Silver III', 'Silver IV', 'Silver Elite', 'Silver Elite Master', 'Gold Nova I', 'Gold Nova II', 'Gold Nova III', 'Gold Nova Master', 'Master Guardian I', 'Master Guardian II', 'Master Guardian Elite', 'Distinguished Master Guardian', 'Legendary Eagle', 'Legendary Eagle Master', 'Supreme Master First Class', 'The Global Elite'], platforms: ['PC'] }
+      ];
+    }
 
-    let game_names: string[] = [];
     for (const key in games)
       if (games[key].name === game)
         return games[key];
