@@ -26,6 +26,7 @@ export class PostComponent implements OnChanges
   join_button: boolean = false;
   chips: {text: string, color: string}[] = [];
   game_image: string = '';
+  compatibility_score: number = 0;
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
 
@@ -83,8 +84,22 @@ export class PostComponent implements OnChanges
     this.time_string = formatDistanceToNow(this.post.created_at, { addSuffix: true });
     this.game_image = this.get_bg_image(this.post.info.game || '');
 
-    const current_user = await this.api.get_user_id();
-    this.is_owner = current_user === this.post.user_id;
+    const current_user_id = await this.api.get_user_id();
+    this.is_owner = current_user_id === this.post.user_id;
+
+    // Calculate compatibility score
+    try {
+      const me = await this.api.get_user_info(current_user_id);
+      let score = 50; // Base score
+      
+      if (me.publicMetadata?.preferred_games?.includes(this.post.info.game)) score += 20;
+      if (me.publicMetadata?.socials?.language === this.post.info.language) score += 15;
+      if (me.publicMetadata?.socials?.region === this.post.info.region) score += 15;
+      
+      this.compatibility_score = Math.min(score, 100);
+    } catch {
+      this.compatibility_score = 0;
+    }
 
     this.chips = [];
     const colors: any = {

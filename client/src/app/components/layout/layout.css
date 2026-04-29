@@ -2,18 +2,6 @@
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    background-color: #0f172a;
-    background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.15), transparent 500px), 
-                      radial-gradient(circle at bottom left, rgba(233, 69, 96, 0.1), transparent 500px);
-    background-attachment: fixed;
-    color: #f8fafc;
-}
-
-.light-theme .app-container {
-    background-color: #f8fafc;
-    background-image: radial-gradient(circle at top right, rgba(99, 102, 241, 0.05), transparent 500px), 
-                      radial-gradient(circle at bottom left, rgba(233, 69, 96, 0.05), transparent 500px);
-    color: #0f172a;
 }
 
 .glass-navbar {

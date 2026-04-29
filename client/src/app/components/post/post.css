@@ -27,6 +27,30 @@
     background: linear-gradient(0deg, var(--mat-sys-surface-container-low) 0%, transparent 100%);
 }
 
+.match-score {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    background: rgba(99, 102, 241, 0.9);
+    color: white;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    z-index: 2;
+}
+
+.match-score mat-icon {
+    font-size: 14px;
+    width: 14px;
+    height: 14px;
+}
+
 mat-card-header {
     padding: 16px 16px 0 !important;
 }

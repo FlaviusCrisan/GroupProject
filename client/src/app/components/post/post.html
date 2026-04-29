@@ -1,6 +1,11 @@
 <mat-card class="post-card" appearance="raised">
   <div class="game-banner" [style.background-image]="'url(' + game_image + ')'">
-    <div class="banner-overlay"></div>
+    <div class="banner-overlay">
+      <div class="match-score" *ngIf="compatibility_score > 0 && !is_owner">
+        <mat-icon>favorite</mat-icon>
+        {{compatibility_score}}% Match
+      </div>
+    </div>
   </div>
 
   <mat-card-header>
