@@ -71,4 +71,57 @@ test.describe('Login Page', () => {
           await expect(page.getByRole('button', { name: 'Continue' })).toBeVisible();
         }
     });
+    test('user can navigate through the login page with keyboard', async ({ page }) => {
+        await page.keyboard.press('Tab');
+        await page.keyboard.press('Tab'); 
+        const continueBtn = page.getByRole('button', { name: 'Continue' });
+        await continueBtn.focus();
+        await expect(continueBtn).toBeFocused();
+    });
+
+    test('Discord/Github/Google buttons are visible', async ({ page }) => {
+        await expect(page.getByRole('button', { name: /discord/i })).toBeVisible();
+        await expect(page.getByRole('button', { name: /github/i })).toBeVisible();
+        await expect(page.getByRole('button', { name: /google/i })).toBeVisible();
+    });
+    
+    test('email is cleared on reload', async ({ page }) => {
+        const email = page.getByPlaceholder('Enter email or username');
+        await email.fill('test@test.com');
+        await page.reload();
+        await expect(email).toHaveValue('');
+    });
+    test('user can paste email and password in', async ({ page }) => {
+   
+        const email = page.getByPlaceholder('Enter email or username');
+        await email.click();
+        await page.keyboard.press('Control+A');
+        await page.keyboard.press('Backspace');
+      
+        await page.evaluate(async (value) => {
+          await navigator.clipboard.writeText(value);
+        }, 'pagimuly@fxzig.com');
+      
+        await page.keyboard.press('Control+V');
+        await expect(email).toHaveValue('pagimuly@fxzig.com');
+      
+
+        await page.getByRole('button', { name: 'Continue' }).click();
+        await expect(page).toHaveURL(/#\/factor-one/);
+      
+
+        const password = page.getByPlaceholder('Enter your password');
+        await expect(password).toBeVisible();
+      
+        await password.click();
+        await page.keyboard.press('Control+A');
+        await page.keyboard.press('Backspace');
+      
+        await page.evaluate(async (value) => {
+          await navigator.clipboard.writeText(value);
+        }, 'tempAccount1234_');
+      
+        await page.keyboard.press('Control+V');
+        await expect(password).toHaveValue('tempAccount1234_');
+    });
 });
