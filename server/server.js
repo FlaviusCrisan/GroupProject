@@ -10,6 +10,9 @@ const app = express();
 
 app.use(cors());
 app.use(express.json());
+app.use(clerkMiddleware());
+
+const auth = requireAuth();
 
 const pool = new Pool({
   user: process.env.DB_USER,
@@ -81,8 +84,6 @@ app.get('/api/check', (req, res) => {
     res.send("ok");
 });
 
-app.use(clerkMiddleware());
-
 app.get('/api/posts', async (req, res) => {
   try {
     const filters = ['game', 'game_mode', 'rank', 'region', 'platform', 'language', 'age_range', 'gender'];
@@ -128,7 +129,7 @@ app.get('/api/posts/:id', async (req, res) => {
   }
 });
 
-app.post('/api/posts', requireAuth(), async (req, res) => {
+app.post('/api/posts', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const { title, description, game, game_mode, rank, region, platform, language, age_range, gender } = req.body;
@@ -165,7 +166,7 @@ app.post('/api/posts', requireAuth(), async (req, res) => {
   }
 });
 
-app.patch('/api/posts/:id', requireAuth(), async (req, res) => {
+app.patch('/api/posts/:id', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -210,7 +211,7 @@ app.patch('/api/posts/:id', requireAuth(), async (req, res) => {
   }
 });
 
-app.delete('/api/posts/:id', requireAuth(), async (req, res) => {
+app.delete('/api/posts/:id', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -234,7 +235,7 @@ app.delete('/api/posts/:id', requireAuth(), async (req, res) => {
   }
 });
 
-app.patch('/api/posts/:id/join', requireAuth(), async (req, res) => {
+app.patch('/api/posts/:id/join', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -260,7 +261,7 @@ app.patch('/api/posts/:id/join', requireAuth(), async (req, res) => {
   }
 });
 
-app.delete('/api/posts/:id/join', requireAuth(), async (req, res) => {
+app.delete('/api/posts/:id/join', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -273,7 +274,7 @@ app.delete('/api/posts/:id/join', requireAuth(), async (req, res) => {
   }
 });
 
-app.get('/api/posts/:id/requests', requireAuth(), async (req, res) => {
+app.get('/api/posts/:id/requests', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -295,7 +296,7 @@ app.get('/api/posts/:id/requests', requireAuth(), async (req, res) => {
   }
 });
 
-app.get('/api/posts/:id/hasRequested', requireAuth(), async (req, res) => {
+app.get('/api/posts/:id/hasRequested', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -313,7 +314,7 @@ app.get('/api/posts/:id/hasRequested', requireAuth(), async (req, res) => {
   }
 });
 
-app.post('/api/posts/:id/accept', requireAuth(), async (req, res) => {
+app.post('/api/posts/:id/accept', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const id = req.params.id;
@@ -348,7 +349,7 @@ app.post('/api/posts/:id/accept', requireAuth(), async (req, res) => {
   }
 });
 
-app.patch('/api/users/metadata', requireAuth(), async (req, res) => {
+app.patch('/api/users/metadata', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const { publicMetadata } = req.body;
@@ -371,7 +372,7 @@ app.patch('/api/users/metadata', requireAuth(), async (req, res) => {
   }
 });
 
-app.get('/api/users/requests', requireAuth(), async (req, res) => {
+app.get('/api/users/requests', auth, async (req, res) => {
   try {
     const { userId } = getAuth(req);
     const joined = req.query.joined === '1';
@@ -428,7 +429,7 @@ app.get('/api/users/:userId/socials', async (req, res) => {
   }
 });
 
-app.get('/api/messages/:matchUserId', requireAuth(), async (req, res) => {
+app.get('/api/messages/:matchUserId', auth, async (req, res) => {
   try {
     const { userId: currentUserId } = getAuth(req);
     const { matchUserId } = req.params;
@@ -448,7 +449,7 @@ app.get('/api/messages/:matchUserId', requireAuth(), async (req, res) => {
   }
 });
 
-app.post('/api/messages', requireAuth(), async (req, res) => {
+app.post('/api/messages', auth, async (req, res) => {
   try {
     const { userId: senderId } = getAuth(req);
     const { receiverId, content } = req.body;

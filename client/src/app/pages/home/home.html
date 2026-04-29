@@ -1,9 +1,9 @@
-<div style="display: flex; flex-direction: column; align-items: center; width: 100%">
-  <div style="max-width: 1200px; width: 100%">
+<div class="home-page" style="padding-top: 2rem;">
+  <section class="matches-section">
+    <div class="section-title">
+      <p>Open lobbies</p>
+      <span>Use filters to find better teammates</span>
+    </div>
     <app-post-list [show_filters]="true"></app-post-list>
-  </div>
-  <div class="post">
-    <p>Want to start a game?</p>
-    <button matButton="filled" routerLink="/post-game">Post your game</button>
-  </div>
+  </section>
 </div>

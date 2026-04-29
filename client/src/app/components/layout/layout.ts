@@ -24,7 +24,15 @@ export class Layout implements OnInit
   {
     this.is_dark = localStorage.getItem('theme') !== 'light';
     this.update_theme();
-    this.user_info = await this.api.get_user_info(await this.api.get_user_id());
+    const user_id = await this.api.get_user_id();
+    try {
+      this.user_info = await this.api.get_user_info(user_id);
+      if ((window as any).Clerk && (window as any).Clerk.user) {
+        this.user_info.imageUrl = (window as any).Clerk.user.imageUrl;
+      }
+    } catch {
+      this.user_info = { id: user_id, imageUrl: (window as any).Clerk?.user?.imageUrl || '' };
+    }
     await this.cd.detectChanges();
   }
 

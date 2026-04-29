@@ -1,13 +1,25 @@
-<div [ngStyle]="{'display': show_filters ? 'flex' : 'none'}" style="justify-content: center">
+<div [ngStyle]="{'display': show_filters ? 'flex' : 'none'}" class="filters-wrap">
   <app-post-info-selectors (on_changed)="on_filters_changed($event)" style="width: 100%"></app-post-info-selectors>
 </div>
-<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 16px; padding: 16px">
-  <app-post *ngFor="let post of posts" [id]="post.id" (join_clicked)="view($event)" style="max-height: 400px"></app-post>
+
+<div class="post-grid">
+  <div class="post-item" *ngFor="let post of posts">
+    <app-post [id]="post.id" (join_clicked)="view($event)"></app-post>
+
+    @if (current_user_joined !== undefined) {
+      <div class="history-actions">
+        <button matButton="filled" (click)="view(post)">Open</button>
+        @if (current_user_joined === false) {
+          <button matButton (click)="cancel(post)">Cancel</button>
+        }
+      </div>
+    }
+  </div>
 </div>
 
-<div *ngIf="posts.length === 0" style="display: flex; justify-content: center; margin-top: 40px">
-  <mat-card style="padding: 40px; text-align: center; max-width: 400px; border-radius: 16px !important; opacity: 0.8">
-    <h2 style="margin-bottom: 10px; font-weight: 500">No matches found</h2>
+<div *ngIf="posts.length === 0" class="empty-list">
+  <mat-card>
+    <h2>No matches found</h2>
     <p>There are no open lobbies right now. Be the first to start a game and find your perfect teammate!</p>
   </mat-card>
 </div>

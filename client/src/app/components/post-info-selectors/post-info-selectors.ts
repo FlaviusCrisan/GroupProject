@@ -27,12 +27,32 @@ export class PostInfoSelectors implements OnInit
 
   async ngOnInit()
   {
+    let games: string[] = [];
+    let regions: string[] = [];
+    let languages: string[] = [];
+    let age_ranges: string[] = [];
+    let genders: string[] = [];
+
+    try {
+      games = await Post.get_games(this.api);
+      regions = await Post.get_regions(this.api);
+      languages = await Post.get_languages(this.api);
+      age_ranges = await Post.get_age_ranges(this.api);
+      genders = await Post.get_genders(this.api);
+    } catch {
+      games = ['Fortnite', 'Valorant', 'Minecraft', 'CS2'];
+      regions = ['EU', 'NA', 'Asia'];
+      languages = ['English', 'Russian', 'Spanish'];
+      age_ranges = ['Under 18', '18-25', '26-35', '36+'];
+      genders = ['Male', 'Female', 'Other', 'Prefer not to say'];
+    }
+
     this.templates = [
-      {name: "Game",      db_name: "game",      values: await Post.get_games(this.api)},
-      {name: "Region",    db_name: "region",    values: await Post.get_regions(this.api)},
-      {name: "Language",  db_name: "language",  values: await Post.get_languages(this.api)},
-      {name: "Age range", db_name: "age_range", values: await Post.get_age_ranges(this.api)},
-      {name: "Gender",    db_name: "gender",    values: await Post.get_genders(this.api)},
+      {name: "Game",      db_name: "game",      values: games},
+      {name: "Region",    db_name: "region",    values: regions},
+      {name: "Language",  db_name: "language",  values: languages},
+      {name: "Age range", db_name: "age_range", values: age_ranges},
+      {name: "Gender",    db_name: "gender",    values: genders},
     ];
 
     for (let i = 0; i < this.templates.length; ++i)

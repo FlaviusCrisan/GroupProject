@@ -27,11 +27,27 @@ export class PostGame
   {
     if (this.add_clicked)
       return;
+
+    if (!this.info.title.trim()) {
+      this.snack.open("Title is required", "Close", {duration: 2500});
+      return;
+    }
+
+    if (!this.info.game) {
+      this.snack.open("Choose a game", "Close", {duration: 2500});
+      return;
+    }
+
     this.add_clicked = true;
 
-    (await this.api.post_game(this.info))!;
-    this.snack.open("Post created", "Close", {duration: 2500});
-    this.router.navigate(["/home"]);
+    try {
+      (await this.api.post_game(this.info))!;
+      this.snack.open("Post created", "Close", {duration: 2500});
+      this.router.navigate(["/home"]);
+    } catch {
+      this.add_clicked = false;
+      this.snack.open("Post was not created", "Close", {duration: 2500});
+    }
   }
 
   update_info(info: Record<string, string>)

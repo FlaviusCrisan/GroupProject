@@ -42,7 +42,11 @@
         </div>
         <div>
           <span>Steam</span>
-          <p>{{user_info?.publicMetadata?.socials?.steam || 'Not added'}}</p>
+          @if (get_steam_link()) {
+            <p><a [href]="get_steam_link()" target="_blank">{{user_info?.publicMetadata?.socials?.steam}}</a></p>
+          } @else {
+            <p>Not added</p>
+          }
         </div>
         <div>
           <span>Riot ID</span>
@@ -50,7 +54,7 @@
         </div>
         <div>
           <span>Preferred games</span>
-          <p>{{user_info?.publicMetadata?.preferred_games?.join(', ') || 'Not added'}}</p>
+          <p>{{get_games_text() || 'Not added'}}</p>
         </div>
       </div>
 

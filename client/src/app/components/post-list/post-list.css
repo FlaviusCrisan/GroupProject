@@ -1,0 +1,48 @@
+.filters-wrap {
+    justify-content: center;
+}
+
+.post-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 16px;
+    padding: 16px;
+}
+
+.post-item {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.post-item app-post {
+    max-height: 400px;
+}
+
+.history-actions {
+    display: flex;
+    gap: 10px;
+}
+
+.history-actions button {
+    flex: 1;
+}
+
+.empty-list {
+    display: flex;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.empty-list mat-card {
+    padding: 34px;
+    text-align: center;
+    max-width: 430px;
+    border-radius: 16px !important;
+    opacity: 0.85;
+}
+
+.empty-list h2 {
+    margin-bottom: 10px;
+    font-weight: 500;
+}

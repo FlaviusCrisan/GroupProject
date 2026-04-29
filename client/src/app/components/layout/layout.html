@@ -21,7 +21,11 @@
       </button>
 
       <div class="user-profile" (click)="go_to_profile()">
-        <img [src]="user_info?.imageUrl" class="user-avatar">
+        @if (user_info?.imageUrl) {
+          <img [src]="user_info?.imageUrl" class="user-avatar">
+        } @else {
+          <mat-icon>account_circle</mat-icon>
+        }
       </div>
     </div>
   </mat-toolbar>

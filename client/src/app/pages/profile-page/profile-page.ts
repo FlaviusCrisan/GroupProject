@@ -28,10 +28,16 @@ export class ProfilePage implements OnInit
 
   async ngOnInit()
   {
-    this.user_info = await this.api.get_user_info(this.route.snapshot.paramMap.get("id")!);
-    this.is_self = this.user_info.id === await this.api.get_user_id();
+    const id = this.route.snapshot.paramMap.get("id")!;
+    const current_id = await this.api.get_user_id();
+    try {
+      this.user_info = await this.api.get_user_info(id);
+    } catch {
+      this.user_info = { id, username: 'User', imageUrl: '', publicMetadata: {} };
+    }
+    this.is_self = this.user_info.id === current_id;
     this.socials = Object.assign({}, this.user_info.publicMetadata?.socials || {});
-    this.preferred_games = (this.user_info.publicMetadata?.preferred_games || []).join(", ");
+    this.preferred_games = this.get_games_text();
     this.cd.detectChanges();
   }
 
@@ -57,5 +63,23 @@ export class ProfilePage implements OnInit
     this.editing = false;
     this.snack.open("Profile updated", "Close", {duration: 2500});
     this.cd.detectChanges();
+  }
+
+  get_games_text()
+  {
+    const games = this.user_info?.publicMetadata?.preferred_games;
+    if (Array.isArray(games))
+      return games.join(", ");
+    return games || "";
+  }
+
+  get_steam_link()
+  {
+    const steam = this.user_info?.publicMetadata?.socials?.steam;
+    if (!steam)
+      return "";
+    if (steam.startsWith("http"))
+      return steam;
+    return "https://steamcommunity.com/id/" + steam;
   }
 }

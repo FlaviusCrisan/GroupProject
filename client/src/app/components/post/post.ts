@@ -29,6 +29,28 @@ export class PostComponent implements OnChanges
 
   constructor(private api: ApiService, private cd: ChangeDetectorRef, private router: Router) {}
 
+  is_owner: boolean = false;
+
+  async delete_post() {
+    if (confirm('Are you sure you want to delete this post?')) {
+      await this.api.delete_game(this.id);
+      window.location.reload();
+    }
+  }
+
+  async edit_post() {
+    const new_title = prompt('Enter new title:', this.post?.info?.title);
+    if (!new_title) return;
+    const new_desc = prompt('Enter new description:', this.post?.info?.description);
+    
+    await this.api.update_game(this.id, {
+      ...this.post!.info,
+      title: new_title,
+      description: new_desc || ''
+    });
+    window.location.reload();
+  }
+
   go_to_profile()
   {
     this.router.navigate(['/user', this.user_info.id]);
@@ -56,6 +78,9 @@ export class PostComponent implements OnChanges
     this.user_info = await this.api.get_user_info(this.post.user_id);
     this.time_string = formatDistanceToNow(this.post.created_at, { addSuffix: true });
     this.game_image = this.get_bg_image(this.post.info.game || '');
+
+    const current_user = await this.api.get_user_id();
+    this.is_owner = current_user === this.post.user_id;
 
     this.chips = [];
     const colors: any = {

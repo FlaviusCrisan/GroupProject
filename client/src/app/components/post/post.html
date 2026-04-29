@@ -34,6 +34,10 @@
           View
         </button>
       }
+      @if (is_owner) {
+        <button mat-flat-button color="accent" class="view-button" (click)="edit_post()" style="margin-right: 8px;">Edit</button>
+        <button mat-flat-button color="warn" class="view-button" (click)="delete_post()">Delete</button>
+      }
     </div>
   </mat-card-footer>
 </mat-card>
