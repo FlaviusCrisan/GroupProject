@@ -1,0 +1,75 @@
+.profile-page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 24px;
+}
+
+.profile-card {
+    width: min(900px, 100%);
+}
+
+.profile-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+}
+
+.profile-avatar {
+    border-radius: 9999px;
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+}
+
+.profile-name {
+    margin: 0;
+    font-size: 30px;
+    font-weight: 600;
+}
+
+.profile-form {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.profile-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.profile-info {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    width: 100%;
+}
+
+.profile-info div {
+    padding: 12px;
+    border: 1px solid var(--mat-sys-outline-variant);
+    border-radius: 10px;
+}
+
+.profile-info span {
+    font-size: 12px;
+    opacity: 0.7;
+}
+
+.profile-info p {
+    margin: 6px 0 0;
+    font-weight: 600;
+}
+
+.open-games {
+    width: 100%;
+}
+
+.open-games > p {
+    font-size: 30px;
+    margin: 18px 0 8px;
+}

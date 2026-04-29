@@ -24,10 +24,6 @@
           
           <mat-card-content class="interaction-content">
             @if (is_self) {
-              @if (message) {
-                <div class="success-message">{{message}}</div>
-              }
-
               @if (editing) {
                 <div class="edit-form">
                   <mat-form-field appearance="outline">

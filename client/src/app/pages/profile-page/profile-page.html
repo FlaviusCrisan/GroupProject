@@ -1,18 +1,61 @@
-<div style="display: flex; flex-direction: column; align-items: center">
-  <mat-card appearance="outlined" style="width: 800px">
-    <mat-card-content style="display: flex; flex-direction: column; align-items: center; gap: 15px">
-      <img style="border-radius: 9999px; width: 100px; height: 100px" src="{{user_info?.imageUrl}}">
-      <p style="margin: 3px 0px; font-size: 30px">{{user_info?.username}}</p>
-      @if (is_self) 
-      {
-        <button matButton="filled" (click)="edit_profile()">Edit profile</button>
-      }
-      @else 
-      {
+<div class="profile-page">
+  <mat-card appearance="outlined" class="profile-card">
+    <mat-card-content class="profile-content">
+      <img class="profile-avatar" src="{{user_info?.imageUrl}}">
+      <p class="profile-name">{{user_info?.username || user_info?.firstName}}</p>
+
+      @if (is_self) {
+        @if (editing) {
+          <div class="profile-form">
+            <mat-form-field appearance="outline">
+              <mat-label>Discord</mat-label>
+              <input matInput [(ngModel)]="socials.discord">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Steam</mat-label>
+              <input matInput [(ngModel)]="socials.steam">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Riot ID</mat-label>
+              <input matInput [(ngModel)]="socials.riot">
+            </mat-form-field>
+            <mat-form-field appearance="outline">
+              <mat-label>Preferred games</mat-label>
+              <input matInput [(ngModel)]="preferred_games">
+            </mat-form-field>
+            <div class="profile-actions">
+              <button matButton="filled" (click)="save_profile()">Save</button>
+              <button matButton (click)="editing = false">Cancel</button>
+            </div>
+          </div>
+        } @else {
+          <button matButton="filled" (click)="edit_profile()">Edit profile</button>
+        }
+      } @else {
         <button matButton="filled" (click)="open_dms()">Send a message</button>
       }
-      <div style="display: flex; flex-direction: column; gap: 10px">
-        <p style="font-size: 30px; margin: 10px 0">Open games</p>
+
+      <div class="profile-info">
+        <div>
+          <span>Discord</span>
+          <p>{{user_info?.publicMetadata?.socials?.discord || 'Not added'}}</p>
+        </div>
+        <div>
+          <span>Steam</span>
+          <p>{{user_info?.publicMetadata?.socials?.steam || 'Not added'}}</p>
+        </div>
+        <div>
+          <span>Riot ID</span>
+          <p>{{user_info?.publicMetadata?.socials?.riot || 'Not added'}}</p>
+        </div>
+        <div>
+          <span>Preferred games</span>
+          <p>{{user_info?.publicMetadata?.preferred_games?.join(', ') || 'Not added'}}</p>
+        </div>
+      </div>
+
+      <div class="open-games">
+        <p>Open games</p>
         <app-post-list [filter_user_id]="user_info?.id" [show_filters]="true"></app-post-list>
       </div>
     </mat-card-content>

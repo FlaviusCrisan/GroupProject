@@ -131,6 +131,11 @@ export class ApiService
     return request;
   }
 
+  async update_user_metadata(publicMetadata: any)
+  {
+    return await firstValueFrom(this.http.patch(`${environment.api_url}/api/users/metadata`, {publicMetadata}, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));
+  }
+
   async get_messages(id: string)
   {
     return await firstValueFrom(this.http.get(`${environment.api_url}/api/messages/${id}`, {headers: {Authorization: `Bearer ${await this.get_token()}`}}));

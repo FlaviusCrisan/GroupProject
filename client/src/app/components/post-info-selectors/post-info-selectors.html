@@ -1,15 +1,17 @@
-<mat-card appearance="raised" style="padding: 24px; max-width: 800px; margin: 20px auto; border-radius: 16px !important">
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-bottom: 16px">
-    @for (template of templates; track template)
-    {
-      @if (template.name === "Game" || template.name === "Rank" || template.name === "Platform" || template.name === "Mode")
-      {
+<mat-card appearance="raised" class="filters-card">
+  <div class="filters-top">
+    <p>Filters</p>
+    <button mat-button type="button" (click)="clear()">Clear</button>
+  </div>
+
+  <div class="filters-grid main-filters">
+    @for (template of templates; track template) {
+      @if (template.name === "Game" || template.name === "Rank" || template.name === "Platform" || template.name === "Mode") {
         <mat-form-field appearance="outline">
           <mat-label>{{template.name}}</mat-label>
           <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
             <mat-option value="Any">Any</mat-option>
-            @for (item of template.values; track item)
-            {
+            @for (item of template.values; track item) {
               <mat-option [value]="item">{{item}}</mat-option>
             }
           </mat-select>
@@ -17,17 +19,15 @@
       }
     }
   </div>
-  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px">
-    @for (template of templates; track template)
-    {
-      @if (template.name !== "Game" && template.name !== "Rank" && template.name !== "Platform" && template.name !== "Mode")
-      {
+
+  <div class="filters-grid">
+    @for (template of templates; track template) {
+      @if (template.name !== "Game" && template.name !== "Rank" && template.name !== "Platform" && template.name !== "Mode") {
         <mat-form-field appearance="outline">
           <mat-label>{{template.name}}</mat-label>
           <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
             <mat-option value="Any">Any</mat-option>
-            @for (item of template.values; track item)
-            {
+            @for (item of template.values; track item) {
               <mat-option [value]="item">{{item}}</mat-option>
             }
           </mat-select>

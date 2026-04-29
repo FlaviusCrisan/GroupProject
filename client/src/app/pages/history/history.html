@@ -1,9 +1,28 @@
-<div style="display: flex; flex-direction: column; align-items: center; width: 100%">
-  <div style="max-width: 1200px; width: 90%">
-    <p style="font-size: 50px; margin: 40px 0 60px 0">History</p>
-    <p style="font-size: 30px; margin: 50px 0 5px 0">Requested</p>
-    <app-post-list [current_user_joined]="false"></app-post-list>
-    <p style="font-size: 30px; margin: 40px 0 5px 0">Accepted</p>
-    <app-post-list [current_user_joined]="true"></app-post-list>
+<div class="history-page">
+  <div class="history-content">
+    <div class="history-header">
+      <p>History</p>
+      <span>Your requests and accepted games</span>
+    </div>
+
+    <mat-card class="history-section">
+      <mat-card-header>
+        <mat-card-title>Requested</mat-card-title>
+        <mat-card-subtitle>Games you asked to join</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-post-list [current_user_joined]="false"></app-post-list>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="history-section">
+      <mat-card-header>
+        <mat-card-title>Joined</mat-card-title>
+        <mat-card-subtitle>Accepted games and active chats</mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <app-post-list [current_user_joined]="true"></app-post-list>
+      </mat-card-content>
+    </mat-card>
   </div>
 </div>

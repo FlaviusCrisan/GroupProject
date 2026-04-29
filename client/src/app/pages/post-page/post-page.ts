@@ -13,10 +13,11 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { FormsModule } from '@angular/forms';
 import { PostInfoSelectors } from '../../components/post-info-selectors/post-info-selectors';
 import { Router } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-post-page',
-  imports: [MatIconModule, CommonModule, MatButtonModule, MatCardModule, MatInputModule, MatFormFieldModule, FormsModule, PostInfoSelectors, PostComponent, MessagingComponent],
+  imports: [MatIconModule, CommonModule, MatButtonModule, MatCardModule, MatInputModule, MatFormFieldModule, FormsModule, MatSnackBarModule, PostInfoSelectors, PostComponent, MessagingComponent],
   templateUrl: './post-page.html',
   styleUrl: './post-page.css',
 })
@@ -31,9 +32,8 @@ export class PostPage implements OnInit
   requests: any[] = [];
   editing: boolean = false;
   refresh: number = 0;
-  message: string = "";
 
-  constructor(public api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef, private router: Router)
+  constructor(public api: ApiService, private route: ActivatedRoute, private cd: ChangeDetectorRef, private router: Router, private snack: MatSnackBar)
   {
     this.id = Number(this.route.snapshot.paramMap.get("id"));
   }
@@ -71,7 +71,7 @@ export class PostPage implements OnInit
   {
     await this.api.update_game(this.id, this.edit_info);
     this.editing = false;
-    this.message = "Post updated";
+    this.snack.open("Post updated", "Close", {duration: 2500});
     await this.load_post();
     this.refresh++;
     this.cd.detectChanges();
@@ -83,6 +83,7 @@ export class PostPage implements OnInit
       return;
 
     await this.api.delete_game(this.id);
+    this.snack.open("Post deleted", "Close", {duration: 2500});
     this.router.navigate(["/home"]);
   }
 
@@ -90,6 +91,7 @@ export class PostPage implements OnInit
   {
     await this.api.request_to_join(this.id);
     this.requested = true;
+    this.snack.open("Request sent", "Close", {duration: 2500});
     this.cd.detectChanges();
   }
 
@@ -97,6 +99,7 @@ export class PostPage implements OnInit
   {
     await this.api.cancel_request(this.id);
     this.requested = false;
+    this.snack.open("Request cancelled", "Close", {duration: 2500});
     this.cd.detectChanges();
   }
 
@@ -104,6 +107,7 @@ export class PostPage implements OnInit
   {
     await this.api.accept_request(this.id, user_id);
     if (this.post) this.post.accepted_user_id = user_id;
+    this.snack.open("Request accepted", "Close", {duration: 2500});
     this.cd.detectChanges();
   }
 }

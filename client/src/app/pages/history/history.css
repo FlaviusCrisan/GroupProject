@@ -1,0 +1,31 @@
+.history-page {
+    display: flex;
+    justify-content: center;
+    padding: 28px 16px;
+}
+
+.history-content {
+    width: min(1200px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.history-header p {
+    font-size: 48px;
+    font-weight: 700;
+    margin: 0;
+}
+
+.history-header span {
+    opacity: 0.7;
+}
+
+.history-section {
+    border-radius: 16px !important;
+    overflow: hidden;
+}
+
+.history-section mat-card-content {
+    padding: 0 !important;
+}

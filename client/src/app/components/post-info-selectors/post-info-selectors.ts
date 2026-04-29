@@ -7,10 +7,11 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { CommonModule } from '@angular/common';
 import { Post } from '../../Post';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-post-info-selectors',
-  imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, CommonModule],
+  imports: [MatCardModule, MatFormFieldModule, MatSelectModule, MatInputModule, FormsModule, CommonModule, MatButtonModule],
   templateUrl: './post-info-selectors.html',
   styleUrl: './post-info-selectors.css',
 })
@@ -120,5 +121,13 @@ export class PostInfoSelectors implements OnInit
     }
     
     this.on_changed.emit(selected);
+  }
+
+  async clear()
+  {
+    for (let i = 0; i < this.templates.length; ++i)
+      this.selected[this.templates[i].name] = "Any";
+
+    await this.update();
   }
 }
