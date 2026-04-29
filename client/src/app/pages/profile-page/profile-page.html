@@ -1,67 +1,142 @@
 <div class="profile-page">
-  <mat-card appearance="outlined" class="profile-card">
-    <mat-card-content class="profile-content">
-      @if (user_info?.imageUrl) {
-        <img class="profile-avatar" [src]="user_info?.imageUrl">
-      } @else {
-        <mat-icon style="font-size: 100px; width: 100px; height: 100px; color: gray;">account_circle</mat-icon>
-      }
-      <p class="profile-name">{{user_info?.username || user_info?.firstName || 'Player'}}</p>
-
-      @if (is_self) {
-        @if (editing) {
-          <div class="profile-form">
-            <mat-form-field appearance="outline">
-              <mat-label>Discord</mat-label>
-              <input matInput [(ngModel)]="socials.discord">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Steam</mat-label>
-              <input matInput [(ngModel)]="socials.steam">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Riot ID</mat-label>
-              <input matInput [(ngModel)]="socials.riot">
-            </mat-form-field>
-            <mat-form-field appearance="outline">
-              <mat-label>Preferred games</mat-label>
-              <input matInput [(ngModel)]="preferred_games">
-            </mat-form-field>
-            <div class="profile-actions">
-              <button matButton="filled" (click)="save_profile()">Save</button>
-              <button matButton (click)="editing = false">Cancel</button>
-            </div>
-          </div>
+  <div class="profile-container">
+    <!-- Left Sidebar: Avatar and Socials -->
+    <mat-card appearance="outlined" class="sidebar-card">
+      <div class="avatar-section">
+        @if (user_info?.imageUrl) {
+          <img class="profile-avatar" [src]="user_info?.imageUrl">
         } @else {
-          <button matButton="filled" (click)="edit_profile()">Edit profile</button>
+          <mat-icon class="placeholder-avatar">account_circle</mat-icon>
         }
-      } @else {
-        <button matButton="filled" (click)="open_dms()">Send a message</button>
-      }
-
-      <div class="profile-info">
-        <div>
-          <span>Discord</span>
-          <p>{{user_info?.publicMetadata?.socials?.discord || 'Not added'}}</p>
-        </div>
-        <div>
-          <span>Steam</span>
-          @if (get_steam_link()) {
-            <p><a [href]="get_steam_link()" target="_blank">{{user_info?.publicMetadata?.socials?.steam}}</a></p>
-          } @else {
-            <p>Not added</p>
-          }
-        </div>
-        <div>
-          <span>Riot ID</span>
-          <p>{{user_info?.publicMetadata?.socials?.riot || 'Not added'}}</p>
-        </div>
-        <div>
-          <span>Preferred games</span>
-          <p>{{get_games_text() || 'Not added'}}</p>
+        <h1 class="profile-name">{{user_info?.username || user_info?.firstName || 'Player'}}</h1>
+        <div class="region-badge">
+          <mat-icon>public</mat-icon>
+          {{socials.region || 'Unknown Region'}}
         </div>
       </div>
 
-    </mat-card-content>
-  </mat-card>
+      <div class="sidebar-divider"></div>
+
+      <div class="social-links">
+        <h3>Connect</h3>
+        <div class="social-item">
+          <mat-icon>chat</mat-icon>
+          <div class="social-val">
+            <span>Discord</span>
+            <p>{{socials.discord || 'Not linked'}}</p>
+          </div>
+        </div>
+        <div class="social-item">
+          <mat-icon>games</mat-icon>
+          <div class="social-val">
+            <span>Steam</span>
+            @if (get_steam_link()) {
+              <p><a [href]="get_steam_link()" target="_blank">View Profile</a></p>
+            } @else {
+              <p>Not linked</p>
+            }
+          </div>
+        </div>
+        <div class="social-item">
+          <mat-icon>bolt</mat-icon>
+          <div class="social-val">
+            <span>Riot ID</span>
+            <p>{{socials.riot || 'Not linked'}}</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-actions">
+        @if (is_self) {
+          <button class="glass-button primary-glow full-width" (click)="edit_profile()">
+            <mat-icon>edit</mat-icon> Edit Profile
+          </button>
+        } @else {
+          <button class="glass-button primary-glow full-width" (click)="open_dms()">
+            <mat-icon>message</mat-icon> Send DM
+          </button>
+        }
+      </div>
+    </mat-card>
+
+    <!-- Right Main Content: Bio, Games, Editing -->
+    <div class="main-profile-content">
+      @if (editing) {
+        <mat-card class="edit-card anim-fade-in">
+          <h2>Edit Your Profile</h2>
+          <div class="edit-grid">
+            <mat-form-field appearance="outline">
+              <mat-label>Bio</mat-label>
+              <textarea matInput [(ngModel)]="socials.bio" rows="3"></textarea>
+            </mat-form-field>
+
+            <div class="edit-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Region</mat-label>
+                <input matInput [(ngModel)]="socials.region">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Language</mat-label>
+                <input matInput [(ngModel)]="socials.language">
+              </mat-form-field>
+            </div>
+
+            <div class="edit-row">
+              <mat-form-field appearance="outline">
+                <mat-label>Discord</mat-label>
+                <input matInput [(ngModel)]="socials.discord">
+              </mat-form-field>
+              <mat-form-field appearance="outline">
+                <mat-label>Steam ID</mat-label>
+                <input matInput [(ngModel)]="socials.steam">
+              </mat-form-field>
+            </div>
+
+            <mat-form-field appearance="outline">
+              <mat-label>Preferred games (comma separated)</mat-label>
+              <input matInput [(ngModel)]="preferred_games">
+            </mat-form-field>
+          </div>
+
+          <div class="edit-actions">
+            <button mat-button (click)="editing = false">Cancel</button>
+            <button class="glass-button primary-glow" (click)="save_profile()">Save Changes</button>
+          </div>
+        </mat-card>
+      } @else {
+        <!-- Bio Card -->
+        <mat-card class="content-card bio-card">
+          <div class="card-header">
+            <mat-icon>info</mat-icon>
+            <h2>About Me</h2>
+          </div>
+          <p class="bio-text">{{socials.bio || 'This user hasn\'t written a bio yet.'}}</p>
+          
+          <div class="meta-info">
+            <div class="meta-item">
+              <mat-icon>translate</mat-icon>
+              <span>Speaks: {{socials.language || 'Any'}}</span>
+            </div>
+          </div>
+        </mat-card>
+
+        <!-- Games Card -->
+        <mat-card class="content-card games-card">
+          <div class="card-header">
+            <mat-icon>sports_esports</mat-icon>
+            <h2>Main Games</h2>
+          </div>
+          <div class="games-list">
+            @if (user_info?.publicMetadata?.preferred_games?.length) {
+              @for (game of user_info.publicMetadata.preferred_games; track game) {
+                <div class="game-tag">{{game}}</div>
+              }
+            } @else {
+              <p class="empty-text">No favorite games added.</p>
+            }
+          </div>
+        </mat-card>
+      }
+    </div>
+  </div>
 </div>

@@ -1,23 +1,37 @@
-<div style="display: flex; flex-direction: column; width: 100%; align-items: center">
-<mat-card appearance="raised" style="max-width: 600px; width: 100%; height: 100%; gap: 16px">
+<div class="post-game-container">
+  <mat-card appearance="outlined" class="post-game-card">
     <mat-card-header>
-      <p style="margin: 10px auto; font-size: 25px">Create a new post</p>
+      <mat-icon class="header-icon">add_circle</mat-icon>
+      <h1 class="header-title">Create New Lobby</h1>
+      <p class="header-subtitle">Fill in the details to find your perfect squad</p>
     </mat-card-header>
-    <mat-card-content>
-      <div style="display: flex; flex-direction: column;">
-        <mat-form-field appearance="outline">
-          <mat-label>Title</mat-label>
-          <input matInput placeholder="Enter title" [(ngModel)]="info.title">
+
+    <mat-card-content class="post-form">
+      <div class="form-section">
+        <h3>General Information</h3>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Lobby Title</mat-label>
+          <input matInput placeholder="e.g. Competitive grind to Radiant" [(ngModel)]="info.title">
         </mat-form-field>
-        <mat-form-field appearance="outline">
-          <mat-label>Description</mat-label>
-          <textarea matInput cdkTextareaAutosize placeholder="Description" name="info.description" [(ngModel)]="info.description"></textarea>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description (Optional)</mat-label>
+          <textarea matInput rows="3" placeholder="Tell more about your playstyle..." [(ngModel)]="info.description"></textarea>
         </mat-form-field>
+      </div>
+
+      <div class="form-section">
+        <h3>Game Settings</h3>
         <app-post-info-selectors (on_changed)="update_info($event)"></app-post-info-selectors>
       </div>
     </mat-card-content>
-    <mat-card-footer class="card-footer" style="display: flex; flex-direction: column; align-items: center; padding: 0 16px 16px">
-      <button matButton="filled" (click)="add()">Post</button>
-    </mat-card-footer>
+
+    <div class="post-actions">
+      <button class="glass-button secondary" (click)="router.navigate(['/home'])">Cancel</button>
+      <button class="glass-button primary-glow" [disabled]="add_clicked" (click)="add()">
+        <mat-icon *ngIf="!add_clicked">publish</mat-icon>
+        {{ add_clicked ? 'Creating...' : 'Post Lobby' }}
+      </button>
+    </div>
   </mat-card>
 </div>

@@ -41,7 +41,20 @@ export class ProfilePage implements OnInit
     } catch {
       this.user_info = { id, username: 'User', imageUrl: this.is_self ? (window as any).Clerk?.user?.imageUrl : '', publicMetadata: {} };
     }
-    this.socials = Object.assign({}, this.user_info.publicMetadata?.socials || {});
+    this.socials = Object.assign({
+      discord: '',
+      steam: '',
+      riot: '',
+      region: 'EU',
+      language: 'English',
+      bio: ''
+    }, this.user_info.publicMetadata?.socials || {});
+    
+    // Support top-level bio if stored there by setup
+    if (this.user_info.publicMetadata?.bio) {
+      this.socials.bio = this.user_info.publicMetadata.bio;
+    }
+
     this.preferred_games = this.get_games_text();
     this.cd.detectChanges();
   }

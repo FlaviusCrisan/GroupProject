@@ -138,8 +138,16 @@ app.post('/api/posts', auth, async (req, res) => {
       return res.status(400).json({ error: 'title is required' });
     }
 
-    const user = await clerkClient.users.getUser(userId);
-    const username = user.username || user.firstName || 'Unknown';
+    let username = 'Unknown Player';
+    try {
+      const user = await clerkClient.users.getUser(userId);
+      username = user.username || user.firstName || 'Unknown';
+    } catch (clerkErr) {
+      console.warn('Failed to fetch user from Clerk:', clerkErr.message);
+      // Fallback to searching database for existing posts by this user to get their username
+      const lastPost = await pool.query('SELECT username FROM posts WHERE clerk_id = $1 LIMIT 1', [userId]);
+      if (lastPost.rows.length > 0) username = lastPost.rows[0].username;
+    }
 
     const result = await pool.query(
       `INSERT INTO posts (title, description, clerk_id, username, game, game_mode, rank, region, platform, language, age_range, gender)
