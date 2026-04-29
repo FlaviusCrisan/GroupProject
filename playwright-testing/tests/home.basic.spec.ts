@@ -72,7 +72,6 @@ test.describe('Home Page Basic UI', () => {
     await expect(button).toHaveCount(1);
   });
   
-  
   test('returning to home manually should show heading again', async () => {
     await page.goto('http://localhost:4200/post-game');
     await page.goto('http://localhost:4200/home');
@@ -85,5 +84,45 @@ test.describe('Home Page Basic UI', () => {
     await expect(page.getByText('Want to start a game?')).toBeVisible();
     const loadTime = Date.now() - start;
     expect(loadTime).toBeLessThan(10000);
+  });
+
+  test('page should stay authenticated during long idle period', async () => {
+    await page.goto('http://localhost:4200/home');
+    await page.waitForTimeout(15000);
+    await expect(page).toHaveURL('http://localhost:4200/home');
+    await expect(page).not.toHaveURL(/login|factor-one|factor-two/i);
+  });
+
+  test('clicking username/avatar navigates to the user profile page', async () => {
+    await page.goto('http://localhost:4200/home');
+    const postList = page.locator('app-post-list').first();
+    const postCards = postList.locator('.post-card');
+    if ((await postCards.count()) === 0) {
+      await expect(
+        postList.locator('h2', { hasText: 'No matches found' })
+      ).toBeVisible();
+      return;
+    }
+    const username = postList.locator('.username').first();
+    await expect(username).toBeVisible();
+    await username.click();
+    await expect(page).toHaveURL(/\/user\/\d+/);
+  });
+
+  test('filters UI is visible', async () => {
+    await page.goto('http://localhost:4200/home');
+    await expect(page.locator('app-post-info-selectors')).toBeVisible();
+  });
+
+  test('posts or “No matches found” are shown', async () => {
+    await page.goto('http://localhost:4200/home');
+    const postList = page.locator('app-post-list').first();
+    const postCards = postList.locator('.post-card');
+    const cardsCount = await postCards.count();
+    if (cardsCount === 0) {
+      await expect(postList.locator('h2', { hasText: 'No matches found' })).toBeVisible();
+    } else {
+      await expect(postCards.first()).toBeVisible();
+    }
   });
 });
