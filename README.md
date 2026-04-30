@@ -73,5 +73,5 @@ in the root directory `GroupProject/`:
 - Must have Playwright & components required by Playwright installed
 - Host website locally
 - You will need to change the email and password in the test files to go through login (manual 2 step verification required)
-- Use the command "npx playwright test tests/login.spec.ts" (remember to change the filename depending on which file you want to test)
+- Make sure you cd to playwright-testing, use the command "npx playwright test tests/login.spec.ts" (change the filename depending on which file you want to test)
 - And to enable the GUI (which is needed for some tests) add "--headed --debug --project=chromium" to the end of the base test command
