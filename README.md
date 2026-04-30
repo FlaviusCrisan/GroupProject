@@ -43,11 +43,11 @@ Kostiantyn - Backend
 Flavius - Database & Testing
 
 # Build Instructions
-- Prerequisites:
+Prerequisites:
 - Must have Postgres server installed
 - Set up variables in server/.env
 
-- in the root directory `GroupProject/`:
+in the root directory `GroupProject/`:
 - run `npm install`
 - run `npm run dev`
 - connect to `localhost:4200` in your browser
