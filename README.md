@@ -40,9 +40,9 @@ Testing - Playwright
 
 Maksymilian - Frontend
 
-Kostiantyn - Backend
+Kostiantyn - Database & Backend
 
-Flavius - Database & Testing
+Flavius - Testing
 
 # Build Instructions
 Prerequisites:
