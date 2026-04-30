@@ -47,7 +47,20 @@ Flavius - Database & Testing
 # Build Instructions
 Prerequisites:
 - Must have Postgres server installed
-- Set up variables in server/.env
+- Set up variables in `server/.env`
+Example `.env`
+```
+DB_USER=postgres
+DB_HOST=localhost
+DB_NAME=mydb
+DB_PASSWORD=
+DB_PORT=5432
+
+PORT=3000
+
+CLERK_PUBLISHABLE_KEY=pk_test_Y2xpbWJpbmctbGlnZXItNzYuY2xlcmsuYWNjb3VudHMuZGV2JA
+CLERK_SECRET_KEY=sk_clerk_secret_key9e87hhjdkshfjk
+```
 
 in the root directory `GroupProject/`:
 - run `npm install`
