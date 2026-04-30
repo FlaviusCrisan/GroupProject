@@ -1,13 +1,12 @@
-# Project Summary
-This is a website where gamers can find matches
+# GameMatch
+This is a website where gamers can find teammates
 
 Features:
-- Register account with preferences
+- Search for lobbies
 - Filters / sorting
 - User profile (social media links, Game specific stats)
-- List of matches (swipe left / right)
-- Matchmaking algorithm
-- Player history
+- Advanced matchmaking algorithm
+- Match history
 - Chatting
 - Themes (dark / light)
 
@@ -35,7 +34,6 @@ Database - PostgreSQL
 
 Testing - Playwright
 
-
 # Member Roles
 
 Maksymilian - Frontend
@@ -44,8 +42,12 @@ Kostiantyn - Backend
 
 Flavius - Database & Testing
 
-# How to run
-- `cd` to the root directory `GroupProject/`
+# Build Instructions
+- Prerequisites:
+- Must have Postgres server installed
+- Set up variables in server/.env
+
+- in the root directory `GroupProject/`:
 - run `npm install`
 - run `npm run dev`
 - connect to `localhost:4200` in your browser
