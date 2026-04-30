@@ -1,5 +1,6 @@
 # GameMatch
 This is a website where gamers can find teammates
+It is hosted at [https://project-v8csq.vercel.app](https://project-v8csq.vercel.app)
 
 Features:
 - Search for lobbies
