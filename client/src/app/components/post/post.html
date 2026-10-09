@@ -1,48 +1,51 @@
-<mat-card class="post-card" appearance="raised">
-  <div class="game-banner" [style.background-image]="'url(' + game_image + ')'">
-    <div class="banner-overlay">
-      <div class="match-score" *ngIf="compatibility_score > 0 && !is_owner">
-        <mat-icon>favorite</mat-icon>
-        {{compatibility_score}}% Match
-      </div>
-    </div>
+@if (error) {
+  <div class="error-state" role="alert">
+    <p>This lobby could not be loaded.</p>
+    <button class="text-button" (click)="updateData()">Try again</button>
   </div>
-
-  <mat-card-header>
-    <div mat-card-avatar class="user-avatar-container">
-      <img [src]="user_info?.imageUrl" class="user-avatar" (click)="$event.stopPropagation(); go_to_profile()">
+} @else if (post) {
+  <article class="post-card">
+    <div class="game-banner" [attr.data-game]="post.info.game">
+      <div class="cover-grid" aria-hidden="true"></div>
+      <span class="game-wordmark">{{ post.info.game.replaceAll('_', ' ') }}</span
+      ><app-icon class="cover-icon" aria-hidden="true" name="controller"></app-icon
+      ><span class="game-mode">{{ post.info.game_mode || 'Find your teammate' }}</span>
     </div>
-    <mat-card-title class="post-title">{{post?.info?.title}}</mat-card-title>
-    <mat-card-subtitle class="post-subtitle">
-      <span class="username" (click)="$event.stopPropagation(); go_to_profile()">{{user_info?.username}}</span>
-      <span class="dot">&middot;</span>
-      <span class="time">{{time_string}}</span>
-    </mat-card-subtitle>
-  </mat-card-header>
-
-  <mat-card-content class="post-description-container">
-    <p class="post-description">{{post?.info?.description}}</p>
-  </mat-card-content>
-
-  <mat-card-footer class="post-footer">
-    <div class="footer-content">
+    <div class="card-body">
+      <div class="card-topline">
+        <span class="game-chip">{{ post.info.game.replaceAll('_', ' ') }}</span
+        ><span class="time">{{ time_string }}</span>
+      </div>
+      <h3>{{ post.info.title }}</h3>
+      <p class="post-description">
+        {{
+          post.info.description ||
+            'Looking for someone to play with. Open the lobby to get in touch.'
+        }}
+      </p>
       <div class="tag-cells">
         @for (chip of chips; track $index) {
-          <div class="tag-cell" [class]="'tag-' + chip.color">
-            {{chip.text}}
-          </div>
+          <span class="tag-cell">{{ chip.text }}</span>
         }
       </div>
-      
-      @if (join_clicked.observed) {
-        <button mat-flat-button color="primary" class="view-button" (click)="join_clicked.emit(post)">
-          View
+      <div class="card-bottom">
+        <button class="host-button" (click)="go_to_profile()">
+          <span class="avatar-initial">{{
+            (user_info?.username || 'P').charAt(0).toUpperCase()
+          }}</span
+          ><span
+            >{{ user_info?.username || user_info?.firstName || 'Player'
+            }}<small>{{ is_owner ? 'Your lobby' : 'Lobby host' }}</small></span
+          >
         </button>
-      }
-      @if (is_owner) {
-        <button mat-flat-button color="accent" class="view-button" (click)="edit_post()" style="margin-right: 8px;">Edit</button>
-        <button mat-flat-button color="warn" class="view-button" (click)="delete_post()">Delete</button>
-      }
+        @if (join_clicked.observed) {
+          <button class="view-button" (click)="join_clicked.emit(post)">
+            View lobby <span aria-hidden="true">↗</span>
+          </button>
+        }
+      </div>
     </div>
-  </mat-card-footer>
-</mat-card>
+  </article>
+} @else {
+  <div class="card-loading" role="status">Loading lobby…</div>
+}

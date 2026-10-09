@@ -1,212 +1,170 @@
-.profile-page {
-    padding: 40px 20px;
-    max-width: 1200px;
-    margin: 0 auto;
-}
-
 .profile-container {
-    display: grid;
-    grid-template-columns: 320px 1fr;
-    gap: 24px;
+  display: grid;
+  grid-template-columns: 280px minmax(0, 1fr);
+  gap: 25px;
 }
-
 .sidebar-card {
-    padding: 32px 24px;
-    height: fit-content;
-    position: sticky;
-    top: 100px;
+  padding: 25px;
+  height: fit-content;
 }
-
 .avatar-section {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
+  text-align: center;
 }
-
 .profile-avatar {
-    width: 160px;
-    height: 160px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid #6366f1;
-    box-shadow: 0 10px 30px rgba(99, 102, 241, 0.3);
-    margin-bottom: 20px;
+  height: 95px;
+  width: 95px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-bottom: 15px;
+  border: 5px solid var(--soft-color);
 }
-
 .placeholder-avatar {
-    font-size: 160px;
-    width: 160px;
-    height: 160px;
-    color: var(--mat-sys-surface-container-high);
-    margin-bottom: 20px;
+  font-size: 95px;
+  width: 95px;
+  height: 95px;
+  color: var(--muted-color);
 }
-
 .profile-name {
-    font-size: 24px;
-    font-weight: 800;
-    margin-bottom: 8px;
+  font-size: 23px;
+  margin-bottom: 12px;
 }
-
 .region-badge {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    background: rgba(99, 102, 241, 0.1);
-    color: #6366f1;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 14px;
-    font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--soft-color);
+  border-radius: 6px;
+  padding: 5px 10px;
+  font-size: 11px;
 }
-
+.region-badge app-icon {
+  font-size: 14px;
+  height: 14px;
+  width: 14px;
+}
 .sidebar-divider {
-    height: 1px;
-    background: var(--border-color);
-    margin: 24px 0;
+  height: 1px;
+  background: var(--border-color);
+  margin: 22px 0;
 }
-
-.social-links {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-}
-
 .social-links h3 {
-    font-size: 14px;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    opacity: 0.5;
-    margin-bottom: 8px;
+  font-size: 11px;
+  color: var(--muted-color);
 }
-
 .social-item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 15px;
 }
-
-.social-item mat-icon {
-    color: #6366f1;
+.social-item app-icon {
+  color: var(--muted-color);
+  font-size: 19px;
 }
-
 .social-val span {
-    display: block;
-    font-size: 11px;
-    opacity: 0.5;
-    text-transform: uppercase;
+  font-size: 9px;
+  color: var(--muted-color);
 }
-
 .social-val p {
-    font-size: 14px;
-    font-weight: 500;
-    margin: 0;
+  font-size: 12px;
+  margin: 0;
+  overflow-wrap: anywhere;
 }
-
 .sidebar-actions {
-    margin-top: 32px;
+  margin-top: 24px;
 }
-
-.full-width {
-    width: 100%;
-    justify-content: center;
+.sidebar-actions button {
+  font-size: 12px;
 }
-
-/* Main Content Area */
 .main-profile-content {
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  min-width: 0;
 }
-
-.content-card {
-    padding: 32px;
-}
-
-.card-header {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    margin-bottom: 20px;
-}
-
-.card-header mat-icon {
-    color: #6366f1;
-}
-
-.card-header h2 {
-    font-size: 20px;
-    font-weight: 700;
-    margin: 0;
-}
-
-.bio-text {
-    font-size: 16px;
-    line-height: 1.6;
-    opacity: 0.8;
-}
-
-.meta-info {
-    margin-top: 24px;
-    display: flex;
-    gap: 24px;
-}
-
-.meta-item {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 14px;
-    opacity: 0.7;
-}
-
-.games-list {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-}
-
-.game-tag {
-    background: var(--mat-sys-surface-container-high);
-    padding: 8px 16px;
-    border-radius: 12px;
-    font-weight: 600;
-    border: 1px solid var(--border-color);
-}
-
+.content-card,
 .edit-card {
-    padding: 32px;
+  padding: 27px;
 }
-
+.card-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 18px;
+}
+.card-header h2 {
+  margin: 0;
+  font-size: 21px;
+}
+.card-header app-icon {
+  color: var(--success-color);
+  font-size: 20px;
+}
+.bio-text,
+.empty-text {
+  font-size: 13px;
+  color: var(--muted-color);
+}
+.meta-info {
+  border-top: 1px solid var(--border-color);
+  margin-top: 20px;
+  padding-top: 18px;
+}
+.meta-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  color: var(--muted-color);
+}
+.meta-item app-icon {
+  font-size: 17px;
+  height: 17px;
+}
+.games-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.game-tag {
+  padding: 8px 12px;
+  border: 1px solid var(--border-color);
+  border-radius: 7px;
+  font-size: 11px;
+}
 .edit-grid {
-    display: flex;
-    flex-direction: column;
-    gap: 16px;
-    margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  margin-top: 20px;
 }
-
 .edit-row {
-    display: flex;
-    gap: 16px;
+  display: flex;
+  gap: 15px;
 }
-
-.edit-row mat-form-field {
-    flex: 1;
-}
-
 .edit-actions {
-    display: flex;
-    justify-content: flex-end;
-    gap: 12px;
-    margin-top: 24px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+}
+@media (max-width: 900px) {
+  .profile-container {
+    grid-template-columns: 1fr;
+  }
+  .sidebar-card {
+    position: static;
+  }
+  .edit-row {
+    flex-direction: column;
+    gap: 0;
+  }
 }
 
-@media (max-width: 900px) {
-    .profile-container {
-        grid-template-columns: 1fr;
-    }
-    .sidebar-card {
-        position: relative;
-        top: 0;
-    }
+.social-item app-icon.brand-discord {
+  color: #5865f2;
+}
+.social-item app-icon.brand-steam {
+  color: var(--text-color);
+}
+.social-item app-icon.brand-riot {
+  color: #e63a47;
 }

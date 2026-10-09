@@ -1,0 +1,68 @@
+.conversation-list {
+  max-width: 850px;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 13px;
+  overflow: hidden;
+}
+.conversation-row {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  text-decoration: none;
+  padding: 23px;
+  border-bottom: 1px solid var(--border-color);
+}
+.conversation-row:last-child {
+  border: 0;
+}
+.conversation-row:hover {
+  background: var(--soft-color);
+}
+.person-initial {
+  background: #e7d4be;
+  color: #473e34;
+  border-radius: 50%;
+  width: 43px;
+  height: 43px;
+  display: grid;
+  place-items: center;
+  font-weight: 600;
+}
+.person-name {
+  font-weight: 600;
+  flex: 1;
+}
+.person-name small {
+  font-weight: 400;
+  font-size: 11px;
+  color: var(--muted-color);
+  display: block;
+  margin-top: 3px;
+}
+.open-conversation {
+  font-size: 11px;
+  color: var(--muted-color);
+}
+.empty-conversations {
+  text-align: center;
+  padding: 50px 20px;
+  background: var(--surface-color);
+  border: 1px dashed var(--border-color);
+  border-radius: 14px;
+}
+.empty-conversations h2 {
+  font-size: 23px;
+}
+.empty-conversations p {
+  color: var(--muted-color);
+}
+@media (max-width: 540px) {
+  .open-conversation {
+    font-size: 0;
+  }
+  .open-conversation::after {
+    content: '↗';
+    font-size: 18px;
+  }
+}

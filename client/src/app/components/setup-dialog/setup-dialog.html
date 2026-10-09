@@ -1,0 +1,43 @@
+<div class="setup-backdrop">
+  <section
+    class="setup-dialog"
+    cdkTrapFocus
+    [cdkTrapFocusAutoCapture]="true"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="setup-title"
+  >
+    <span class="eyebrow">MAKE YOURSELF AT HOME</span>
+    <h2 id="setup-title">Your game. Your way.</h2>
+    <p>A few preferences help you find the right teammates. You can change them in your profile.</p>
+    <form (ngSubmit)="save()">
+      <label
+        >Region<select cdkFocusInitial name="region" [(ngModel)]="region">
+          <option>EU</option>
+          <option>NA</option>
+          <option>Asia</option>
+          <option>OCE</option>
+          <option>SA</option>
+          <option>ME</option>
+          <option>Africa</option>
+        </select></label
+      ><label
+        >Language<input name="language" [(ngModel)]="language" maxlength="30" required /></label
+      ><label
+        >Favourite games<input
+          name="games"
+          [(ngModel)]="games"
+          placeholder="Valorant, Minecraft"
+          maxlength="250"
+      /></label>
+      @if (error) {
+        <p class="setup-error" role="alert">{{ error }}</p>
+      }
+      <button class="primary-button full-width" type="submit" [disabled]="saving">
+        {{ saving ? 'Saving…' : 'Save preferences' }}</button
+      ><button class="text-button full-width" type="button" (click)="completed.emit()">
+        I'll do this later
+      </button>
+    </form>
+  </section>
+</div>

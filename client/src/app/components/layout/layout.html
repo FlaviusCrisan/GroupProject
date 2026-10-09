@@ -1,40 +1,71 @@
 <div class="app-container">
-  <div class="glass-navbar">
-    <div class="logo-container" (click)="home()">
-      <span class="logo-text">Game<span class="logo-accent">Match</span></span>
+  <a class="skip-link" href="#main-content">Skip to content</a>
+  <aside class="sidebar">
+    <a class="brand" routerLink="/home" aria-label="GameMatch home"
+      ><span class="brand-mark"><app-icon name="controller"></app-icon></span
+      ><span>game<span class="brand-light">match</span><span class="brand-dot">.</span></span></a
+    >
+    <span class="sidebar-label">YOUR SPACE</span>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a routerLink="/home" routerLinkActive="active" class="nav-link"
+        ><app-icon name="teammates"></app-icon><span>Find teammates</span></a
+      >
+      <a routerLink="/history" routerLinkActive="active" class="nav-link"
+        ><app-icon name="activity"></app-icon><span>My activity</span></a
+      >
+      <a routerLink="/chats" routerLinkActive="active" class="nav-link"
+        ><app-icon name="messages"></app-icon><span>Messages</span></a
+      >
+      <a [routerLink]="['/user', user_info?.id]" routerLinkActive="active" class="nav-link"
+        ><app-icon name="profile"></app-icon><span>My profile</span></a
+      >
+    </nav>
+    <div class="sidebar-note">
+      <span class="note-icon"><app-icon name="controller"></app-icon></span>
+      <h3>Good games start<br />with good company.</h3>
+      <p>Find someone who plays<br />your way.</p>
+      <a routerLink="/post-game" class="secondary-button"
+        >Create a lobby <span aria-hidden="true">↗</span></a
+      >
     </div>
-
-    <div class="nav-links">
-      <a class="nav-link" (click)="home()">Home</a>
-      <a class="nav-link" (click)="post_game()">New Game</a>
-      <a class="nav-link" (click)="match_history()">History</a>
-      <a class="nav-link" (click)="chats()">Chats</a>
-    </div>
-
-    <span class="spacer"></span>
-
-    <div class="nav-actions">
-      <button mat-icon-button (click)="toggle_theme()" class="theme-toggle">
-        <mat-icon>{{ is_dark ? 'light_mode' : 'dark_mode' }}</mat-icon>
+    <div class="sidebar-bottom">
+      <span class="small-wordmark">MADE FOR PLAYERS</span
+      ><button class="sign-out" (click)="sign_out()">
+        <app-icon name="logout"></app-icon>Sign out
       </button>
-
-      <div class="user-profile" (click)="go_to_profile()">
-        @if (user_info?.imageUrl) {
-          <img [src]="user_info?.imageUrl" class="user-avatar">
-        } @else {
-          <mat-icon>account_circle</mat-icon>
-        }
+    </div>
+  </aside>
+  <div class="workspace">
+    <header class="topbar">
+      <span class="topbar-label">A place to find your people.</span>
+      <a class="mobile-brand" routerLink="/home">gamematch<span>.</span></a>
+      <div class="nav-actions">
+        <button
+          class="icon-button"
+          (click)="toggle_theme()"
+          [attr.aria-label]="is_dark ? 'Use light theme' : 'Use dark theme'"
+        >
+          <app-icon [name]="is_dark ? 'sun' : 'moon'"></app-icon>
+        </button>
+        <button class="profile-button" (click)="go_to_profile()" aria-label="Open your profile">
+          <span class="avatar-initial">{{
+            (user_info?.username || user_info?.firstName || 'P').charAt(0).toUpperCase()
+          }}</span
+          ><span class="profile-name">{{
+            user_info?.username || user_info?.firstName || 'Player'
+          }}</span
+          ><app-icon name="chevron"></app-icon>
+        </button>
       </div>
-
-      <button mat-icon-button class="theme-toggle" (click)="sign_out()" title="Sign Out">
-        <mat-icon>logout</mat-icon>
-      </button>
-    </div>
+    </header>
+    <main id="main-content" class="main-content" tabindex="-1">
+      <router-outlet></router-outlet>
+    </main>
+    <footer class="app-footer">
+      <span>GameMatch</span><span>More playing. Less looking.</span>
+    </footer>
   </div>
-
-  <main class="main-content">
-    <router-outlet></router-outlet>
-  </main>
-
-  <app-setup-dialog *ngIf="show_setup"></app-setup-dialog>
+  @if (show_setup) {
+    <app-setup-dialog (completed)="show_setup = false"></app-setup-dialog>
+  }
 </div>

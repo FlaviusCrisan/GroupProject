@@ -10,34 +10,45 @@ import { Post, PostInfo } from '../../Post';
 import { PostInfoSelectors } from '../../components/post-info-selectors/post-info-selectors';
 import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 
-import { MatIconModule } from '@angular/material/icon';
+import { GameIcon } from '../../components/game-icon/game-icon';
 import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-post-game',
-  imports: [MatCardModule, PostInfoSelectors, FormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatSnackBarModule, MatIconModule, CommonModule],
+  imports: [
+    MatCardModule,
+    PostInfoSelectors,
+    FormsModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatSnackBarModule,
+    GameIcon,
+    CommonModule,
+  ],
   templateUrl: './post-game.html',
   styleUrl: './post-game.css',
 })
-export class PostGame
-{
+export class PostGame {
   info: PostInfo = new PostInfo();
   add_clicked: boolean = false;
 
-  constructor(public api: ApiService, public router: Router, private snack: MatSnackBar) {}
+  constructor(
+    public api: ApiService,
+    public router: Router,
+    private snack: MatSnackBar,
+  ) {}
 
-  async add()
-  {
-    if (this.add_clicked)
-      return;
+  async add() {
+    if (this.add_clicked) return;
 
     if (!this.info.title.trim()) {
-      this.snack.open("Title is required", "Close", {duration: 2500});
+      this.snack.open('Title is required', 'Close', { duration: 2500 });
       return;
     }
 
     if (!this.info.game) {
-      this.snack.open("Choose a game", "Close", {duration: 2500});
+      this.snack.open('Choose a game', 'Close', { duration: 2500 });
       return;
     }
 
@@ -45,16 +56,15 @@ export class PostGame
 
     try {
       (await this.api.post_game(this.info))!;
-      this.snack.open("Post created", "Close", {duration: 2500});
-      this.router.navigate(["/home"]);
+      this.snack.open('Post created', 'Close', { duration: 2500 });
+      this.router.navigate(['/home']);
     } catch {
       this.add_clicked = false;
-      this.snack.open("Post was not created", "Close", {duration: 2500});
+      this.snack.open('Post was not created', 'Close', { duration: 2500 });
     }
   }
 
-  update_info(info: Record<string, string>)
-  {
+  update_info(info: Record<string, string>) {
     this.info.game = info['game'];
     this.info.game_mode = info['game_mode'];
     this.info.rank = info['rank'];

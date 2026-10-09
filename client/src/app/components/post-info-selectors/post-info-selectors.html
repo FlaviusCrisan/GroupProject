@@ -1,38 +1,19 @@
-<mat-card appearance="raised" class="filters-card">
+<div class="filters-card">
   <div class="filters-top">
-    <p>Filters</p>
-    <button mat-button type="button" (click)="clear()">Clear</button>
+    <span>Find your fit</span
+    ><button type="button" class="clear-button" (click)="clear()">Reset filters</button>
   </div>
-
-  <div class="filters-grid main-filters">
-    @for (template of templates; track template) {
-      @if (template.name === "Game" || template.name === "Rank" || template.name === "Platform" || template.name === "Mode") {
-        <mat-form-field appearance="outline">
-          <mat-label>{{template.name}}</mat-label>
-          <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
-            <mat-option value="Any">Any</mat-option>
-            @for (item of template.values; track item) {
-              <mat-option [value]="item">{{item}}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      }
-    }
-  </div>
-
   <div class="filters-grid">
-    @for (template of templates; track template) {
-      @if (template.name !== "Game" && template.name !== "Rank" && template.name !== "Platform" && template.name !== "Mode") {
-        <mat-form-field appearance="outline">
-          <mat-label>{{template.name}}</mat-label>
-          <mat-select [(ngModel)]="selected[template.name]" (selectionChange)="update()">
-            <mat-option value="Any">Any</mat-option>
-            @for (item of template.values; track item) {
-              <mat-option [value]="item">{{item}}</mat-option>
-            }
-          </mat-select>
-        </mat-form-field>
-      }
+    @for (template of templates; track template.name) {
+      <label class="filter-field"
+        ><span>{{ template.name }}</span
+        ><select [(ngModel)]="selected[template.name]" (ngModelChange)="update()">
+          <option value="Any">Any {{ template.name.toLowerCase() }}</option>
+          @for (item of template.values; track item) {
+            <option [value]="item">{{ item }}</option>
+          }
+        </select></label
+      >
     }
   </div>
-</mat-card>
+</div>

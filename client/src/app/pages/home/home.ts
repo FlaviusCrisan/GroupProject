@@ -2,19 +2,26 @@ import { Component } from '@angular/core';
 import { RouterModule, Router } from '@angular/router';
 import { MatButtonModule } from '@angular/material/button';
 import { PostList } from '../../components/post-list/post-list';
-import { MatIconModule } from '@angular/material/icon';
+import { GameIcon } from '../../components/game-icon/game-icon';
 import { MatCardModule } from '@angular/material/card';
 import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-home',
-  imports: [RouterModule, PostList, MatButtonModule, MatIconModule, MatCardModule],
+  imports: [RouterModule, PostList, GameIcon],
   templateUrl: './home.html',
   styleUrl: './home.css',
   schemas: [],
 })
 export class Home {
-  constructor(private api: ApiService, private router: Router) {}
+  constructor(
+    private api: ApiService,
+    private router: Router,
+  ) {}
+
+  scrollToLobbies() {
+    document.getElementById('lobbies')?.scrollIntoView({ behavior: 'smooth' });
+  }
 
   async quickMatch() {
     const posts = await this.api.get_games({});
@@ -26,7 +33,7 @@ export class Home {
 
     for (const post of posts) {
       if (post.user_id === myId) continue;
-      
+
       let score = 50;
       if (me.publicMetadata?.preferred_games?.includes(post.info.game)) score += 20;
       if (me.publicMetadata?.socials?.language === post.info.language) score += 15;
@@ -41,7 +48,7 @@ export class Home {
     if (bestPost) {
       this.router.navigate(['/post', bestPost.id]);
     } else {
-      alert("No suitable matches found at the moment!");
+      alert('No suitable matches found at the moment!');
     }
   }
 }

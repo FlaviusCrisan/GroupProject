@@ -1,18 +1,53 @@
-<mat-card appearance="outlined" style="width: 100%; height: 100%">
-  <mat-card-content style="display: flex; flex-direction: column; height: 100%; align-items: center; gap: 12px; min-height: 0">
-    <div style="display: flex; width: 100%; align-items: center">
-      <a href="/user/{{left_user_info?.id}}">
-        <img style="border-radius: 9999px; width: 50px; height: 50px" src="{{left_user_info?.imageUrl}}">
-      </a>
-      <p style="margin: 3px 0px; font-size: 20px; margin-left: 12px">{{left_user_info?.username}}</p>
-    </div>
-    <div class="message-container">
-      <div *ngFor="let message of message_list" [ngClass]="message.sender_id == right_user_info?.id ? 'right' : 'left'" class="message"><p>{{message.content}}</p></div>
-      <div #bottom></div>
-    </div>
-    <mat-form-field appearance="outline" style="width: 100%">
-      <textarea matInput cdkTextareaAutosize placeholder="Send a message" name="chat_message" [(ngModel)]="chat_message" (keydown.enter)="send($event)"></textarea>
-      <mat-icon matSuffix (click)="send($event)">send</mat-icon>
-    </mat-form-field>
-  </mat-card-content>
-</mat-card>
+<section class="messenger">
+  <header class="conversation-header">
+    <a [href]="'/user/' + id" class="conversation-person"
+      ><span class="avatar-initial">{{
+        (left_user_info?.username || 'P').charAt(0).toUpperCase()
+      }}</span
+      ><span>{{ left_user_info?.username || 'Player' }}<small>Your conversation</small></span></a
+    >
+  </header>
+  @if (error) {
+    <p class="message-error" role="alert">{{ error }}</p>
+  }
+  <div class="message-container" aria-label="Messages" aria-live="polite">
+    @for (message of message_list; track message.id) {
+      <div
+        class="message"
+        [class.right]="message.sender_id === right_user_info?.id"
+        [class.left]="message.sender_id !== right_user_info?.id"
+      >
+        <p>{{ message.content }}</p>
+        <time>{{ message.created_at | date: 'HH:mm' }}</time>
+      </div>
+    }
+    @if (!message_list.length && !error) {
+      <div class="conversation-empty">
+        <h3>Say hello.</h3>
+        <p>A good game starts with a conversation.</p>
+      </div>
+    }
+    <div #bottom></div>
+  </div>
+  <form class="composer" (ngSubmit)="send($event)">
+    <label class="sr-only" for="chat_message">Your message</label
+    ><textarea
+      id="chat_message"
+      placeholder="Write a message…"
+      name="chat_message"
+      [(ngModel)]="chat_message"
+      (keydown.enter)="onEnter($event)"
+      rows="2"
+      maxlength="4000"
+    ></textarea
+    ><button
+      class="send-button"
+      type="submit"
+      [disabled]="sending || !chat_message.trim()"
+      aria-label="Send message"
+    >
+      <app-icon name="arrow-up"></app-icon>
+    </button>
+  </form>
+  <span class="composer-note">Enter to send · Shift + Enter for a new line</span>
+</section>

@@ -1,101 +1,155 @@
 <div class="container page-layout">
-  <div class="content main-grid">
-    <div class="post-column">
-      <app-post [id]="id" [refresh]="refresh" class="featured-post"></app-post>
+  @if (loading) {
+    <p role="status">Loading lobby…</p>
+  } @else if (error) {
+    <div class="state-card" role="alert">
+      <h2>Couldn't load this lobby</h2>
+      <p>{{ error }}</p>
+      <button class="secondary-button" (click)="load_post()">Try again</button>
     </div>
+  } @else {
+    <div class="content main-grid">
+      <div class="post-column">
+        <app-post [id]="id" [refresh]="refresh" class="featured-post"></app-post>
+      </div>
 
-    <div class="action-column">
-      @if (post?.accepted_user_id) {
-        @if (is_self || accepted_is_self) {
-          <mat-card class="chat-card">
-            <app-messaging [id]="is_self ? post?.accepted_user_id! : post?.user_id!" class="full-chat"></app-messaging>
-          </mat-card>
+      <div class="action-column">
+        @if (post?.accepted_user_id) {
+          @if (is_self || accepted_is_self) {
+            <mat-card class="chat-card">
+              <app-messaging
+                [id]="is_self ? post?.accepted_user_id! : post?.user_id!"
+                class="full-chat"
+              ></app-messaging>
+            </mat-card>
+          } @else {
+            <mat-card class="status-card">
+              <app-icon color="warn" name="lock"></app-icon>
+              <p>This lobby is already full.</p>
+            </mat-card>
+          }
         } @else {
-          <mat-card class="status-card">
-            <mat-icon color="warn">lock</mat-icon>
-            <p>This lobby is already full.</p>
-          </mat-card>
-        }
-      } @else {
-        <mat-card class="interaction-card">
-          <mat-card-header>
-            <mat-card-title>{{ is_self ? 'Lobby Management' : 'Join this Game' }}</mat-card-title>
-          </mat-card-header>
-          
-          <mat-card-content class="interaction-content">
-            @if (is_self) {
-              @if (editing) {
-                <div class="edit-form">
-                  <mat-form-field appearance="outline">
-                    <mat-label>Title</mat-label>
-                    <input matInput [(ngModel)]="edit_info.title">
-                  </mat-form-field>
+          <mat-card class="interaction-card">
+            <mat-card-header>
+              <mat-card-title>{{ is_self ? 'Lobby Management' : 'Join this Game' }}</mat-card-title>
+            </mat-card-header>
 
-                  <mat-form-field appearance="outline">
-                    <mat-label>Description</mat-label>
-                    <textarea matInput rows="3" [(ngModel)]="edit_info.description"></textarea>
-                  </mat-form-field>
+            <mat-card-content class="interaction-content">
+              @if (is_self) {
+                @if (editing) {
+                  <div class="edit-form">
+                    <mat-form-field appearance="outline">
+                      <mat-label>Title</mat-label>
+                      <input matInput [(ngModel)]="edit_info.title" />
+                    </mat-form-field>
 
-                  <app-post-info-selectors (on_changed)="update_edit_info($event)"></app-post-info-selectors>
+                    <mat-form-field appearance="outline">
+                      <mat-label>Description</mat-label>
+                      <textarea matInput rows="3" [(ngModel)]="edit_info.description"></textarea>
+                    </mat-form-field>
 
-                  <div class="edit-actions">
-                    <button mat-flat-button color="primary" (click)="save_post()">Save</button>
-                    <button mat-button (click)="editing = false">Cancel</button>
-                  </div>
-                </div>
-              } @else {
-                <div class="owner-actions">
-                  <button mat-flat-button color="primary" (click)="editing = true">
-                    <mat-icon>edit</mat-icon>
-                    Edit
-                  </button>
-                  <button mat-flat-button color="warn" (click)="delete_post()">
-                    <mat-icon>delete</mat-icon>
-                    Delete
-                  </button>
-                </div>
-              }
+                    <app-post-info-selectors
+                      [initialValues]="edit_info"
+                      (on_changed)="update_edit_info($event)"
+                    ></app-post-info-selectors>
 
-              <p class="section-title">Join Requests ({{requests.length}})</p>
-              <div class="requests-list">
-                @for (request of requests; track request.clerk_id) {
-                  <div class="request-item">
-                    <img [src]="request.user_info.imageUrl" class="mini-avatar">
-                    <span class="request-username">{{request.user_info.username}}</span>
-                    <div class="request-actions">
-                      <button mat-flat-button color="primary" (click)="this.accept(request.clerk_id)" class="small-btn">
-                        Accept
+                    <div class="edit-actions">
+                      <button
+                        [disabled]="busy"
+                        mat-flat-button
+                        color="primary"
+                        (click)="save_post()"
+                      >
+                        Save
                       </button>
-                      <button mat-button color="warn" (click)="this.decline(request.clerk_id)" class="small-btn">
-                        Decline
-                      </button>
+                      <button [disabled]="busy" mat-button (click)="editing = false">Cancel</button>
                     </div>
                   </div>
+                } @else {
+                  <div class="owner-actions">
+                    <button
+                      [disabled]="busy"
+                      mat-flat-button
+                      color="primary"
+                      (click)="editing = true"
+                    >
+                      <app-icon name="edit"></app-icon>
+                      Edit
+                    </button>
+                    <button [disabled]="busy" mat-flat-button color="warn" (click)="delete_post()">
+                      <app-icon name="trash"></app-icon>
+                      Delete
+                    </button>
+                  </div>
                 }
-                @if (requests.length === 0) {
-                  <div class="empty-requests">No requests yet. Waiting for gamers...</div>
-                }
-              </div>
-            } @else {
-              @if (requested) {
-                <div class="status-box pending">
-                  <mat-icon>hourglass_empty</mat-icon>
-                  <p>Request sent! Waiting for host to accept...</p>
-                  <button mat-stroked-button color="warn" (click)="cancel_request()">
-                    Cancel request
-                  </button>
+
+                <p class="section-title">Join Requests ({{ requests.length }})</p>
+                <div class="requests-list">
+                  @for (request of requests; track request.clerk_id) {
+                    <div class="request-item">
+                      @if (request.user_info?.imageUrl) {
+                        <img [src]="request.user_info.imageUrl" class="mini-avatar" alt="" />
+                      }
+                      <span class="request-username">{{ request.user_info.username }}</span>
+                      <div class="request-actions">
+                        <button
+                          [disabled]="busy"
+                          mat-flat-button
+                          color="primary"
+                          (click)="this.accept(request.clerk_id)"
+                          class="small-btn"
+                        >
+                          Accept
+                        </button>
+                        <button
+                          [disabled]="busy"
+                          mat-button
+                          color="warn"
+                          (click)="this.decline(request.clerk_id)"
+                          class="small-btn"
+                        >
+                          Decline
+                        </button>
+                      </div>
+                    </div>
+                  }
+                  @if (requests.length === 0) {
+                    <div class="empty-requests">No requests yet. Waiting for gamers...</div>
+                  }
                 </div>
               } @else {
-                <p class="pitch">Looking for a teammate? Send a request to start a chat!</p>
-                <button mat-flat-button color="accent" size="large" (click)="this.request_to_join()" class="join-btn">
-                  <mat-icon>person_add</mat-icon>
-                  Request to Join
-                </button>
+                @if (requested) {
+                  <div class="status-box pending">
+                    <app-icon name="hourglass"></app-icon>
+                    <p>Request sent! Waiting for host to accept...</p>
+                    <button
+                      [disabled]="busy"
+                      mat-stroked-button
+                      color="warn"
+                      (click)="cancel_request()"
+                    >
+                      Cancel request
+                    </button>
+                  </div>
+                } @else {
+                  <p class="pitch">Looking for a teammate? Send a request to start a chat!</p>
+                  <button
+                    [disabled]="busy"
+                    mat-flat-button
+                    color="accent"
+                    size="large"
+                    (click)="this.request_to_join()"
+                    class="join-btn"
+                  >
+                    <app-icon name="teammates"></app-icon>
+                    Request to Join
+                  </button>
+                }
               }
-            }
-          </mat-card-content>
-        </mat-card>
-      }
+            </mat-card-content>
+          </mat-card>
+        }
+      </div>
     </div>
-  </div>
+  }
 </div>

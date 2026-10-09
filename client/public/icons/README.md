@@ -1,0 +1,1 @@
+Brand logos: [Simple Icons](https://github.com/simple-icons/simple-icons), downloaded 2026-10-09. CC0-1.0 license included here. Discord, Steam and Riot Games remain trademarks of their owners. The navigation and interface SVGs in `game-icon.html` were drawn for GameMatch.

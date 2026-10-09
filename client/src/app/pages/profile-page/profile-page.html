@@ -4,14 +4,14 @@
     <mat-card appearance="outlined" class="sidebar-card">
       <div class="avatar-section">
         @if (user_info?.imageUrl) {
-          <img class="profile-avatar" [src]="user_info?.imageUrl">
+          <img class="profile-avatar" alt="Profile photo" [src]="user_info?.imageUrl" />
         } @else {
-          <mat-icon class="placeholder-avatar">account_circle</mat-icon>
+          <app-icon class="placeholder-avatar" name="avatar"></app-icon>
         }
-        <h1 class="profile-name">{{user_info?.username || user_info?.firstName || 'Player'}}</h1>
+        <h1 class="profile-name">{{ user_info?.username || user_info?.firstName || 'Player' }}</h1>
         <div class="region-badge">
-          <mat-icon>public</mat-icon>
-          {{socials.region || 'Unknown Region'}}
+          <app-icon name="globe"></app-icon>
+          {{ socials.region || 'Unknown Region' }}
         </div>
       </div>
 
@@ -20,28 +20,32 @@
       <div class="social-links">
         <h3>Connect</h3>
         <div class="social-item">
-          <mat-icon>chat</mat-icon>
+          <app-icon name="discord" class="brand-discord"></app-icon>
           <div class="social-val">
             <span>Discord</span>
-            <p>{{socials.discord || 'Not linked'}}</p>
+            <p>{{ socials.discord || 'Not linked' }}</p>
           </div>
         </div>
         <div class="social-item">
-          <mat-icon>games</mat-icon>
+          <app-icon name="steam" class="brand-steam"></app-icon>
           <div class="social-val">
             <span>Steam</span>
             @if (get_steam_link()) {
-              <p><a [href]="get_steam_link()" target="_blank">View Profile</a></p>
+              <p>
+                <a [href]="get_steam_link()" target="_blank" rel="noopener noreferrer"
+                  >View Profile</a
+                >
+              </p>
             } @else {
               <p>Not linked</p>
             }
           </div>
         </div>
         <div class="social-item">
-          <mat-icon>bolt</mat-icon>
+          <app-icon name="riotgames" class="brand-riot"></app-icon>
           <div class="social-val">
             <span>Riot ID</span>
-            <p>{{socials.riot || 'Not linked'}}</p>
+            <p>{{ socials.riot || 'Not linked' }}</p>
           </div>
         </div>
       </div>
@@ -49,11 +53,11 @@
       <div class="sidebar-actions">
         @if (is_self) {
           <button class="glass-button primary-glow full-width" (click)="edit_profile()">
-            <mat-icon>edit</mat-icon> Edit Profile
+            <app-icon name="edit"></app-icon> Edit Profile
           </button>
         } @else {
           <button class="glass-button primary-glow full-width" (click)="open_dms()">
-            <mat-icon>message</mat-icon> Send DM
+            <app-icon name="messages"></app-icon> Send DM
           </button>
         }
       </div>
@@ -73,49 +77,51 @@
             <div class="edit-row">
               <mat-form-field appearance="outline">
                 <mat-label>Region</mat-label>
-                <input matInput [(ngModel)]="socials.region">
+                <input matInput [(ngModel)]="socials.region" />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Language</mat-label>
-                <input matInput [(ngModel)]="socials.language">
+                <input matInput [(ngModel)]="socials.language" />
               </mat-form-field>
             </div>
 
             <div class="edit-row">
               <mat-form-field appearance="outline">
                 <mat-label>Discord</mat-label>
-                <input matInput [(ngModel)]="socials.discord">
+                <input matInput [(ngModel)]="socials.discord" />
               </mat-form-field>
               <mat-form-field appearance="outline">
                 <mat-label>Steam ID</mat-label>
-                <input matInput [(ngModel)]="socials.steam">
+                <input matInput [(ngModel)]="socials.steam" />
               </mat-form-field>
             </div>
 
             <mat-form-field appearance="outline">
               <mat-label>Preferred games (comma separated)</mat-label>
-              <input matInput [(ngModel)]="preferred_games">
+              <input matInput [(ngModel)]="preferred_games" />
             </mat-form-field>
           </div>
 
           <div class="edit-actions">
-            <button mat-button (click)="editing = false">Cancel</button>
-            <button class="glass-button primary-glow" (click)="save_profile()">Save Changes</button>
+            <button mat-button [disabled]="saving" (click)="cancel_edit()">Cancel</button>
+            <button class="glass-button primary-glow" [disabled]="saving" (click)="save_profile()">
+              {{ saving ? 'Saving�' : 'Save changes' }}
+            </button>
           </div>
         </mat-card>
       } @else {
         <!-- Bio Card -->
         <mat-card class="content-card bio-card">
           <div class="card-header">
-            <mat-icon>info</mat-icon>
+            <app-icon name="info"></app-icon>
             <h2>About Me</h2>
           </div>
-          <p class="bio-text">{{socials.bio || 'This user hasn\'t written a bio yet.'}}</p>
-          
+          <p class="bio-text">{{ socials.bio || "This user hasn't written a bio yet." }}</p>
+
           <div class="meta-info">
             <div class="meta-item">
-              <mat-icon>translate</mat-icon>
-              <span>Speaks: {{socials.language || 'Any'}}</span>
+              <app-icon name="language"></app-icon>
+              <span>Speaks: {{ socials.language || 'Any' }}</span>
             </div>
           </div>
         </mat-card>
@@ -123,13 +129,13 @@
         <!-- Games Card -->
         <mat-card class="content-card games-card">
           <div class="card-header">
-            <mat-icon>sports_esports</mat-icon>
+            <app-icon name="controller"></app-icon>
             <h2>Main Games</h2>
           </div>
           <div class="games-list">
             @if (user_info?.publicMetadata?.preferred_games?.length) {
               @for (game of user_info.publicMetadata.preferred_games; track game) {
-                <div class="game-tag">{{game}}</div>
+                <div class="game-tag">{{ game }}</div>
               }
             } @else {
               <p class="empty-text">No favorite games added.</p>

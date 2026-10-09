@@ -1,1 +1,43 @@
-<div id="sign-in"></div>
+<div class="login-page">
+  <section class="login-story">
+    <a class="login-brand" href="/">gamematch<span>.</span></a>
+    <div class="login-copy">
+      <span class="eyebrow">GOOD GAMES. BETTER COMPANY.</span>
+      <h1>Your game.<br />Your people.</h1>
+      <p>Find teammates who share your game,<br />your region and your way to play.</p>
+      <div class="login-art" aria-hidden="true">
+        <span>+</span
+        ><svg viewBox="0 0 180 110" fill="none">
+          <path
+            d="M48 24h84c15 0 26 13 29 29l7 31c4 18-15 30-28 16l-19-20H59l-19 20C27 114 8 102 12 84l7-31c3-16 14-29 29-29Z"
+            stroke="currentColor"
+            stroke-width="5"
+          />
+          <path
+            d="M46 41v29M32 55h28"
+            stroke="currentColor"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+          <circle cx="133" cy="46" r="5" fill="currentColor" />
+          <circle cx="145" cy="58" r="5" fill="currentColor" /></svg
+        ><span>✳</span>
+      </div>
+    </div>
+    <span class="login-footer">MORE PLAYING. LESS LOOKING.</span>
+  </section>
+  <section class="login-form">
+    <div class="login-form-inner">
+      <span class="eyebrow">WELCOME TO GAMEMATCH</span>
+      <h2>Let's find your next teammate.</h2>
+      <p>Sign in to browse lobbies and start a conversation.</p>
+      @if (error) {
+        <div class="error-state" role="alert">
+          <p>{{ error }}</p>
+          <button class="secondary-button" (click)="loadSignIn()">Try again</button>
+        </div>
+      }
+      <div id="sign-in"></div>
+    </div>
+  </section>
+</div>

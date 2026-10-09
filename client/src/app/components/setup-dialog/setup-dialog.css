@@ -1,0 +1,41 @@
+.setup-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  background: #15221bcc;
+  padding: 20px;
+  overflow-y: auto;
+}
+.setup-dialog {
+  width: min(440px, 100%);
+  background: var(--surface-color);
+  border-radius: 16px;
+  padding: 30px;
+  border: 1px solid var(--border-color);
+}
+.setup-dialog > p {
+  color: var(--muted-color);
+  font-size: 12px;
+}
+.setup-dialog label {
+  display: block;
+  margin: 15px 0;
+  font-size: 11px;
+}
+.setup-dialog input,
+.setup-dialog select {
+  display: block;
+  width: 100%;
+  margin-top: 6px;
+  border: 1px solid var(--border-color);
+  background: var(--bg-color);
+  color: var(--text-color);
+  border-radius: 8px;
+  padding: 11px;
+}
+.setup-error {
+  font-size: 11px;
+  color: #b45c47;
+}

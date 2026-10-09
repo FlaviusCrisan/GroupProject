@@ -1,16 +1,58 @@
 <div class="home-page">
-  <div class="hero-banner">
-    <div class="hero-overlay"></div>
-    <div class="hero-content">
-      <h1>Find your perfect squad</h1>
-      <p>Connect with players globally and dominate together.</p>
+  <div class="welcome-row">
+    <div>
+      <span class="eyebrow">THE NEXT GAME IS BETTER TOGETHER</span>
+      <h1>Find your people.</h1>
+      <p>Same game. Same wavelength. Your next teammate is here.</p>
     </div>
+    <a routerLink="/post-game" class="primary-button"
+      ><app-icon name="plus"></app-icon>Create a lobby</a
+    >
   </div>
-  
-  <section class="matches-section">
+  <section class="hero-banner" aria-labelledby="hero-title">
+    <div class="hero-content">
+      <span class="hero-label"><span class="little-dot"></span>A BETTER WAY TO TEAM UP</span>
+      <h2 id="hero-title">Less solo queue.<br />More <em>good company.</em></h2>
+      <p>
+        Find players who share your game, region and playstyle.<br class="desktop-break" />
+        Make a connection. Then make a play.
+      </p>
+      <button type="button" (click)="scrollToLobbies()" class="hero-link">
+        Explore the lobbies <span aria-hidden="true">↗</span>
+      </button>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="orbit orbit-one"></div>
+      <div class="orbit orbit-two"></div>
+      <div class="controller-tile">
+        <svg viewBox="0 0 180 110" fill="none">
+          <path
+            d="M48 24h84c15 0 26 13 29 29l7 31c4 18-15 30-28 16l-19-20H59l-19 20C27 114 8 102 12 84l7-31c3-16 14-29 29-29Z"
+            stroke="currentColor"
+            stroke-width="6"
+          />
+          <path
+            d="M46 41v29M32 55h28"
+            stroke="currentColor"
+            stroke-width="5"
+            stroke-linecap="round"
+          />
+          <circle cx="133" cy="46" r="5" fill="currentColor" />
+          <circle cx="145" cy="58" r="5" fill="currentColor" />
+          <path d="M75 24v-9h30v9" stroke="currentColor" stroke-width="5" />
+        </svg>
+      </div>
+      <span class="art-spark spark-one">✳</span><span class="art-spark spark-two">+</span
+      ><span class="art-caption">PLAYER TWO, FOUND.</span>
+    </div>
+  </section>
+  <section id="lobbies" class="matches-section">
     <div class="section-title">
-      <p>Open lobbies</p>
-      <span>Use filters to find better teammates</span>
+      <div>
+        <h2>Open lobbies<span class="heading-dot"></span></h2>
+        <p>Find a game that feels like your kind of game.</p>
+      </div>
+      <span class="section-label"><app-icon name="filter"></app-icon>Make it your match</span>
     </div>
     <app-post-list [show_filters]="true"></app-post-list>
   </section>

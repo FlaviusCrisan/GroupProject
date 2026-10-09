@@ -1,7 +1,7 @@
 <div class="post-game-container">
   <mat-card appearance="outlined" class="post-game-card">
     <mat-card-header>
-      <mat-icon class="header-icon">add_circle</mat-icon>
+      <app-icon class="header-icon" name="plus"></app-icon>
       <h1 class="header-title">Create New Lobby</h1>
       <p class="header-subtitle">Fill in the details to find your perfect squad</p>
     </mat-card-header>
@@ -11,12 +11,21 @@
         <h3>General Information</h3>
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Lobby Title</mat-label>
-          <input matInput placeholder="e.g. Competitive grind to Radiant" [(ngModel)]="info.title">
+          <input
+            matInput
+            placeholder="e.g. Competitive grind to Radiant"
+            [(ngModel)]="info.title"
+          />
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Description (Optional)</mat-label>
-          <textarea matInput rows="3" placeholder="Tell more about your playstyle..." [(ngModel)]="info.description"></textarea>
+          <textarea
+            matInput
+            rows="3"
+            placeholder="Tell more about your playstyle..."
+            [(ngModel)]="info.description"
+          ></textarea>
         </mat-form-field>
       </div>
 
@@ -29,7 +38,7 @@
     <div class="post-actions">
       <button class="glass-button secondary" (click)="router.navigate(['/home'])">Cancel</button>
       <button class="glass-button primary-glow" [disabled]="add_clicked" (click)="add()">
-        <mat-icon *ngIf="!add_clicked">publish</mat-icon>
+        <app-icon *ngIf="!add_clicked" name="arrow-up"></app-icon>
         {{ add_clicked ? 'Creating...' : 'Post Lobby' }}
       </button>
     </div>

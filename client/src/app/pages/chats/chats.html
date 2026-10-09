@@ -1,0 +1,30 @@
+<div class="page-heading">
+  <span class="eyebrow">KEEP THE GAME GOING</span>
+  <h1>Messages.</h1>
+  <p>Conversations with teammates from your joined lobbies.</p>
+</div>
+@if (loading) {
+  <p class="muted" role="status">Loading conversations…</p>
+} @else if (error) {
+  <div class="error-state" role="alert">
+    <p>We couldn't load your conversations.</p>
+    <button class="secondary-button" (click)="load()">Try again</button>
+  </div>
+} @else if (!conversations.length) {
+  <div class="empty-conversations">
+    <h2>Your next conversation starts here.</h2>
+    <p>Join a lobby to connect with another player.</p>
+    <a routerLink="/home" class="primary-button">Find teammates ↗</a>
+  </div>
+} @else {
+  <div class="conversation-list">
+    @for (person of conversations; track person.id) {
+      <a class="conversation-row" [routerLink]="['/user', person.id, 'dms']"
+        ><span class="person-initial">{{ person.name.charAt(0).toUpperCase() }}</span
+        ><span class="person-name"
+          >{{ person.name }}<small>{{ person.game.replaceAll('_', ' ') }}</small></span
+        ><span class="open-conversation">Open conversation ↗</span></a
+      >
+    }
+  </div>
+}

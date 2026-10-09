@@ -1,35 +1,57 @@
-<div [ngStyle]="{'display': show_filters ? 'flex' : 'none'}" class="filters-wrap">
-  <app-post-info-selectors (on_changed)="on_filters_changed($event)" style="width: 100%"></app-post-info-selectors>
-</div>
-
-<div class="post-grid">
-  <div class="post-item" *ngFor="let post of posts">
-    <app-post [id]="post.id" (join_clicked)="view($event)"></app-post>
-
-    @if (current_user_joined !== undefined) {
-      <div class="history-actions">
-        <button matButton="filled" (click)="view(post)">Open</button>
-        @if (current_user_joined === false) {
-          <button matButton (click)="cancel(post)">Cancel</button>
-        }
-      </div>
-    }
+@if (show_filters) {
+  <div class="filters-wrap">
+    <app-post-info-selectors (on_changed)="on_filters_changed($event)"></app-post-info-selectors>
   </div>
-</div>
-
-<div *ngIf="posts.length === 0" class="empty-list">
-  <mat-card>
-    <ng-container *ngIf="current_user_joined === undefined">
-      <h2>No matches found</h2>
-      <p>There are no open lobbies right now. Be the first to start a game and find your perfect teammate!</p>
-    </ng-container>
-    <ng-container *ngIf="current_user_joined === false">
-      <h2>No requests yet</h2>
-      <p>You haven't requested to join any games yet.</p>
-    </ng-container>
-    <ng-container *ngIf="current_user_joined === true">
-      <h2>No joined games</h2>
-      <p>You haven't been accepted into any games yet.</p>
-    </ng-container>
-  </mat-card>
-</div>
+}
+@if (loading) {
+  <div class="loading-list" role="status"><span class="loading-dot"></span>Finding lobbies…</div>
+} @else if (error) {
+  <div class="error-state" role="alert">
+    <h3>We couldn't load the lobbies.</h3>
+    <p>Check your connection and try again.</p>
+    <button class="secondary-button" (click)="load_posts()">Try again</button>
+  </div>
+} @else {
+  <div class="list-meta">
+    <span>{{ posts.length }} {{ posts.length === 1 ? 'lobby' : 'lobbies' }}</span
+    ><span>Newest first</span>
+  </div>
+  <div class="post-grid">
+    <div class="post-item" *ngFor="let post of posts">
+      <app-post [id]="post.id" (join_clicked)="view($event)"></app-post>
+      @if (current_user_joined !== undefined) {
+        <div class="history-actions">
+          @if (current_user_joined === false) {
+            <button class="text-button" (click)="cancel(post)">Cancel request</button>
+          }
+        </div>
+      }
+    </div>
+  </div>
+  @if (posts.length === 0) {
+    <div class="empty-list">
+      <span class="empty-symbol" aria-hidden="true">↗</span>
+      <h3>
+        {{
+          current_user_joined === undefined
+            ? 'A little quiet here.'
+            : current_user_joined
+              ? 'Your next game is ahead.'
+              : 'No requests yet.'
+        }}
+      </h3>
+      <p>
+        {{
+          current_user_joined === undefined
+            ? 'Try different filters, or create a lobby and let your teammates find you.'
+            : 'Browse the open lobbies to find someone to play with.'
+        }}
+      </p>
+      <a
+        class="secondary-button"
+        [routerLink]="current_user_joined === undefined ? '/post-game' : '/home'"
+        >{{ current_user_joined === undefined ? 'Create a lobby' : 'Browse lobbies' }}</a
+      >
+    </div>
+  }
+}
