@@ -1,77 +1,59 @@
 # GameMatch
-This is a website where gamers can find teammates
 
-It is hosted at [https://project-v8csq.vercel.app](https://project-v8csq.vercel.app)
+GameMatch helps players find a teammate for their next game. Hosts create lobbies, players filter by game and preferences, and accepted teammates can plan a session through direct messages.
 
-Features:
-- Search for lobbies
-- Filters / sorting
-- User profile (social media links, Game specific stats)
-- Advanced matchmaking algorithm
-- Match history
-- Chatting
-- Themes (dark / light)
+[View the interface](https://gamematch-design-preview.vercel.app)
 
-# Supported Games
-- Fortnite
-- Rainbox six siege
-- Valorant
-- Rocket league
-- League of legends
-- Marvel rivals
-- Overwatch
-- Warzone
-- Minecraft
-- Cs2
-- Roblox
-- Apex legends
+## Features
 
-# Tech Stack
+- Lobby creation, editing and join requests
+- Filters for game, mode, region, language, platform and rank
+- Player profiles with Discord, Steam and Riot details
+- Accepted lobbies and request history
+- Direct messages with recoverable delivery errors
+- Responsive navigation, light and dark themes, local SVG icons
 
-Frontend - Angular
+## Stack
 
-Backend - Node.js
+Angular 21 and TypeScript on the frontend; Express and PostgreSQL on the backend. Clerk handles authentication and profile metadata. The redesign adds no framework dependencies.
 
-Database - PostgreSQL
+## Development
 
-Testing - Playwright
+Use Node.js 22 or later and npm. Install the two applications separately:
 
-# Member Roles
-
-Maksymilian - Frontend
-
-Kostiantyn - Database & Backend
-
-Flavius - Testing
-
-# Build Instructions
-Prerequisites:
-- Must have Postgres server installed
-- Set up variables in `server/.env`
-
-Example `.env`
-```
-DB_USER=postgres
-DB_HOST=localhost
-DB_NAME=mydb
-DB_PASSWORD=
-DB_PORT=5432
-
-PORT=3000
-
-CLERK_PUBLISHABLE_KEY=<your api key>
-CLERK_SECRET_KEY=<your api key>
+```sh
+cd client
+npm ci
+cd ../server
+npm ci
 ```
 
-in the root directory `GroupProject/`:
-- run `npm install`
-- run `npm run dev`
-- connect to `localhost:4200` in your browser
+Copy `server/.env.example` to `server/.env` and set your PostgreSQL connection and Clerk keys. The browser's publishable key in `client/src/index.html` must belong to the same Clerk application. Do not put the Clerk secret key in the frontend.
 
-# Testing Instructions
+Initialize the database once with `npm run db:init` inside `server`. Start the API with `npm start` inside `server`, and start Angular with `npm start` inside `client`. Open http://localhost:4200. The local frontend uses http://localhost:3000.
 
-- Must have Playwright & components required by Playwright installed
-- Host website locally
-- You will need to change the email and password in the test files to go through login (manual 2 step verification required)
-- Make sure you cd to playwright-testing, use the command "npx playwright test tests/login.spec.ts" (change the filename depending on which file you want to test)
-- And to enable the GUI (which is needed for some tests) add "--headed --debug --project=chromium" to the end of the base test command
+To view the interface without external services, run `npm run design-preview` inside `client`. This separate build uses in-memory example lobbies, profiles and messages. Changes reset when the page reloads. It does not contain accounts, saved user data or a live backend. The hosted interface link above runs this configuration. Production builds exclude these fixtures and require real authentication.
+
+## Deployment
+
+See [Vercel setup](docs/deployment.md) for the frontend and API projects, environment variables and database initialization.
+
+## Checks
+
+```sh
+cd server
+npm test
+cd ../client
+npm run build
+npm test -- --watch=false --include=src/app/components/messaging/messaging.spec.ts --include=src/app/components/post-list/post-list.spec.ts
+```
+
+The API checks cover authentication, host permissions, failed persistence and accepting join requests. The frontend checks cover draft retention, duplicate sends and stale filter responses. Other original generated specs and the original Playwright suite are not part of these checks; the Playwright suite requires real test accounts and manual sign-in.
+
+## Team
+
+- Maksymilian � frontend
+- Kostiantyn � database and backend
+- Flavius � testing
+
+The original group project is maintained at [FlaviusCrisan/GroupProject](https://github.com/FlaviusCrisan/GroupProject). Brand icon source and licensing are documented in [client/public/icons](client/public/icons/README.md).
