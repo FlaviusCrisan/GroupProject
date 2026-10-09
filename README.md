@@ -2,7 +2,7 @@
 
 GameMatch helps players find a teammate for their next game. Hosts create lobbies, players filter by game and preferences, and accepted teammates can plan a session through direct messages.
 
-[View the interface](https://gamematch-design-preview.vercel.app)
+[Open GameMatch](https://gamematch-kkostia.vercel.app)
 
 ## Features
 
@@ -32,7 +32,7 @@ Copy `server/.env.example` to `server/.env` and set your PostgreSQL connection a
 
 Initialize the database once with `npm run db:init` inside `server`. Start the API with `npm start` inside `server`, and start Angular with `npm start` inside `client`. Open http://localhost:4200. The local frontend uses http://localhost:3000.
 
-To view the interface without external services, run `npm run design-preview` inside `client`. This separate build uses in-memory example lobbies, profiles and messages. Changes reset when the page reloads. It does not contain accounts, saved user data or a live backend. The hosted interface link above runs this configuration. Production builds exclude these fixtures and require real authentication.
+To view the interface without external services, run `npm run design-preview` inside `client`. This separate build uses in-memory example lobbies, profiles and messages. Changes reset when the page reloads. It does not contain accounts, saved user data or a live backend. Production builds exclude these fixtures. The live site uses Clerk accounts and persistent Neon PostgreSQL storage.
 
 ## Deployment
 
@@ -52,8 +52,8 @@ The API checks cover authentication, host permissions, failed persistence and ac
 
 ## Team
 
-- Maksymilian � frontend
-- Kostiantyn � database and backend
-- Flavius � testing
+- Maksymilian: frontend
+- Kostiantyn: database and backend
+- Flavius: testing
 
 The original group project is maintained at [FlaviusCrisan/GroupProject](https://github.com/FlaviusCrisan/GroupProject). Brand icon source and licensing are documented in [client/public/icons](client/public/icons/README.md).

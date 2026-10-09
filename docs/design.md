@@ -1,9 +1,11 @@
-# Interface design
+# Interface
 
-The visual direction was inspired by the Community App reference at [MotionSites](https://motionsites.ai/?prompt=social-hangouts): an easy-to-scan sidebar, a focused feed and clear navigation. No template code or paid prompt was copied.
+The interface uses a warm neutral background, green actions and local SVG icons. Discord, Steam and Riot use brand paths from Simple Icons. Navigation becomes a bottom bar on mobile. Light and dark themes are available.
 
-GameMatch uses a warm neutral background, forest green actions and amber highlights. A shared local SVG component supplies interface icons. Discord, Steam and Riot use their brand paths from Simple Icons. Cards use CSS artwork, and the controller illustration and navigation icons are repository-native SVGs. The layout adapts to a mobile bottom navigation bar and supports a dark theme.
+Pages use short headings, functional labels and error messages. Lobbies show the game, preferences, host and description without promotional artwork or banners.
 
-![Home](screenshots/home-desktop.png)
+![Lobbies](screenshots/home-desktop.png)
 
-![Player profile](screenshots/profile-desktop.png)
+![Mobile navigation](screenshots/home-mobile.png)
+
+The initial layout reference was the [MotionSites community app](https://motionsites.ai/?prompt=social-hangouts). No template code was copied.
