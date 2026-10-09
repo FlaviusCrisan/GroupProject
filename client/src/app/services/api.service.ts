@@ -43,7 +43,13 @@ export class ApiService {
       }, 50);
     });
 
-    await Clerk.load();
+    await Clerk.load({
+      localization: {
+        signIn: { start: { title: 'Sign in', subtitle: '' } },
+        signUp: { start: { title: 'Create account', subtitle: '' } },
+      },
+      appearance: { variables: { colorPrimary: '#294e40', borderRadius: '9px' } },
+    });
     this.clerk_initialized = true;
   }
 
@@ -79,7 +85,21 @@ export class ApiService {
     if (!this.clerk_initialized) throw new Error('Clerk not initialized');
     if (!e) throw new Error('element is null');
 
-    await Clerk.mountSignIn(e, { afterSignInUrl: after_sign_in_url });
+    Clerk.mountSignIn(e, {
+      signUpUrl: '/sign-up',
+      forceRedirectUrl: after_sign_in_url,
+      signUpForceRedirectUrl: after_sign_in_url,
+    });
+  }
+
+  async mount_sign_up(e: HTMLDivElement, redirectUrl: string) {
+    await this.init_clerk();
+    if (!e) throw new Error('element is null');
+    Clerk.mountSignUp(e, {
+      signInUrl: '/',
+      forceRedirectUrl: redirectUrl,
+      signInForceRedirectUrl: redirectUrl,
+    });
   }
 
   async sign_out(redirect_url: string) {

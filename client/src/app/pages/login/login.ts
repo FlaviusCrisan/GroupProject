@@ -25,6 +25,8 @@ export class Login implements AfterViewInit {
     try {
       const is_signed_in = await this.api.is_signed_in();
       if (is_signed_in) await this.router.navigate(['/home']);
+      else if (this.router.url.startsWith('/sign-up'))
+        await this.api.mount_sign_up(document.getElementById('sign-in') as HTMLDivElement, '/home');
       else
         await this.api.mount_sign_in(document.getElementById('sign-in') as HTMLDivElement, '/home');
     } catch {
