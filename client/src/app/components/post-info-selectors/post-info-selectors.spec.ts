@@ -1,18 +1,17 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { PostList } from './post-list';
+import { PostInfoSelectors } from './post-info-selectors';
 
-describe('PostList', () => {
-  let component: PostList;
-  let fixture: ComponentFixture<PostList>;
+describe('PostInfoSelectors', () => {
+  let component: PostInfoSelectors;
+  let fixture: ComponentFixture<PostInfoSelectors>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [PostList]
-    })
-    .compileComponents();
+      imports: [PostInfoSelectors],
+    }).compileComponents();
 
-    fixture = TestBed.createComponent(PostList);
+    fixture = TestBed.createComponent(PostInfoSelectors);
     component = fixture.componentInstance;
     await fixture.whenStable();
   });

@@ -1,3 +1,1 @@
-export const environment = {
-  api_url: 'https://gamematch-h5zk.onrender.com'
-};
+export const environment = { api_url: '', designPreview: false };

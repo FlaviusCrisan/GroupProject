@@ -25,10 +25,7 @@
                 "input": "public"
               }
             ],
-            "styles": [
-              "src/material-theme.scss",
-              "src/styles.css"
-            ]
+            "styles": ["src/material-theme.scss", "src/styles.css"]
           },
           "configurations": {
             "production": {
@@ -52,6 +49,20 @@
               ],
               "outputHashing": "all"
             },
+            "design-preview": {
+              "optimization": false,
+              "sourceMap": true,
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.preview.ts"
+                },
+                {
+                  "replace": "src/app/services/api-provider.ts",
+                  "with": "src/app/services/api-provider.preview.ts"
+                }
+              ]
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,
@@ -65,6 +76,9 @@
           "configurations": {
             "production": {
               "buildTarget": "client:build:production"
+            },
+            "design-preview": {
+              "buildTarget": "client:build:design-preview"
             },
             "development": {
               "buildTarget": "client:build:development"
