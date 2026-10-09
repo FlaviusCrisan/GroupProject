@@ -16,7 +16,13 @@ const app = express();
 
 app.use(cors());
 app.use(express.json({ limit: "32kb" }));
-app.use(clerkMiddleware());
+app.use(
+  clerkMiddleware({
+    publishableKey:
+      process.env.CLERK_PUBLISHABLE_KEY ||
+      process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY,
+  }),
+);
 
 const auth = (req, res, next) => {
   if (!getAuth(req).userId)
@@ -25,8 +31,6 @@ const auth = (req, res, next) => {
 };
 
 const pool = require("./db");
-
-app.get("/debug", (req, res) => res.send("debug ok"));
 
 app.get("/api/games", (req, res) => {
   res.json({
@@ -490,11 +494,9 @@ app.post("/api/posts/:id/accept", auth, requirePostOwner, async (req, res) => {
         [clerk_id, id, userId],
       );
       if (!result.rows.length)
-        return res
-          .status(409)
-          .json({
-            error: "Lobby is full or this player has not requested to join",
-          });
+        return res.status(409).json({
+          error: "Lobby is full or this player has not requested to join",
+        });
       res.json(result.rows[0]);
     } catch (dbErr) {
       return res

@@ -1,7 +1,7 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 const api = process.env.GAMEMATCH_API_URL;
-const key = process.env.CLERK_PUBLISHABLE_KEY;
+const key = process.env.CLERK_PUBLISHABLE_KEY || process.env.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY;
 if (!api || !key)
   throw new Error('Set GAMEMATCH_API_URL and CLERK_PUBLISHABLE_KEY before building for Vercel.');
 const apiUrl = new URL(api);
