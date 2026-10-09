@@ -34,19 +34,13 @@
       <h3>
         {{
           current_user_joined === undefined
-            ? 'A little quiet here.'
+            ? 'No lobbies'
             : current_user_joined
-              ? 'Your next game is ahead.'
-              : 'No requests yet.'
+              ? 'No joined lobbies'
+              : 'No requests'
         }}
       </h3>
-      <p>
-        {{
-          current_user_joined === undefined
-            ? 'Try different filters, or create a lobby and let your teammates find you.'
-            : 'Browse the open lobbies to find someone to play with.'
-        }}
-      </p>
+
       <a
         class="secondary-button"
         [routerLink]="current_user_joined === undefined ? '/post-game' : '/home'"

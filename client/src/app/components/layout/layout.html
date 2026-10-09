@@ -5,7 +5,6 @@
       ><span class="brand-mark"><app-icon name="controller"></app-icon></span
       ><span>game<span class="brand-light">match</span><span class="brand-dot">.</span></span></a
     >
-    <span class="sidebar-label">YOUR SPACE</span>
     <nav class="nav-links" aria-label="Main navigation">
       <a routerLink="/home" routerLinkActive="active" class="nav-link"
         ><app-icon name="teammates"></app-icon><span>Find teammates</span></a
@@ -20,24 +19,14 @@
         ><app-icon name="profile"></app-icon><span>My profile</span></a
       >
     </nav>
-    <div class="sidebar-note">
-      <span class="note-icon"><app-icon name="controller"></app-icon></span>
-      <h3>Good games start<br />with good company.</h3>
-      <p>Find someone who plays<br />your way.</p>
-      <a routerLink="/post-game" class="secondary-button"
-        >Create a lobby <span aria-hidden="true">↗</span></a
-      >
-    </div>
     <div class="sidebar-bottom">
-      <span class="small-wordmark">MADE FOR PLAYERS</span
-      ><button class="sign-out" (click)="sign_out()">
+      <button class="sign-out" (click)="sign_out()">
         <app-icon name="logout"></app-icon>Sign out
       </button>
     </div>
   </aside>
   <div class="workspace">
     <header class="topbar">
-      <span class="topbar-label">A place to find your people.</span>
       <a class="mobile-brand" routerLink="/home">gamematch<span>.</span></a>
       <div class="nav-actions">
         <button
@@ -61,9 +50,6 @@
     <main id="main-content" class="main-content" tabindex="-1">
       <router-outlet></router-outlet>
     </main>
-    <footer class="app-footer">
-      <span>GameMatch</span><span>More playing. Less looking.</span>
-    </footer>
   </div>
   @if (show_setup) {
     <app-setup-dialog (completed)="show_setup = false"></app-setup-dialog>

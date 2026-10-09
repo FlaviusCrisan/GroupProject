@@ -7,9 +7,6 @@ import {
   Output,
   ChangeDetectorRef,
 } from '@angular/core';
-import { MatCardModule } from '@angular/material/card';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatButtonModule } from '@angular/material/button';
 import { ApiService } from '../../services/api.service';
 import { Post } from '../../Post';
 import { formatDistanceToNow } from 'date-fns';
@@ -17,11 +14,10 @@ import { formatDistanceToNow } from 'date-fns';
 import { Router } from '@angular/router';
 
 import { CommonModule } from '@angular/common';
-import { GameIcon } from '../game-icon/game-icon';
 
 @Component({
   selector: 'app-post',
-  imports: [CommonModule, GameIcon],
+  imports: [CommonModule],
   templateUrl: './post.html',
   styleUrl: './post.css',
 })

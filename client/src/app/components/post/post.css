@@ -11,73 +11,7 @@
   display: flex;
   flex-direction: column;
 }
-.game-banner {
-  height: 122px;
-  background: #3b5149;
-  color: #eef0d8;
-  position: relative;
-  padding: 20px;
-  overflow: hidden;
-  flex-shrink: 0;
-}
-.game-banner[data-game='Valorant'],
-.game-banner[data-game='valorant'] {
-  background: #d6b1a4;
-  color: #55352e;
-}
-.game-banner[data-game='CS2'],
-.game-banner[data-game='cs2'] {
-  background: #d9bb83;
-  color: #493e27;
-}
-.game-banner[data-game='Minecraft'],
-.game-banner[data-game='minecraft'] {
-  background: #b3c0a6;
-  color: #33422c;
-}
-.game-banner[data-game='Rocket League'],
-.game-banner[data-game='rocket_league'] {
-  background: #b1bdc9;
-  color: #334357;
-}
-.game-wordmark {
-  position: relative;
-  text-transform: uppercase;
-  font-size: 22px;
-  line-height: 1.05;
-  font-weight: 800;
-  letter-spacing: -0.06em;
-  max-width: 70%;
-  display: block;
-}
-.game-mode {
-  position: absolute;
-  bottom: 17px;
-  left: 20px;
-  font-size: 9px;
-  letter-spacing: 0.05em;
-  opacity: 0.85;
-}
-.cover-icon {
-  position: absolute;
-  font-size: 88px;
-  width: 88px;
-  height: 88px;
-  right: 10px;
-  top: 21px;
-  transform: rotate(-18deg);
-  opacity: 0.18;
-}
-.cover-grid {
-  position: absolute;
-  inset: 0;
-  background-image:
-    linear-gradient(currentColor 1px, transparent 1px),
-    linear-gradient(90deg, currentColor 1px, transparent 1px);
-  background-size: 25px 25px;
-  opacity: 0.06;
-  mask-image: linear-gradient(90deg, transparent, black);
-}
+
 .card-body {
   padding: 19px;
   display: flex;

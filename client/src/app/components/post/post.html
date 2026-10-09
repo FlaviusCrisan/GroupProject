@@ -5,24 +5,15 @@
   </div>
 } @else if (post) {
   <article class="post-card">
-    <div class="game-banner" [attr.data-game]="post.info.game">
-      <div class="cover-grid" aria-hidden="true"></div>
-      <span class="game-wordmark">{{ post.info.game.replaceAll('_', ' ') }}</span
-      ><app-icon class="cover-icon" aria-hidden="true" name="controller"></app-icon
-      ><span class="game-mode">{{ post.info.game_mode || 'Find your teammate' }}</span>
-    </div>
     <div class="card-body">
       <div class="card-topline">
         <span class="game-chip">{{ post.info.game.replaceAll('_', ' ') }}</span
         ><span class="time">{{ time_string }}</span>
       </div>
       <h3>{{ post.info.title }}</h3>
-      <p class="post-description">
-        {{
-          post.info.description ||
-            'Looking for someone to play with. Open the lobby to get in touch.'
-        }}
-      </p>
+      @if (post.info.description) {
+        <p class="post-description">{{ post.info.description }}</p>
+      }
       <div class="tag-cells">
         @for (chip of chips; track $index) {
           <span class="tag-cell">{{ chip.text }}</span>

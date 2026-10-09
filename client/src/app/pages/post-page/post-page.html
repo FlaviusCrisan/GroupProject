@@ -31,7 +31,7 @@
         } @else {
           <mat-card class="interaction-card">
             <mat-card-header>
-              <mat-card-title>{{ is_self ? 'Lobby Management' : 'Join this Game' }}</mat-card-title>
+              <mat-card-title>{{ is_self ? 'Manage lobby' : 'Join lobby' }}</mat-card-title>
             </mat-card-header>
 
             <mat-card-content class="interaction-content">
@@ -114,14 +114,14 @@
                     </div>
                   }
                   @if (requests.length === 0) {
-                    <div class="empty-requests">No requests yet. Waiting for gamers...</div>
+                    <div class="empty-requests">No requests</div>
                   }
                 </div>
               } @else {
                 @if (requested) {
                   <div class="status-box pending">
                     <app-icon name="hourglass"></app-icon>
-                    <p>Request sent! Waiting for host to accept...</p>
+                    <p>Request pending</p>
                     <button
                       [disabled]="busy"
                       mat-stroked-button
@@ -132,7 +132,6 @@
                     </button>
                   </div>
                 } @else {
-                  <p class="pitch">Looking for a teammate? Send a request to start a chat!</p>
                   <button
                     [disabled]="busy"
                     mat-flat-button

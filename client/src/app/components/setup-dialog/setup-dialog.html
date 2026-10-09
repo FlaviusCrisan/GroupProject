@@ -7,9 +7,7 @@
     aria-modal="true"
     aria-labelledby="setup-title"
   >
-    <span class="eyebrow">MAKE YOURSELF AT HOME</span>
-    <h2 id="setup-title">Your game. Your way.</h2>
-    <p>A few preferences help you find the right teammates. You can change them in your profile.</p>
+    <h2 id="setup-title">Profile settings</h2>
     <form (ngSubmit)="save()">
       <label
         >Region<select cdkFocusInitial name="region" [(ngModel)]="region">
@@ -35,9 +33,7 @@
       }
       <button class="primary-button full-width" type="submit" [disabled]="saving">
         {{ saving ? 'Saving…' : 'Save preferences' }}</button
-      ><button class="text-button full-width" type="button" (click)="completed.emit()">
-        I'll do this later
-      </button>
+      ><button class="text-button full-width" type="button" (click)="completed.emit()">Skip</button>
     </form>
   </section>
 </div>

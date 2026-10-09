@@ -1,17 +1,13 @@
 <div class="history-page">
   <div class="page-heading">
-    <span class="eyebrow">YOUR NEXT GAME</span>
-    <h1>My activity.</h1>
-    <p>Keep track of the connections you've made.</p>
+    <h1>My activity</h1>
   </div>
   <section class="history-section">
     <h2>Pending requests</h2>
-    <p class="muted">Lobbies you've asked to join.</p>
     <app-post-list [current_user_joined]="false"></app-post-list>
   </section>
   <section class="history-section">
     <h2>Joined lobbies</h2>
-    <p class="muted">Your accepted games and conversations.</p>
     <app-post-list [current_user_joined]="true"></app-post-list>
   </section>
 </div>
